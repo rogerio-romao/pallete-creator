@@ -14,15 +14,13 @@
 
 <script setup>
 import { ref } from "vue";
+import { rgbToHsl } from "../lib/utils";
 import ColorSlot from "./ColorSlot.vue";
-const mainRed = ref(null);
-const mainGreen = ref(null);
-const mainBlue = ref(null);
+const mainRGB = ref(null);
+const mainHSL = ref(null);
 const setMainColor = (rgb) => {
-  const [r, g, b] = rgb.match(/\d+/g).map(Number);
-  mainRed.value = r;
-  mainGreen.value = g;
-  mainBlue.value = b;
+  mainRGB.value = rgb;
+  mainHSL.value = rgbToHsl(rgb);
 };
 </script>
 
