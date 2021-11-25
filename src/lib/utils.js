@@ -11,25 +11,8 @@ export const generateRgb = () => {
   return rgb
 }
 
-const generateColor = (slot) => {
-  const r = randomInt()
-  const g = randomInt()
-  const b = randomInt()
-
-  const rgb = `rgb(${r}, ${g}, ${b})`
-  const hex = rgbToHex(r, g, b)
-  const hsl = rgbToHsl(r, g, b)
-
-  slot.style.backgroundColor = rgb
-
-  slot.querySelector('.rgbValue').innerHTML = rgb
-  slot.querySelector('.hexValue').innerHTML = hex
-  slot.querySelector('.hslValue').innerHTML = `hsl(${Math.round(
-    hsl[0]
-  )}, ${Math.round(hsl[1] * 100)}%, ${Math.round(hsl[2] * 100)}%)`
-}
-
-const rgbToHex = (r, g, b) => {
+export const rgbToHex = (rgb) => {
+  const [r, g, b] = rgb.match(/\d+/g).map(Number)
   let hex = [r.toString(16), g.toString(16), b.toString(16)]
   hex.forEach((color, index) => {
     if (color.length === 1) {
@@ -39,7 +22,8 @@ const rgbToHex = (r, g, b) => {
   return `#${hex.join('')}`
 }
 
-const rgbToHsl = (r, g, b) => {
+export const rgbToHsl = (rgb) => {
+  let [r, g, b] = rgb.match(/\d+/g).map(Number)
   r /= 255
   g /= 255
   b /= 255
@@ -64,5 +48,5 @@ const rgbToHsl = (r, g, b) => {
   } else {
     s = (max - l) / Math.min(l, 1 - l)
   }
-  return [h, s, l]
+  return `${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%`
 }
