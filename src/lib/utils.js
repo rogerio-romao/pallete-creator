@@ -50,3 +50,9 @@ export const rgbToHsl = (rgb) => {
   }
   return `${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%`
 }
+
+export const generateComplement = (hsl) => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  const h2 = (h + 180) % 360
+  return `hsl(${h2}, ${s}%, ${l}%)`
+}

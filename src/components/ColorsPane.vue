@@ -6,6 +6,7 @@
         <color-slot
           @setMainColor="setMainColor($event)"
           :isMainSlot="i === 1"
+          :mainHsl="mainHSL"
         />
       </template>
     </section>
