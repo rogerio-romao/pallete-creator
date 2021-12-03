@@ -15,11 +15,25 @@
         <i class="fas fa-random" />
       </button>
       <button
-        v-if="props.slotNumber === 2"
+        v-if="props.slotNumber > 1"
         class="generate-color"
         @click="setComplement"
       >
         <i class="fas fa-adjust"></i>
+      </button>
+      <button
+        v-if="props.slotNumber > 1"
+        class="generate-color"
+        @click="setMono"
+      >
+        <i class="fas fa-tv"></i>
+      </button>
+      <button
+        v-if="props.slotNumber > 1"
+        class="generate-color"
+        @click="setTriad"
+      >
+        <i class="fas fa-dice-three"></i>
       </button>
     </div>
   </div>
@@ -32,6 +46,8 @@ import {
   rgbToHex,
   hslToRgb,
   generateComplement,
+  generateMono,
+  generateTriad,
 } from "../lib/utils";
 
 const props = defineProps({
@@ -40,6 +56,10 @@ const props = defineProps({
     default: 1,
   },
   mainHsl: {
+    type: String,
+    default: "",
+  },
+  mainRgb: {
     type: String,
     default: "",
   },
@@ -59,6 +79,18 @@ const setHsl = () => {
 
 const setComplement = () => {
   hsl.value = generateComplement(props.mainHsl);
+  rgb.value = hslToRgb(hsl.value);
+  hex.value = rgbToHex(rgb.value);
+};
+
+const setMono = () => {
+  hsl.value = generateMono(props.mainHsl);
+  rgb.value = hslToRgb(hsl.value);
+  hex.value = rgbToHex(rgb.value);
+};
+
+const setTriad = () => {
+  hsl.value = generateTriad(props.mainHsl);
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
 };

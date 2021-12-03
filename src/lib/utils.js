@@ -91,3 +91,26 @@ export const hslToRgb = (hsl) => {
     b * 255
   )})`
 }
+
+export const generateMono = (hsl) => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  const l2 = Math.floor((s + Math.random() * 100) % 100)
+  const l3 = Math.floor((s + Math.random() * 100) % 100)
+  const l4 = Math.floor((s + Math.random() * 100) % 100)
+  return [
+    `hsl(${h}, ${s}%, ${l2}%)`,
+    `hsl(${h}, ${s}%, ${l3}%)`,
+    `hsl(${h}, ${s}%, ${l4}%)`
+  ][Math.floor(Math.random() * 3)]
+}
+
+export const generateTriad = (hsl) => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  const h2 = (h + 120) % 360
+  const h3 = (h + 240) % 360
+  return [
+    `hsl(${h}, ${s}%, ${l}%)`,
+    `hsl(${h2}, ${s}%, ${l}%)`,
+    `hsl(${h3}, ${s}%, ${l}%)`
+  ][Math.floor(Math.random() * 3)]
+}

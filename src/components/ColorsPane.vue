@@ -7,6 +7,7 @@
           @setMainColor="setMainColor($event)"
           :slotNumber="i"
           :mainHsl="mainHSL"
+          :mainRgb="mainRGB"
         />
       </template>
     </section>
@@ -15,10 +16,13 @@
 
 <script setup>
 import { ref } from "vue";
+import { hslToRgb } from "../lib/utils";
 import ColorSlot from "./ColorSlot.vue";
 const mainHSL = ref(null);
+const mainRGB = ref(null);
 const setMainColor = (hsl) => {
   mainHSL.value = hsl;
+  mainRgb.value = hslToRgb(hsl);
 };
 </script>
 
