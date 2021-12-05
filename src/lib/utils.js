@@ -114,3 +114,32 @@ export const generateTriad = (hsl) => {
     `hsl(${h3}, ${s}%, ${l}%)`
   ][Math.floor(Math.random() * 3)]
 }
+
+export const generateAnalogous = (hsl) => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  const h2 = (h + 30) % 360
+  const h3 = (h + 60) % 360
+  const h4 = (h + 90) % 360
+  const h5 = (h + 120) % 360
+  const h6 = (h + 150) % 360
+  const h7 = (h + 180) % 360
+  const h8 = (h + 210) % 360
+  const h9 = (h + 240) % 360
+  const h10 = (h + 270) % 360
+  const h11 = (h + 300) % 360
+  const h12 = (h + 330) % 360
+  return [
+    `hsl(${h}, ${s}%, ${l}%)`,
+    `hsl(${h2}, ${s}%, ${l}%)`,
+    `hsl(${h3}, ${s}%, ${l}%)`,
+    `hsl(${h4}, ${s}%, ${l}%)`,
+    `hsl(${h5}, ${s}%, ${l}%)`,
+    `hsl(${h6}, ${s}%, ${l}%)`,
+    `hsl(${h7}, ${s}%, ${l}%)`,
+    `hsl(${h8}, ${s}%, ${l}%)`,
+    `hsl(${h9}, ${s}%, ${l}%)`,
+    `hsl(${h10}, ${s}%, ${l}%)`,
+    `hsl(${h11}, ${s}%, ${l}%)`,
+    `hsl(${h12}, ${s}%, ${l}%)`
+  ][Math.floor(Math.random() * 12)]
+}

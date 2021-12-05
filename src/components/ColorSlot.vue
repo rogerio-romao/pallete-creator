@@ -14,33 +14,24 @@
       <button class="generate-color" @click="setHsl">
         <i class="fas fa-random" />
       </button>
-      <button
-        v-if="props.slotNumber > 1"
-        class="generate-color"
-        @click="setComplement"
-      >
+      <button v-if="showButtons" class="generate-color" @click="setComplement">
         <i class="fas fa-adjust"></i>
       </button>
-      <button
-        v-if="props.slotNumber > 1"
-        class="generate-color"
-        @click="setMono"
-      >
+      <button v-if="showButtons" class="generate-color" @click="setMono">
         <i class="fas fa-tv"></i>
       </button>
-      <button
-        v-if="props.slotNumber > 1"
-        class="generate-color"
-        @click="setTriad"
-      >
+      <button v-if="showButtons" class="generate-color" @click="setTriad">
         <i class="fas fa-dice-three"></i>
+      </button>
+      <button v-if="showButtons" class="generate-color" @click="setAnalogous">
+        <i class="fab fa-microsoft"></i>
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import {
   generateHsl,
   rgbToHex,
@@ -48,6 +39,7 @@ import {
   generateComplement,
   generateMono,
   generateTriad,
+  generateAnalogous,
 } from "../lib/utils";
 
 const props = defineProps({
@@ -59,9 +51,9 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  mainRgb: {
-    type: String,
-    default: "",
+  mainSet: {
+    type: Boolean,
+    default: false,
   },
 });
 const emit = defineEmits(["setMainColor"]);
@@ -69,6 +61,8 @@ const emit = defineEmits(["setMainColor"]);
 const rgb = ref("");
 const hex = ref("");
 const hsl = ref("");
+
+const showButtons = computed(() => props.slotNumber > 1 && props.mainSet);
 
 const setHsl = () => {
   hsl.value = generateHsl();
@@ -91,6 +85,12 @@ const setMono = () => {
 
 const setTriad = () => {
   hsl.value = generateTriad(props.mainHsl);
+  rgb.value = hslToRgb(hsl.value);
+  hex.value = rgbToHex(rgb.value);
+};
+
+const setAnalogous = () => {
+  hsl.value = generateAnalogous(props.mainHsl);
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
 };
