@@ -101,7 +101,7 @@ export const generateMono = (hsl) => {
     `hsl(${h}, ${s}%, ${l2}%)`,
     `hsl(${h}, ${s}%, ${l3}%)`,
     `hsl(${h}, ${s}%, ${l4}%)`
-  ][Math.floor(Math.random() * 3)]
+  ]
 }
 
 export const generateTriad = (hsl) => {
@@ -112,7 +112,7 @@ export const generateTriad = (hsl) => {
     `hsl(${h}, ${s}%, ${l}%)`,
     `hsl(${h2}, ${s}%, ${l}%)`,
     `hsl(${h3}, ${s}%, ${l}%)`
-  ][Math.floor(Math.random() * 3)]
+  ]
 }
 
 export const generateAnalogous = (hsl) => {
@@ -141,5 +141,5 @@ export const generateAnalogous = (hsl) => {
     `hsl(${h10}, ${s}%, ${l}%)`,
     `hsl(${h11}, ${s}%, ${l}%)`,
     `hsl(${h12}, ${s}%, ${l}%)`
-  ][Math.floor(Math.random() * 12)]
+  ]
 }

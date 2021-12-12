@@ -56,7 +56,7 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(["setMainColor"]);
+const emit = defineEmits(["setMainColor", "addColor"]);
 
 const rgb = ref("");
 const hex = ref("");
@@ -69,30 +69,35 @@ const setHsl = () => {
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
   if (props.slotNumber === 1) emit("setMainColor", hsl.value);
+  emit("addColor", [hsl.value]);
 };
 
 const setComplement = () => {
   hsl.value = generateComplement(props.mainHsl);
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
+  emit("addColor", [hsl.value]);
 };
 
 const setMono = () => {
-  hsl.value = generateMono(props.mainHsl);
+  hsl.value = generateMono(props.mainHsl)[Math.floor(Math.random() * 3)];
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
+  emit("addColor", [...generateMono(props.mainHsl)]);
 };
 
 const setTriad = () => {
-  hsl.value = generateTriad(props.mainHsl);
+  hsl.value = generateTriad(props.mainHsl)[Math.floor(Math.random() * 3)];
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
+  emit("addColor", [...generateTriad(props.mainHsl)]);
 };
 
 const setAnalogous = () => {
-  hsl.value = generateAnalogous(props.mainHsl);
+  hsl.value = generateAnalogous(props.mainHsl)[Math.floor(Math.random() * 12)];
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
+  emit("addColor", [...generateAnalogous(props.mainHsl)]);
 };
 </script>
 
