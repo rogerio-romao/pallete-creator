@@ -12,12 +12,14 @@
         />
       </template>
     </section>
+    <mini-slots :allColors="allColors"></mini-slots>
   </main>
 </template>
 
 <script setup>
 import { computed, reactive, ref } from "vue";
 import ColorSlot from "./ColorSlot.vue";
+import MiniSlots from "./MiniSlots.vue";
 const mainHSL = ref(null);
 const allColors = reactive([]);
 const setMainColor = (hsl) => {

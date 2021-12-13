@@ -102,6 +102,7 @@ select {
   --clr-accent-light: #50a5f2;
   --text-light: antiquewhite;
   --slot-size: 100px;
+  --mini-slot-size: 50px;
 }
 
 /* ----- STYLES -----  */
@@ -155,5 +156,23 @@ main {
 
 .slot-buttons button {
   font-size: 0.75rem;
+}
+
+.mini-slots {
+  border: 1px solid black;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--mini-slot-size));
+  gap: 1.5rem;
+}
+
+.mini-slot {
+  width: var(--mini-slot-size);
+  height: var(--mini-slot-size);
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }
 </style>
