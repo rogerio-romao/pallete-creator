@@ -55,7 +55,7 @@ export const generateHsl = () => {
   const h = Math.floor(Math.random() * 360)
   const s = Math.floor(Math.random() * 100)
   const l = Math.floor(Math.random() * 100)
-  return `${h}, ${s}%, ${l}%`
+  return `hsl(${h}, ${s}%, ${l}%)`
 }
 
 export const generateComplement = (hsl) => {
@@ -108,11 +108,7 @@ export const generateTriad = (hsl) => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
   const h2 = (h + 120) % 360
   const h3 = (h + 240) % 360
-  return [
-    `hsl(${h}, ${s}%, ${l}%)`,
-    `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h3}, ${s}%, ${l}%)`
-  ]
+  return [`hsl(${h2}, ${s}%, ${l}%)`, `hsl(${h3}, ${s}%, ${l}%)`]
 }
 
 export const generateAnalogous = (hsl) => {

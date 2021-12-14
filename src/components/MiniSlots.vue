@@ -2,7 +2,7 @@
   <div class="mini-slots">
     <div
       class="mini-slot"
-      v-for="(color, i) in allColors"
+      v-for="(color, i) in colors"
       :key="i"
       :style="{ backgroundColor: color }"
     ></div>
@@ -11,9 +11,8 @@
 
 <script setup>
 const props = defineProps({
-  allColors: {
-    type: Array,
-    default: () => [],
+  colors: {
+    type: Set,
   },
 });
 </script>

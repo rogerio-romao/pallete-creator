@@ -172,7 +172,7 @@ main {
   width: var(--mini-slot-size);
   height: var(--mini-slot-size);
   border: 1px solid black;
-  border-radius: 0.25rem;
+  border-radius: 50%;
   cursor: pointer;
 }
 </style>

@@ -14,33 +14,13 @@
       <button class="generate-color" @click="setHsl">
         <i class="fas fa-random" />
       </button>
-      <button v-if="showButtons" class="generate-color" @click="setComplement">
-        <i class="fas fa-adjust"></i>
-      </button>
-      <button v-if="showButtons" class="generate-color" @click="setMono">
-        <i class="fas fa-tv"></i>
-      </button>
-      <button v-if="showButtons" class="generate-color" @click="setTriad">
-        <i class="fas fa-dice-three"></i>
-      </button>
-      <button v-if="showButtons" class="generate-color" @click="setAnalogous">
-        <i class="fab fa-microsoft"></i>
-      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
-import {
-  generateHsl,
-  rgbToHex,
-  hslToRgb,
-  generateComplement,
-  generateMono,
-  generateTriad,
-  generateAnalogous,
-} from "../lib/utils";
+import { generateHsl, rgbToHex, hslToRgb } from "../lib/utils";
 
 const props = defineProps({
   slotNumber: {
@@ -56,48 +36,17 @@ const props = defineProps({
     default: false,
   },
 });
-const emit = defineEmits(["setMainColor", "addColor"]);
+const emit = defineEmits(["setMainColor"]);
 
 const rgb = ref("");
 const hex = ref("");
 const hsl = ref("");
-
-const showButtons = computed(() => props.slotNumber > 1 && props.mainSet);
 
 const setHsl = () => {
   hsl.value = generateHsl();
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
   if (props.slotNumber === 1) emit("setMainColor", hsl.value);
-  emit("addColor", [hsl.value]);
-};
-
-const setComplement = () => {
-  hsl.value = generateComplement(props.mainHsl);
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
-  emit("addColor", [hsl.value]);
-};
-
-const setMono = () => {
-  hsl.value = generateMono(props.mainHsl)[Math.floor(Math.random() * 3)];
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
-  emit("addColor", [...generateMono(props.mainHsl)]);
-};
-
-const setTriad = () => {
-  hsl.value = generateTriad(props.mainHsl)[Math.floor(Math.random() * 3)];
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
-  emit("addColor", [...generateTriad(props.mainHsl)]);
-};
-
-const setAnalogous = () => {
-  hsl.value = generateAnalogous(props.mainHsl)[Math.floor(Math.random() * 12)];
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
-  emit("addColor", [...generateAnalogous(props.mainHsl)]);
 };
 </script>
 
