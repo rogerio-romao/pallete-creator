@@ -9,10 +9,14 @@
           :slotNumber="i"
           :mainHsl="mainHSL"
           :mainSet="isMainSet"
+          :copiedColor="copiedColor"
         />
       </template>
     </section>
-    <mini-slots :colors="uniqueColors"></mini-slots>
+    <mini-slots
+      :colors="uniqueColors"
+      @copyColor="copiedColor = $event"
+    ></mini-slots>
   </main>
 </template>
 
@@ -31,6 +35,7 @@ import ColorSlot from "./ColorSlot.vue";
 import MiniSlots from "./MiniSlots.vue";
 
 const mainHSL = ref(null);
+const copiedColor = ref("");
 const allColors = reactive({
   hsl: [],
   rgb: [],

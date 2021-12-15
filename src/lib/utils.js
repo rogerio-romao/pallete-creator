@@ -97,10 +97,14 @@ export const generateMono = (hsl) => {
   const l2 = Math.floor((s + Math.random() * 100) % 100)
   const l3 = Math.floor((s + Math.random() * 100) % 100)
   const l4 = Math.floor((s + Math.random() * 100) % 100)
+  const l5 = Math.floor((s + Math.random() * 100) % 100)
+  const l6 = Math.floor((s + Math.random() * 100) % 100)
   return [
     `hsl(${h}, ${s}%, ${l2}%)`,
     `hsl(${h}, ${s}%, ${l3}%)`,
-    `hsl(${h}, ${s}%, ${l4}%)`
+    `hsl(${h}, ${s}%, ${l4}%)`,
+    `hsl(${h}, ${s}%, ${l5}%)`,
+    `hsl(${h}, ${s}%, ${l6}%)`
   ]
 }
 

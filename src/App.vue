@@ -154,8 +154,9 @@ main {
   gap: 0.5rem;
 }
 
-.slot-buttons button {
+.generate-color {
   font-size: 0.75rem;
+  cursor: pointer;
 }
 
 .mini-slots {
@@ -174,5 +175,9 @@ main {
   border: 1px solid black;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.copied {
+  outline: #50a5f2 solid 5px;
 }
 </style>

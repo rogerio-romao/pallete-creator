@@ -12,14 +12,17 @@
     </div>
     <div class="slot-buttons">
       <button class="generate-color" @click="setHsl">
-        <i class="fas fa-random" />
+        <i class="fas fa-random" title="Generate random color" />
+      </button>
+      <button v-if="slotNumber > 1" class="generate-color" @click="pasteColor">
+        <i class="fas fa-paste" title="Paste the copied color" />
       </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { generateHsl, rgbToHex, hslToRgb } from "../lib/utils";
 
 const props = defineProps({
@@ -35,6 +38,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  copiedColor: {
+    type: String,
+    default: "",
+  },
 });
 const emit = defineEmits(["setMainColor"]);
 
@@ -47,6 +54,12 @@ const setHsl = () => {
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);
   if (props.slotNumber === 1) emit("setMainColor", hsl.value);
+};
+
+const pasteColor = () => {
+  hsl.value = props.copiedColor;
+  rgb.value = hslToRgb(hsl.value);
+  hex.value = rgbToHex(rgb.value);
 };
 </script>
 
