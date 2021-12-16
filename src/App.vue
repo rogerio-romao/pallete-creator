@@ -1,11 +1,36 @@
 <template>
-  <main-nav></main-nav>
-  <colors-pane></colors-pane>
+  <header>
+    <nav>
+      <main-nav></main-nav>
+    </nav>
+  </header>
+  <main>
+    <h1 class="heading1">Build your pallete</h1>
+    <colors-pane
+      @uniqueColors="setUniqueColors($event)"
+      :copiedColor="copiedColor"
+    ></colors-pane>
+    <h2 class="heading2">Pick your variations</h2>
+    <mini-slots
+      :colors="uniqueColors"
+      @copyColor="copiedColor = $event"
+    ></mini-slots>
+  </main>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import MainNav from "./components/MainNav.vue";
 import ColorsPane from "./components/ColorsPane.vue";
+import MiniSlots from "./components/MiniSlots.vue";
+
+const uniqueColors = ref(new Set());
+const copiedColor = ref("");
+console.log(copiedColor);
+
+const setUniqueColors = (colors) => {
+  uniqueColors.value = new Set(colors);
+};
 </script>
 
 
@@ -122,11 +147,20 @@ main {
   padding: 2rem;
 }
 
+section {
+  background: var(--text-light);
+}
+
+.heading1,
+.heading2 {
+  color: var(--clr-main);
+}
+
 .pallete-pane {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  border: 1px solid black;
+  border: 1px solid var(--clr-main);
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
@@ -134,9 +168,9 @@ main {
 .color-slot {
   width: var(--slot-size);
   height: var(--slot-size);
-  border: 1px solid black;
+  border: 1px solid var(--clr-main);
   border-radius: 0.25rem;
-  background-color: var(--text-light);
+  background-color: var(--clr-light);
   display: flex;
   gap: 5px;
   flex-direction: column;
@@ -157,10 +191,17 @@ main {
 .generate-color {
   font-size: 0.75rem;
   cursor: pointer;
+  color: var(--clr-accent);
+  border: 1px solid var(--clr-accent-light);
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  color: var(--clr-complementary);
 }
 
 .mini-slots {
-  border: 1px solid black;
+  border: 1px solid var(--clr-main);
   padding: 1rem 2rem;
   border-radius: 0.5rem;
   margin-top: 5px;

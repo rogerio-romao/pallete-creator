@@ -14,7 +14,12 @@
       <button class="generate-color" @click="setHsl">
         <i class="fas fa-random" title="Generate random color" />
       </button>
-      <button v-if="slotNumber > 1" class="generate-color" @click="pasteColor">
+      <button
+        v-if="slotNumber > 1 && mainSet"
+        class="generate-color"
+        :disabled="copiedColor.length === 0"
+        @click="pasteColor"
+      >
         <i class="fas fa-paste" title="Paste the copied color" />
       </button>
     </div>
@@ -57,6 +62,7 @@ const setHsl = () => {
 };
 
 const pasteColor = () => {
+  if (!props.copiedColor) return;
   hsl.value = props.copiedColor;
   rgb.value = hslToRgb(hsl.value);
   hex.value = rgbToHex(rgb.value);

@@ -1,23 +1,17 @@
 <template>
-  <main>
-    <!-- Pallete Pane  -->
-    <section class="pallete-pane">
-      <template v-for="i in 5" :key="i">
-        <color-slot
-          @setMainColor="setMainColor($event)"
-          @addColor="addColor($event)"
-          :slotNumber="i"
-          :mainHsl="mainHSL"
-          :mainSet="isMainSet"
-          :copiedColor="copiedColor"
-        />
-      </template>
-    </section>
-    <mini-slots
-      :colors="uniqueColors"
-      @copyColor="copiedColor = $event"
-    ></mini-slots>
-  </main>
+  <!-- Pallete Pane  -->
+  <section class="pallete-pane">
+    <template class="color-slots" v-for="i in 5" :key="i">
+      <color-slot
+        @setMainColor="setMainColor($event)"
+        @addColor="addColor($event)"
+        :slotNumber="i"
+        :mainHsl="mainHSL"
+        :mainSet="isMainSet"
+        :copiedColor="copiedColor"
+      />
+    </template>
+  </section>
 </template>
 
 <script setup>
@@ -32,10 +26,17 @@ import {
 } from "../lib/utils";
 
 import ColorSlot from "./ColorSlot.vue";
-import MiniSlots from "./MiniSlots.vue";
+
+const props = defineProps({
+  copiedColor: {
+    type: String,
+    default: "",
+  },
+});
+
+const emit = defineEmits(["uniqueColors"]);
 
 const mainHSL = ref(null);
-const copiedColor = ref("");
 const allColors = reactive({
   hsl: [],
   rgb: [],
@@ -52,7 +53,9 @@ const setMainColor = (hsl) => {
   setMono();
   setTriad();
   setAnalogous();
+  emit("uniqueColors", allColors.hsl);
 };
+
 const isMainSet = computed(() => mainHSL.value !== null);
 
 const addColor = (hsl) => {
