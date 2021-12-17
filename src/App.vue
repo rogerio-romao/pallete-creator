@@ -9,11 +9,13 @@
     <colors-pane
       @uniqueColors="setUniqueColors($event)"
       :copiedColor="copiedColor"
+      :randomScheme="randomScheme"
     ></colors-pane>
     <h2 class="heading2">Pick your variations</h2>
     <mini-slots
       :colors="uniqueColors"
       @copyColor="copiedColor = $event"
+      @setRandomScheme="randomScheme = $event"
     ></mini-slots>
   </main>
 </template>
@@ -26,7 +28,7 @@ import MiniSlots from "./components/MiniSlots.vue";
 
 const uniqueColors = ref(new Set());
 const copiedColor = ref("");
-console.log(copiedColor);
+const randomScheme = ref([]);
 
 const setUniqueColors = (colors) => {
   uniqueColors.value = new Set(colors);
@@ -151,9 +153,12 @@ section {
   background: var(--text-light);
 }
 
-.heading1,
-.heading2 {
+.heading1 {
   color: var(--clr-main);
+}
+
+.heading2 {
+  color: var(--clr-complementary);
 }
 
 .pallete-pane {

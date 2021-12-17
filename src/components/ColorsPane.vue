@@ -9,6 +9,7 @@
         :mainHsl="mainHSL"
         :mainSet="isMainSet"
         :copiedColor="copiedColor"
+        :randomColor="randomScheme[i - 1]"
       />
     </template>
   </section>
@@ -21,6 +22,7 @@ import {
   generateMono,
   generateTriad,
   generateAnalogous,
+  generateSaturations,
   hslToRgb,
   rgbToHex,
 } from "../lib/utils";
@@ -31,6 +33,10 @@ const props = defineProps({
   copiedColor: {
     type: String,
     default: "",
+  },
+  randomScheme: {
+    type: Array,
+    default: () => [],
   },
 });
 
@@ -53,6 +59,7 @@ const setMainColor = (hsl) => {
   setMono();
   setTriad();
   setAnalogous();
+  setSaturations();
   emit("uniqueColors", allColors.hsl);
 };
 
@@ -67,8 +74,8 @@ const addColor = (hsl) => {
 };
 
 const setComplement = () => {
-  const hsl = generateComplement(mainHSL.value);
-  addColor(hsl);
+  const variations = generateComplement(mainHSL.value);
+  variations.map((hsl) => addColor(hsl));
 };
 
 const setMono = () => {
@@ -83,6 +90,11 @@ const setTriad = () => {
 
 const setAnalogous = () => {
   const variations = generateAnalogous(mainHSL.value);
+  variations.map((hsl) => addColor(hsl));
+};
+
+const setSaturations = () => {
+  const variations = generateSaturations(mainHSL.value);
   variations.map((hsl) => addColor(hsl));
 };
 

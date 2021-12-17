@@ -1,56 +1,3 @@
-const randomInt = () => {
-  return Math.floor(Math.random() * 256)
-}
-
-export const generateRgb = () => {
-  const r = randomInt()
-  const g = randomInt()
-  const b = randomInt()
-
-  const rgb = `rgb(${r}, ${g}, ${b})`
-  return rgb
-}
-
-export const rgbToHex = (rgb) => {
-  const [r, g, b] = rgb.match(/\d+/g).map(Number)
-  let hex = [r.toString(16), g.toString(16), b.toString(16)]
-  hex.forEach((color, index) => {
-    if (color.length === 1) {
-      hex[index] = `0${color}`
-    }
-  })
-  return `#${hex.join('')}`
-}
-
-export const rgbToHsl = (rgb) => {
-  let [r, g, b] = rgb.match(/\d+/g).map(Number)
-  r /= 255
-  g /= 255
-  b /= 255
-  let h, s, l
-  const min = Math.min(r, g, b)
-  const max = Math.max(r, g, b)
-  if (max === min) {
-    h = 0
-  } else if (max === r) {
-    h = (60 * (g - b)) / (max - min)
-  } else if (max === g) {
-    h = (60 * (b - r)) / (max - min) + 120
-  } else if (max === b) {
-    h = (60 * (r - g)) / (max - min) + 240
-  }
-  if (h < 0) {
-    h += 360
-  }
-  l = (min + max) / 2
-  if (max === 0 || min === 1) {
-    s = 0
-  } else {
-    s = (max - l) / Math.min(l, 1 - l)
-  }
-  return `${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%`
-}
-
 export const generateHsl = () => {
   const h = Math.floor(Math.random() * 360)
   const s = Math.floor(Math.random() * 100)
@@ -58,13 +5,7 @@ export const generateHsl = () => {
   return `hsl(${h}, ${s}%, ${l}%)`
 }
 
-export const generateComplement = (hsl) => {
-  const [h, s, l] = hsl.match(/\d+/g).map(Number)
-  const h2 = (h + 180) % 360
-  return `hsl(${h2}, ${s}%, ${l}%)`
-}
-
-export const hslToRgb = (hsl) => {
+export const hslToRgb = hsl => {
   let [h, s, l] = hsl.match(/\d+/g).map(Number)
   h /= 360
   s /= 100
@@ -92,54 +33,98 @@ export const hslToRgb = (hsl) => {
   )})`
 }
 
-export const generateMono = (hsl) => {
+export const rgbToHex = rgb => {
+  const [r, g, b] = rgb.match(/\d+/g).map(Number)
+  let hex = [r.toString(16), g.toString(16), b.toString(16)]
+  hex.forEach((color, index) => {
+    if (color.length === 1) {
+      hex[index] = `0${color}`
+    }
+  })
+  return `#${hex.join('')}`
+}
+
+export const generateComplement = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
-  const l2 = Math.floor((s + Math.random() * 100) % 100)
-  const l3 = Math.floor((s + Math.random() * 100) % 100)
-  const l4 = Math.floor((s + Math.random() * 100) % 100)
-  const l5 = Math.floor((s + Math.random() * 100) % 100)
-  const l6 = Math.floor((s + Math.random() * 100) % 100)
+  const h2 = (h + 180) % 360
+  const h3 = Math.abs((h - 150) % 360)
+  const h4 = (h + 150) % 360
   return [
-    `hsl(${h}, ${s}%, ${l2}%)`,
-    `hsl(${h}, ${s}%, ${l3}%)`,
-    `hsl(${h}, ${s}%, ${l4}%)`,
-    `hsl(${h}, ${s}%, ${l5}%)`,
-    `hsl(${h}, ${s}%, ${l6}%)`
+    `hsl(${h2}, ${s}%, ${l}%)`,
+    `hsl(${h}, ${s}%, ${l - 30}%)`,
+    `hsl(${h}, ${50}%, ${90}%)`,
+    `hsl(${h2}, ${s}%, ${l - 30}%)`,
+    `hsl(${h2}, ${50}%, ${90}%)`,
+    `hsl(${h3}, ${s}%, ${l}%)`,
+    `hsl(${h4}, ${s}%, ${l}%)`
   ]
 }
 
-export const generateTriad = (hsl) => {
+export const generateMono = hsl => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  return [
+    `hsl(${h}, ${s}%, ${8}%)`,
+    `hsl(${h}, ${s}%, ${20}%)`,
+    `hsl(${h}, ${s}%, ${32}%)`,
+    `hsl(${h}, ${s}%, ${45}%)`,
+    `hsl(${h}, ${s}%, ${58}%)`,
+    `hsl(${h}, ${s}%, ${72}%)`,
+    `hsl(${h}, ${s}%, ${85}%)`,
+    `hsl(${h}, ${s}%, ${95}%)`
+  ]
+}
+
+export const generateTriad = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
   const h2 = (h + 120) % 360
   const h3 = (h + 240) % 360
-  return [`hsl(${h2}, ${s}%, ${l}%)`, `hsl(${h3}, ${s}%, ${l}%)`]
+  return [
+    `hsl(${h2}, ${s}%, ${l}%)`,
+    `hsl(${h3}, ${s}%, ${l}%)`,
+    `hsl(${h2}, ${s}%, ${l - 20}%)`,
+    `hsl(${h3}, ${s}%, ${l - 20}%)`,
+    `hsl(${h2}, ${s}%, ${l + 20}%)`,
+    `hsl(${h3}, ${s}%, ${l + 20}%)`
+  ]
 }
 
-export const generateAnalogous = (hsl) => {
+export const generateAnalogous = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
-  const h2 = (h + 30) % 360
-  const h3 = (h + 60) % 360
-  const h4 = (h + 90) % 360
-  const h5 = (h + 120) % 360
-  const h6 = (h + 150) % 360
-  const h7 = (h + 180) % 360
-  const h8 = (h + 210) % 360
-  const h9 = (h + 240) % 360
-  const h10 = (h + 270) % 360
-  const h11 = (h + 300) % 360
-  const h12 = (h + 330) % 360
+  const h2 = (h - 60) % 360
+  const h3 = (h - 30) % 360
+  const h4 = (h + 30) % 360
+  const h5 = (h + 60) % 360
+  const h6 = (h - 90) % 360
+  const h7 = (h + 90) % 360
+
   return [
-    `hsl(${h}, ${s}%, ${l}%)`,
     `hsl(${h2}, ${s}%, ${l}%)`,
     `hsl(${h3}, ${s}%, ${l}%)`,
     `hsl(${h4}, ${s}%, ${l}%)`,
     `hsl(${h5}, ${s}%, ${l}%)`,
     `hsl(${h6}, ${s}%, ${l}%)`,
-    `hsl(${h7}, ${s}%, ${l}%)`,
-    `hsl(${h8}, ${s}%, ${l}%)`,
-    `hsl(${h9}, ${s}%, ${l}%)`,
-    `hsl(${h10}, ${s}%, ${l}%)`,
-    `hsl(${h11}, ${s}%, ${l}%)`,
-    `hsl(${h12}, ${s}%, ${l}%)`
+    `hsl(${h7}, ${s}%, ${l}%)`
+  ]
+}
+
+export const generateSaturations = hsl => {
+  const [h, s, l] = hsl.match(/\d+/g).map(Number)
+  const s2 = (s - 10) % 100
+  const s3 = (s + 10) % 100
+  const s4 = (s - 20) % 100
+  const s5 = (s + 20) % 100
+  const s6 = (s - 30) % 100
+  const s7 = (s + 30) % 100
+  const s8 = (s - 40) % 100
+  const s9 = (s + 40) % 100
+  return [
+    `hsl(${h}, ${s2}%, ${l}%)`,
+    `hsl(${h}, ${s3}%, ${l}%)`,
+    `hsl(${h}, ${s4}%, ${l}%)`,
+    `hsl(${h}, ${s5}%, ${l}%)`,
+    `hsl(${h}, ${s6}%, ${l}%)`,
+    `hsl(${h}, ${s7}%, ${l}%)`,
+    `hsl(${h}, ${s8}%, ${l}%)`,
+    `hsl(${h}, ${s9}%, ${l}%)`
   ]
 }
