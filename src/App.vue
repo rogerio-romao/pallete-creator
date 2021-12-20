@@ -142,6 +142,11 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+/* Utilities  */
+.centered {
+  text-align: center;
+}
+
 /* Main  */
 
 main {
@@ -151,14 +156,6 @@ main {
 
 section {
   background: var(--text-light);
-}
-
-.heading1 {
-  color: var(--clr-main);
-}
-
-.heading2 {
-  color: var(--clr-complementary);
 }
 
 .pallete-pane {

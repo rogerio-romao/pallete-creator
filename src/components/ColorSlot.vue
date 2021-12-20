@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="centered">
+    <h3>{{ labels[slotNumber] }}</h3>
     <div
       class="color-slot"
+      @click="pasteColor"
       :style="{
         backgroundColor: rgb || hsl,
       }"
@@ -13,14 +15,6 @@
     <div class="slot-buttons">
       <button v-if="slotNumber === 1" class="generate-color" @click="setHsl">
         <i class="fas fa-random" title="Generate random color" />
-      </button>
-      <button
-        v-if="slotNumber > 1 && mainSet"
-        class="generate-color"
-        :disabled="copiedColor.length === 0"
-        @click="pasteColor"
-      >
-        <i class="fas fa-paste" title="Paste the copied color" />
       </button>
     </div>
   </div>
@@ -63,6 +57,8 @@ watchEffect(() => {
 const rgb = ref("");
 const hex = ref("");
 const hsl = ref("");
+
+const labels = [null, "Main", "Secondary", "Accent", "Light", "Dark"];
 
 const setHsl = () => {
   hsl.value = generateHsl();
