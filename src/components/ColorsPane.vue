@@ -1,13 +1,22 @@
 <template>
   <!-- Pallete Pane  -->
   <section class="pallete-pane">
+    <div class="slot-buttons">
+      <p>Set Main Color</p>
+      <input type="text" placeholder="RGB" />
+      <input type="text" placeholder="HEX" />
+      <input type="text" placeholder="HSL" />
+      <button class="generate-color" @click="setHsl">
+        <i class="fas fa-random" title="Generate random color" />
+        Random
+      </button>
+    </div>
     <template class="color-slots" v-for="i in 5" :key="i">
       <color-slot
         @setMainColor="setMainColor($event)"
         @addColor="addColor($event)"
         :slotNumber="i"
         :mainHsl="mainHSL"
-        :mainSet="isMainSet"
         :copiedColor="copiedColor"
         :randomColor="randomScheme[i - 1]"
       />
@@ -18,6 +27,7 @@
 <script setup>
 import { computed, reactive, ref } from "vue";
 import {
+  generateHsl,
   generateComplement,
   generateMono,
   generateTriad,
@@ -63,7 +73,10 @@ const setMainColor = (hsl) => {
   emit("uniqueColors", allColors.hsl);
 };
 
-const isMainSet = computed(() => mainHSL.value !== null);
+const setHsl = () => {
+  const hsl = generateHsl();
+  setMainColor(hsl);
+};
 
 const addColor = (hsl) => {
   const rgb = hslToRgb(hsl);

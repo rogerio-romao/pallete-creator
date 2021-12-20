@@ -202,6 +202,10 @@ button[disabled] {
   color: var(--clr-complementary);
 }
 
+[contenteditable="true"] {
+  cursor: pointer;
+}
+
 .mini-slots {
   border: 1px solid var(--clr-main);
   padding: 1rem 2rem;
