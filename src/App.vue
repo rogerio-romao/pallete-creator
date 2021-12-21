@@ -11,8 +11,9 @@
       :copiedColor="copiedColor"
       :randomScheme="randomScheme"
     ></colors-pane>
-    <h2 class="heading2">Pick your variations</h2>
+    <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots
+      v-if="uniqueColors.size"
       :colors="uniqueColors"
       @copyColor="copiedColor = $event"
       @setRandomScheme="randomScheme = $event"
@@ -135,7 +136,7 @@ select {
 /* ----- STYLES -----  */
 
 html {
-  background-color: var(--clr-light);
+  background-color: var(--clr-accent);
 }
 
 body {
@@ -158,13 +159,38 @@ section {
   background: var(--text-light);
 }
 
+h1,
+h2 {
+  color: var(--text-light);
+}
+
 .pallete-pane {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.75rem;
   border: 1px solid var(--clr-main);
   border-radius: 0.5rem;
   padding: 0.5rem;
+}
+
+.main-color-box {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 2rem;
+  padding: 10px;
+  color: var(--clr-accent-light);
+  background-color: var(--clr-main);
+  border-radius: 0.5rem;
+  border: 1px solid var(--clr-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.main-color-box input {
+  padding-inline: 6px;
+  flex: 1;
 }
 
 .color-slot {
@@ -187,14 +213,17 @@ section {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .generate-color {
   font-size: 0.75rem;
   cursor: pointer;
+  background-color: var(--clr-light);
   color: var(--clr-accent);
   border: 1px solid var(--clr-accent-light);
+  flex: 1;
+  padding: 0.3rem;
 }
 
 button[disabled] {
@@ -204,6 +233,18 @@ button[disabled] {
 
 [contenteditable="true"] {
   cursor: pointer;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-complementary);
+  font-size: 0.9rem;
+}
+
+.edit-label {
+  margin-left: 5px;
 }
 
 .mini-slots {

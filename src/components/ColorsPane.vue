@@ -1,16 +1,16 @@
 <template>
+  <div class="main-color-box">
+    <p>Set Main Color:</p>
+    <button class="generate-color" @click="setHsl">
+      <i class="fas fa-random" title="Generate random color" />
+      Random
+    </button>
+    <input type="text" placeholder="RGB" />
+    <input type="text" placeholder="HEX" />
+    <input type="text" placeholder="HSL" />
+  </div>
   <!-- Pallete Pane  -->
   <section class="pallete-pane">
-    <div class="slot-buttons">
-      <p>Set Main Color</p>
-      <input type="text" placeholder="RGB" />
-      <input type="text" placeholder="HEX" />
-      <input type="text" placeholder="HSL" />
-      <button class="generate-color" @click="setHsl">
-        <i class="fas fa-random" title="Generate random color" />
-        Random
-      </button>
-    </div>
     <template class="color-slots" v-for="i in 5" :key="i">
       <color-slot
         @setMainColor="setMainColor($event)"
@@ -53,6 +53,7 @@ const props = defineProps({
 const emit = defineEmits(["uniqueColors"]);
 
 const mainHSL = ref(null);
+
 const allColors = reactive({
   hsl: [],
   rgb: [],

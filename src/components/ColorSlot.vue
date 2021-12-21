@@ -1,6 +1,9 @@
 <template>
   <div class="centered">
-    <h3 contenteditable="true">{{ labels[slotNumber] }}</h3>
+    <h3 contenteditable="true" class="label">
+      {{ labels[slotNumber] }}
+      <i class="fas fa-edit edit-label" title="Edit color name" />
+    </h3>
     <div
       class="color-slot"
       @click="pasteColor"
