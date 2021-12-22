@@ -1,7 +1,7 @@
 <template>
   <div class="main-color-box">
     <p>Set Main Color:</p>
-    <button class="generate-color" @click="setHsl">
+    <button class="generate-color" @click="setMainColor">
       <i class="fas fa-random" title="Generate random color" />
       Random
     </button>
@@ -60,7 +60,8 @@ const allColors = reactive({
   hex: [],
 });
 
-const setMainColor = (hsl) => {
+const setMainColor = () => {
+  const hsl = generateHsl();
   allColors.hsl = [];
   allColors.rgb = [];
   allColors.hex = [];
@@ -72,11 +73,6 @@ const setMainColor = (hsl) => {
   setAnalogous();
   setSaturations();
   emit("uniqueColors", allColors.hsl);
-};
-
-const setHsl = () => {
-  const hsl = generateHsl();
-  setMainColor(hsl);
 };
 
 const addColor = (hsl) => {

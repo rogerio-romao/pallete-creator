@@ -22,10 +22,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+
 import MainNav from "./components/MainNav.vue";
 import ColorsPane from "./components/ColorsPane.vue";
 import MiniSlots from "./components/MiniSlots.vue";
+
+const store = useStore();
+const count = computed(() => store.state.count);
 
 const uniqueColors = ref(new Set());
 const copiedColor = ref("");
