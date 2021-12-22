@@ -129,11 +129,11 @@ select {
 /* Custom Properties  */
 :root {
   --clr-main: #435;
-  --clr-complementary: #674712;
-  --clr-light: #ffc76e;
+  --clr-complementary: #462835;
+  --clr-light: #f1f3f6;
   --clr-accent: #1662a6;
   --clr-accent-light: #50a5f2;
-  --text-light: antiquewhite;
+  --text-light: #faebd7;
   --slot-size: 100px;
   --mini-slot-size: 50px;
 }
@@ -225,7 +225,7 @@ h2 {
   font-size: 0.75rem;
   cursor: pointer;
   background-color: var(--clr-light);
-  color: var(--clr-accent);
+  color: var(--clr-complementary);
   border: 1px solid var(--clr-accent-light);
   flex: 1;
   padding: 0.3rem;
