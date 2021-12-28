@@ -6,23 +6,14 @@
   </header>
   <main>
     <h1 class="heading1">Build your pallete</h1>
-    <colors-pane
-      @uniqueColors="setUniqueColors($event)"
-      :copiedColor="copiedColor"
-      :randomScheme="randomScheme"
-    ></colors-pane>
+    <colors-pane></colors-pane>
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
-    <mini-slots
-      v-if="uniqueColors.size"
-      :colors="uniqueColors"
-      @copyColor="copiedColor = $event"
-      @setRandomScheme="randomScheme = $event"
-    ></mini-slots>
+    <mini-slots v-if="uniqueColors.size"></mini-slots>
   </main>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 import MainNav from "./components/MainNav.vue";
@@ -30,15 +21,7 @@ import ColorsPane from "./components/ColorsPane.vue";
 import MiniSlots from "./components/MiniSlots.vue";
 
 const store = useStore();
-const count = computed(() => store.state.count);
-
-const uniqueColors = ref(new Set());
-const copiedColor = ref("");
-const randomScheme = ref([]);
-
-const setUniqueColors = (colors) => {
-  uniqueColors.value = new Set(colors);
-};
+const uniqueColors = computed(() => store.getters.uniqueColors);
 </script>
 
 

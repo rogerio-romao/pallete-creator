@@ -8,7 +8,7 @@
       class="color-slot"
       @click="pasteColor"
       :style="{
-        backgroundColor: rgb || hsl,
+        backgroundColor: slotBg,
       }"
     >
       <span class="rgbValue">{{ rgb }}</span>
@@ -19,63 +19,33 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, computed } from "vue";
 import { rgbToHex, hslToRgb } from "../lib/utils";
+import { useStore } from "vuex";
 
 const props = defineProps({
   slotNumber: {
     type: Number,
     default: 1,
   },
-  mainHsl: {
-    type: String,
-    default: "",
-  },
-  copiedColor: {
-    type: String,
-    default: "",
-  },
-  randomColor: {
-    type: String,
-    default: "",
-  },
 });
 
-watchEffect(() => {
-  if (props.randomColor.length > 0) {
-    setRandomColor();
-  }
-  if (props.mainHsl) {
-    setMainSlotColor();
-  }
-});
+const store = useStore();
+const colorCopied = computed(() => store.state.copiedColor);
+const labels = computed(() => store.state.labels);
 
+const hsl = ref("");
 const rgb = ref("");
 const hex = ref("");
-const hsl = ref("");
 
-const setMainSlotColor = () => {
-  if (props.slotNumber === 1) {
-    hsl.value = props.mainHsl;
-    rgb.value = hslToRgb(hsl.value);
-    hex.value = rgbToHex(rgb.value);
-  }
-};
-
-const labels = [null, "Main", "Secondary", "Accent", "Light", "Dark"];
+const slotBg = computed(() =>
+  props.slotNumber === 1
+    ? store.state.mainHSL
+    : store.state.slotColors[`slot${props.slotNumber}`].hsl
+);
 
 const pasteColor = () => {
-  if (!props.copiedColor) return;
-  hsl.value = props.copiedColor;
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
-};
-
-const setRandomColor = () => {
-  if (props.slotNumber === 1) return;
-  hsl.value = props.randomColor;
-  rgb.value = hslToRgb(hsl.value);
-  hex.value = rgbToHex(rgb.value);
+  store.dispatch("PASTE_COLOR", props.slotNumber);
 };
 </script>
 

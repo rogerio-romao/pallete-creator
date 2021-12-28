@@ -15,7 +15,7 @@ const store = createStore({
   state() {
     return {
       mainHSL: null,
-      mainsSlotColor: {
+      mainSlotColor: {
         hsl: '',
         rgb: '',
         hex: ''
@@ -53,11 +53,12 @@ const store = createStore({
     }
   },
   mutations: {
-    SET_MAIN_COLOR(state, hsl, rgb, hex) {
+    SET_MAIN_COLOR(state, colors) {
+      const { hsl, rgb, hex } = colors
       state.mainHSL = hsl
-      state.mainsSlotColor.hsl = hsl
-      state.mainsSlotColor.rgb = rgb
-      state.mainsSlotColor.hex = hex
+      state.mainSlotColor.hsl = hsl
+      state.mainSlotColor.rgb = rgb
+      state.mainSlotColor.hex = hex
     },
     RESET_ALL_COLORS(state, colors) {
       const { hsl, rgb, hex } = colors
@@ -73,8 +74,7 @@ const store = createStore({
       state.allColors.rgb.push(rgb)
       state.allColors.hex.push(hex)
     },
-    SET_SLOT_COLOR(state, slot, colors) {
-      const { hsl, rgb, hex } = colors
+    SET_SLOT_COLOR(state, { slot, hsl, rgb, hex }) {
       state.slotColors[slot].hsl = hsl
       state.slotColors[slot].rgb = rgb
       state.slotColors[slot].hex = hex
@@ -91,7 +91,7 @@ const store = createStore({
       const hsl = generateHsl()
       const rgb = hslToRgb(hsl)
       const hex = rgbToHex(rgb)
-      commit('SET_MAIN_COLOR', hsl, rgb, hex)
+      commit('SET_MAIN_COLOR', { hsl, rgb, hex })
       commit('RESET_ALL_COLORS', { hsl, rgb, hex })
       dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateComplement })
       dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateMono })
@@ -112,24 +112,24 @@ const store = createStore({
       commit('SET_COPIED_COLOR_INDEX', index)
     },
     PASTE_COLOR({ commit, state }, slot) {
-      if (!state.copiedColor) return
+      if (!state.copiedColor || slot === 1) return
       const hsl = state.copiedColor
       const rgb = hslToRgb(hsl)
       const hex = rgbToHex(rgb)
-      commit('SET_SLOT_COLOR', `slot${slot}`, { hsl, rgb, hex })
+      commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
+    },
+    SET_RANDOM_SCHEME({ commit, getters }) {
+      const unique = [...getters.uniqueColors]
+      for (let i = 2; i <= 5; i++) {
+        const hsl = unique[Math.floor(Math.random() * unique.length)]
+        const rgb = hslToRgb(hsl)
+        const hex = rgbToHex(rgb)
+        commit('SET_SLOT_COLOR', { slot: `slot${i}`, hsl, rgb, hex })
+      }
     }
   },
   getters: {
-    uniqueColors: state => new Set(state.allColors.hsl),
-    randomScheme: state => {
-      const randomColors = []
-      for (let i = 0; i < 4; i++) {
-        randomColors.push(
-          [...uniqueColors][Math.floor(Math.random() * uniqueColors.size)]
-        )
-      }
-      return randomColors
-    }
+    uniqueColors: state => new Set(state.allColors.hsl)
   }
 })
 

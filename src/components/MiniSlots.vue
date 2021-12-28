@@ -7,43 +7,28 @@
       :style="{ backgroundColor: color }"
       @click="copyColor(color, i)"
     ></div>
-    <button
-      v-if="props.colors.size"
-      class="generate-color"
-      @click="setRandomScheme"
-    >
+    <button v-if="colors.size" class="generate-color" @click="setRandomScheme">
       <i class="fas fa-random" title="Generate random scheme" />
     </button>
   </section>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 
-const props = defineProps({
-  colors: {
-    type: Set,
-  },
-});
+const store = useStore();
 
-const emit = defineEmits(["copyColor", "setRandomScheme"]);
-const colorCopied = ref(false);
-const colorCopiedIndex = ref(null);
+const colors = computed(() => store.getters.uniqueColors);
+const colorCopied = computed(() => store.state.copiedColor);
+const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
 
 const copyColor = (color, index) => {
-  emit("copyColor", color);
-  colorCopied.value = true;
-  colorCopiedIndex.value = index;
+  store.dispatch("COPY_COLOR", { color, index });
 };
 
 const setRandomScheme = () => {
-  const randomColors = [];
-  for (let i = 0; i < 5; i++) {
-    randomColors.push(
-      [...props.colors][Math.floor(Math.random() * props.colors.size)]
-    );
-  }
-  emit("setRandomScheme", randomColors);
+  store.dispatch("SET_RANDOM_SCHEME");
 };
 </script>
 
