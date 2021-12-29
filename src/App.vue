@@ -214,21 +214,33 @@ h2 {
   padding: 0.3rem;
 }
 
+.generate-color:hover {
+  background-color: var(--clr-accent-light);
+  color: var(--clr-main);
+}
+
 button[disabled] {
   cursor: not-allowed;
   color: var(--clr-complementary);
 }
 
-[contenteditable="true"] {
+.label {
+  color: var(--clr-complementary);
+  font-size: 0.9rem;
+  margin-left: -40px;
+  padding: 4px;
+}
+
+.label input {
+  background: var(--text-light);
+  max-width: 44%;
+  border: 0;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--clr-complementary);
-  font-size: 0.9rem;
+.label:hover input {
+  background: var(--clr-light);
 }
 
 .edit-label {

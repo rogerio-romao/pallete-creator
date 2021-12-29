@@ -67,6 +67,28 @@ const store = createStore({
         rgb: [rgb],
         hex: [hex]
       }
+      state.slotColors = {
+        slot2: {
+          hsl: '',
+          rgb: '',
+          hex: ''
+        },
+        slot3: {
+          hsl: '',
+          rgb: '',
+          hex: ''
+        },
+        slot4: {
+          hsl: '',
+          rgb: '',
+          hex: ''
+        },
+        slot5: {
+          hsl: '',
+          rgb: '',
+          hex: ''
+        }
+      }
     },
     ADD_COLOR(state, colors) {
       const { hsl, rgb, hex } = colors
