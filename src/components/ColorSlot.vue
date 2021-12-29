@@ -1,8 +1,8 @@
 <template>
-  <div class="centered">
-    <div class="label">
+  <div class="slot-container">
+    <div class="label centered">
       <i class="fas fa-edit edit-label" title="Edit color name" />
-      <input type="text" :placeholder="labels[slotNumber]" />
+      <input type="text" :value="labels[slotNumber]" @change="updateLabel" />
     </div>
     <div
       class="color-slot"
@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -64,6 +64,13 @@ const lightOrDark = computed(() => {
 
 const pasteColor = () => {
   store.dispatch("PASTE_COLOR", props.slotNumber);
+};
+
+const updateLabel = (e) => {
+  store.dispatch("UPDATE_LABEL", {
+    slotNumber: props.slotNumber,
+    label: e.target.value.trim(),
+  });
 };
 </script>
 

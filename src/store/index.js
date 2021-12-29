@@ -53,6 +53,9 @@ const store = createStore({
     }
   },
   mutations: {
+    SET_LABEL(state, { label, slotNumber }) {
+      state.labels[slotNumber] = label
+    },
     SET_MAIN_COLOR(state, colors) {
       const { hsl, rgb, hex } = colors
       state.mainHSL = hsl
@@ -109,6 +112,10 @@ const store = createStore({
     }
   },
   actions: {
+    UPDATE_LABEL({ commit }, { label, slotNumber }) {
+      label = label[0].toUpperCase() + label.slice(1)
+      commit('SET_LABEL', { label, slotNumber })
+    },
     SET_MAIN_COLOR({ commit, dispatch }) {
       const hsl = generateHsl()
       const rgb = hslToRgb(hsl)

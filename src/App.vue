@@ -181,6 +181,13 @@ h2 {
   flex: 1;
 }
 
+.slot-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .color-slot {
   width: var(--slot-size);
   height: var(--slot-size);
@@ -227,7 +234,6 @@ button[disabled] {
 .label {
   color: var(--clr-complementary);
   font-size: 0.9rem;
-  margin-left: -40px;
   padding: 4px;
 }
 
