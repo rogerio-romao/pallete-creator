@@ -10,7 +10,7 @@
     <input type="text" placeholder="HSL" />
   </div>
   <!-- Pallete Pane  -->
-  <section class="pallete-pane">
+  <section class="pallete-pane" v-if="mainHSL">
     <template class="color-slots" v-for="i in 5" :key="i">
       <color-slot :slotNumber="i" />
     </template>
@@ -18,11 +18,14 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 import ColorSlot from "./ColorSlot.vue";
 
 const store = useStore();
+
+const mainHSL = computed(() => store.state.mainHSL);
 
 const setMainColor = () => {
   store.dispatch("SET_MAIN_COLOR");
