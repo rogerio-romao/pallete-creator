@@ -5,9 +5,45 @@
       <i class="fas fa-random" title="Generate random color" />
       Random
     </button>
-    <input type="text" placeholder="RGB" />
-    <input type="text" placeholder="HEX" />
-    <input type="text" placeholder="HSL" />
+    <form>
+      <div class="input">
+        <input
+          type="text"
+          placeholder="RGB - 255,255,255"
+          :pattern="rgbPattern"
+          id="rgbInput"
+        />
+        <button type="submit">
+          <i class="fas fa-chevron-circle-right"></i>
+        </button>
+      </div>
+    </form>
+    <form>
+      <div class="input">
+        <input
+          type="text"
+          placeholder="HEX - #ffffff"
+          :pattern="hexPattern"
+          id="hexInput"
+        />
+        <button type="submit">
+          <i class="fas fa-chevron-circle-right"></i>
+        </button>
+      </div>
+    </form>
+    <form>
+      <div class="input">
+        <input
+          type="text"
+          placeholder="HSL - 360,100,100"
+          :pattern="hslPattern"
+          id="hslInput"
+        />
+        <button type="submit">
+          <i class="fas fa-chevron-circle-right"></i>
+        </button>
+      </div>
+    </form>
   </div>
   <!-- Pallete Pane  -->
   <section class="pallete-pane" v-if="mainHSL">
@@ -18,12 +54,20 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 import ColorSlot from "./ColorSlot.vue";
 
 const store = useStore();
+
+const rgbPattern =
+  "\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b";
+
+const hexPattern = "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$";
+
+const hslPattern =
+  "\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b";
 
 const mainHSL = computed(() => store.state.mainHSL);
 

@@ -251,3 +251,23 @@ button[disabled] {
 .copied {
   outline: #50a5f2 solid 5px;
 }
+
+.input {
+  display: flex;
+  background: white;
+  padding: 2px;
+  border-radius: 2px;
+  align-items: center;
+}
+
+.input input {
+  background: transparent;
+  border: 0;
+}
+
+.input button {
+  padding: 3px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
