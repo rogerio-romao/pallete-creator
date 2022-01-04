@@ -33,6 +33,39 @@ export const hslToRgb = hsl => {
   )})`
 }
 
+export const rgbToHsl = rgb => {
+  let [r, g, b] = rgb.match(/\d+/g).map(Number)
+  r /= 255
+  g /= 255
+  b /= 255
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  let h,
+    s,
+    l = (max + min) / 2
+  if (max === min) {
+    h = s = 0
+  } else {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0)
+        break
+      case g:
+        h = (b - r) / d + 2
+        break
+      case b:
+        h = (r - g) / d + 4
+        break
+    }
+    h /= 6
+  }
+  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(
+    l * 100
+  )}%)`
+}
+
 export const rgbToHex = rgb => {
   const [r, g, b] = rgb.match(/\d+/g).map(Number)
   let hex = [r.toString(16), g.toString(16), b.toString(16)]
@@ -42,6 +75,44 @@ export const rgbToHex = rgb => {
     }
   })
   return `#${hex.join('')}`
+}
+
+export const hexToHsl = hex => {
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
+  const hsl = rgbToHsl(`rgb(${r},${g},${b})`)
+  return hsl
+}
+
+export const hslToHex = hsl => {
+  const rgb = hslToRgb(hsl)
+  return rgbToHex(rgb)
+}
+
+export const getRandomColor = () => {
+  const color = generateHsl()
+  return rgbToHex(hslToRgb(color))
+}
+
+export const getRandomColors = (num = 1) => {
+  const colors = []
+  for (let i = 0; i < num; i++) {
+    colors.push(getRandomColor())
+  }
+  return colors
+}
+
+export const getRandomColorFromArray = colors => {
+  return colors[Math.floor(Math.random() * colors.length)]
+}
+
+export const getRandomColorsFromArray = (colors, num = 1) => {
+  const newColors = []
+  for (let i = 0; i < num; i++) {
+    newColors.push(getRandomColorFromArray(colors))
+  }
+  return newColors
 }
 
 export const generateComplement = hsl => {

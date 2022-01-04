@@ -5,7 +5,7 @@
       <i class="fas fa-random" title="Generate random color" />
       Random
     </button>
-    <form>
+    <form @submit.prevent="submitRgb">
       <div class="input">
         <input
           type="text"
@@ -18,7 +18,7 @@
         </button>
       </div>
     </form>
-    <form>
+    <form @submit.prevent="submitHex">
       <div class="input">
         <input
           type="text"
@@ -31,7 +31,7 @@
         </button>
       </div>
     </form>
-    <form>
+    <form @submit.prevent="submitHsl">
       <div class="input">
         <input
           type="text"
@@ -57,6 +57,8 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
+import { hexToHsl, rgbToHsl } from "../lib/utils";
+
 import ColorSlot from "./ColorSlot.vue";
 
 const store = useStore();
@@ -77,6 +79,30 @@ const setMainColor = () => {
 
 const addColor = (hsl) => {
   store.dispatch("ADD_COLOR", hsl);
+};
+
+const submitRgb = (e) => {
+  const rgb = e.target.rgbInput.value;
+  if (!rgb) return;
+  const hsl = rgbToHsl(rgb);
+  store.dispatch("SET_MAIN_COLOR", hsl);
+  e.target.rgbInput.value = "";
+};
+
+const submitHex = (e) => {
+  const hex = e.target.hexInput.value;
+  if (!hex) return;
+  const hsl = hexToHsl(hex);
+  store.dispatch("SET_MAIN_COLOR", hsl);
+  e.target.hexInput.value = "";
+};
+
+const submitHsl = (e) => {
+  if (!e.target.hslInput.value) return;
+  const [h, s, l] = e.target.hslInput.value.split(",").map(Number);
+  const hsl = `hsl(${h}, ${s}%, ${l}%)`;
+  store.dispatch("SET_MAIN_COLOR", hsl);
+  e.target.hslInput.value = "";
 };
 </script>
 

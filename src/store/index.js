@@ -116,8 +116,8 @@ const store = createStore({
       label = label[0].toUpperCase() + label.slice(1)
       commit('SET_LABEL', { label, slotNumber })
     },
-    SET_MAIN_COLOR({ commit, dispatch }) {
-      const hsl = generateHsl()
+    SET_MAIN_COLOR({ commit, dispatch }, color) {
+      const hsl = color || generateHsl()
       const rgb = hslToRgb(hsl)
       const hex = rgbToHex(rgb)
       commit('SET_MAIN_COLOR', { hsl, rgb, hex })
