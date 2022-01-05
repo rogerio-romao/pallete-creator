@@ -9,7 +9,13 @@
     <colors-pane></colors-pane>
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots v-if="uniqueColors.size"></mini-slots>
-    <h2 class="heading2" @click="setCssVars">Test this pallete</h2>
+    <div class="test-buttons">
+      <button class="generate-color" @click="setCssVars">
+        Test this pallete
+      </button>
+      <button class="generate-color" @click="setLightText">Light Text</button>
+      <button class="generate-color" @click="setDarkText">Dark Text</button>
+    </div>
   </main>
 </template>
 
@@ -33,7 +39,7 @@ const setCssVars = () => {
 
   document.documentElement.style.setProperty("--clr-main", main.value);
   document.documentElement.style.setProperty(
-    "--text-light",
+    "--clr-complementary",
     complementary.value
   );
   document.documentElement.style.setProperty("--clr-light", light.value);
@@ -42,6 +48,14 @@ const setCssVars = () => {
     "--clr-accent-light",
     accentLight.value
   );
+};
+
+const setLightText = () => {
+  document.documentElement.style.setProperty("--text-color", "#faebd7");
+};
+
+const setDarkText = () => {
+  document.documentElement.style.setProperty("--text-color", "#0f131a");
 };
 </script>
 
