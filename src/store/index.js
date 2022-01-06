@@ -147,18 +147,28 @@ const store = createStore({
       const hex = rgbToHex(rgb)
       commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
     },
-    SET_RANDOM_SCHEME({ commit, getters }) {
+    SET_RANDOM_SCHEME({ commit, state, getters }) {
       const unique = [...getters.uniqueColors]
-      for (let i = 2; i <= 5; i++) {
+      const randomScheme = new Set()
+      while (randomScheme.size < 4) {
         const hsl = unique[Math.floor(Math.random() * unique.length)]
+        if (!randomScheme.has(hsl) && hsl !== state.mainHSL) {
+          randomScheme.add(hsl)
+        }
+      }
+      let slot = 2
+      randomScheme.forEach(hsl => {
         const rgb = hslToRgb(hsl)
         const hex = rgbToHex(rgb)
-        commit('SET_SLOT_COLOR', { slot: `slot${i}`, hsl, rgb, hex })
-      }
+        commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
+        slot++
+      })
     }
   },
   getters: {
-    uniqueColors: state => new Set(state.allColors.hsl)
+    uniqueColors: state => new Set(state.allColors.hsl),
+    fullSchemeSet: state =>
+      Object.values(state.slotColors).every(color => color.hsl !== '')
   }
 })
 

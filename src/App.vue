@@ -9,12 +9,13 @@
     <colors-pane></colors-pane>
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots v-if="uniqueColors.size"></mini-slots>
-    <div class="test-buttons">
+    <div class="test-buttons" v-if="showPalleteButtons">
       <button class="generate-color" @click="setCssVars">
         Test this pallete
       </button>
       <button class="generate-color" @click="setLightText">Light Text</button>
       <button class="generate-color" @click="setDarkText">Dark Text</button>
+      <button class="generate-color" @click="copyPallete">Copy Pallete</button>
     </div>
   </main>
 </template>
@@ -29,6 +30,7 @@ import MiniSlots from "./components/MiniSlots.vue";
 
 const store = useStore();
 const uniqueColors = computed(() => store.getters.uniqueColors);
+const showPalleteButtons = computed(() => store.getters.fullSchemeSet);
 
 const setCssVars = () => {
   const main = computed(() => store.state.mainSlotColor.hex);
@@ -56,6 +58,10 @@ const setLightText = () => {
 
 const setDarkText = () => {
   document.documentElement.style.setProperty("--text-color", "#0f131a");
+};
+
+const copyPallete = () => {
+  alert("todo");
 };
 </script>
 
