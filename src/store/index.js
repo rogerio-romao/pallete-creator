@@ -171,7 +171,7 @@ const store = createStore({
       Object.values(state.slotColors).every(color => color.hsl !== ''),
     currentScheme: state => {
       return {
-        main: {
+        slot1: {
           hsl: state.mainHSL,
           rgb: state.mainSlotColor.rgb,
           hex: state.mainSlotColor.hex

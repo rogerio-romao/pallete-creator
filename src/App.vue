@@ -18,20 +18,25 @@
       <button class="generate-color" @click="copyPallete">Copy Pallete</button>
     </div>
   </main>
+  <transition name="modal">
+    <Modal v-if="showModal" @close="showModal = false" />
+  </transition>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 import MainNav from "./components/MainNav.vue";
 import ColorsPane from "./components/ColorsPane.vue";
 import MiniSlots from "./components/MiniSlots.vue";
+import Modal from "./components/Modal.vue";
+
+const showModal = ref(false);
 
 const store = useStore();
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const showPalleteButtons = computed(() => store.getters.fullSchemeSet);
-const currentScheme = computed(() => store.getters.currentScheme);
 
 const setCssVars = () => {
   const main = computed(() => store.state.mainSlotColor.hex);
@@ -62,7 +67,7 @@ const setDarkText = () => {
 };
 
 const copyPallete = () => {
-  console.log(currentScheme.value);
+  showModal.value = true;
 };
 </script>
 
