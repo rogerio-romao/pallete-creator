@@ -10,6 +10,7 @@
         <input
           type="text"
           placeholder="RGB - 255,255,255"
+          title="Enter 3 numbers between 0 and 255, separated by commas"
           :pattern="rgbPattern"
           id="rgbInput"
         />
@@ -22,7 +23,8 @@
       <div class="input">
         <input
           type="text"
-          placeholder="HEX - #ffffff"
+          placeholder="HEX # - ffffff"
+          title="Enter a hex color code, without the #"
           :pattern="hexPattern"
           id="hexInput"
         />
@@ -35,7 +37,8 @@
       <div class="input">
         <input
           type="text"
-          placeholder="HSL - 360,100,100"
+          placeholder="HSL - 190,75,80"
+          title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
           :pattern="hslPattern"
           id="hslInput"
         />

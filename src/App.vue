@@ -31,6 +31,7 @@ import MiniSlots from "./components/MiniSlots.vue";
 const store = useStore();
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const showPalleteButtons = computed(() => store.getters.fullSchemeSet);
+const currentScheme = computed(() => store.getters.currentScheme);
 
 const setCssVars = () => {
   const main = computed(() => store.state.mainSlotColor.hex);
@@ -61,7 +62,7 @@ const setDarkText = () => {
 };
 
 const copyPallete = () => {
-  alert("todo");
+  console.log(currentScheme.value);
 };
 </script>
 
