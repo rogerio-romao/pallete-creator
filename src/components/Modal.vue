@@ -1,28 +1,40 @@
 <template>
   <div class="modal-mask">
-    <div class="modal-wrapper">
+    <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
         <div class="modal-header">
-          <h3>Copy CSS</h3>
+          <h3>Copy CSS <small>- choose color mode</small></h3>
         </div>
 
         <div class="modal-body">
           <div class="modal-buttons">
-            <button>RGB</button>
-            <button>HEX</button>
-            <button>HSL</button>
+            <button class="generate-color" @click="changeMode('rgb')">
+              RGB
+            </button>
+            <button class="generate-color" @click="changeMode('hex')">
+              HEX
+            </button>
+            <button class="generate-color" @click="changeMode('hsl')">
+              HSL
+            </button>
+            <button class="generate-color" @click="changeSyntax">
+              {{ syntaxLabel }}
+            </button>
           </div>
-          <pre v-for="(label, i) in labels" :key="i">
-            --clr-{{ label.toLowerCase() }}: {{
-              currentScheme[`slot${i + 1}`].hsl
-            }};
-          </pre>
+          <div class="pre" @click="selectAll">
+            <p v-for="(label, i) in labels" :key="i" class="code">
+              {{ syntax }}{{ label.toLowerCase() }}:
+              {{ currentScheme[`slot${i + 1}`][mode] }};
+            </p>
+          </div>
         </div>
 
         <div class="modal-footer">
-          <button class="modal-default-button" @click="$emit('close')">
-            OK
-          </button>
+          <button class="generate-color" @click="$emit('close')">OK</button>
+          <span class="msg" v-show="copied">
+            <i class="fas fa-check"></i>
+            Copied!
+          </span>
         </div>
       </div>
     </div>
@@ -30,71 +42,47 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 const labels = computed(() => store.state.labels.slice(1));
 const currentScheme = computed(() => store.getters.currentScheme);
+
+const copied = ref(false);
+const mode = ref("hsl");
+const syntax = ref("--clr-");
+const syntaxLabel = ref("SCSS");
+
+const changeSyntax = () => {
+  if (syntax.value === "--clr-") {
+    syntax.value = "$clr-";
+    syntaxLabel.value = "CSS";
+  } else {
+    syntax.value = "--clr-";
+    syntaxLabel.value = "SCSS";
+  }
+};
+
+const changeMode = (newMode) => {
+  mode.value = newMode;
+};
+
+const selectAll = () => {
+  // copy selected text to clipboard
+  const text = document.querySelector(".pre").innerText;
+  const el = document.createElement("textarea");
+  el.value = text;
+  el.setAttribute("readonly", "");
+  el.style.position = "absolute";
+  el.style.left = "-9999px";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+  copied.value = true;
+};
 </script>
 
-<style scoped>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.modal-container {
-  width: min-content;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  font-family: Helvetica, Arial, sans-serif;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  display: block;
-  margin-top: 1rem;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-}
+<style>
 </style>
