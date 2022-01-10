@@ -166,6 +166,11 @@ const store = createStore({
     },
     SAVE_PALLETE({ state }, { name, scheme }) {
       localStorage.setItem(name, JSON.stringify(scheme))
+    },
+    UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
+      const rgb = hslToRgb(hsl)
+      const hex = rgbToHex(rgb)
+      commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
     }
   },
   getters: {
