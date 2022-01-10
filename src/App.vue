@@ -16,10 +16,14 @@
       <button class="generate-color" @click="setLightText">Light Text</button>
       <button class="generate-color" @click="setDarkText">Dark Text</button>
       <button class="generate-color" @click="copyPallete">Copy Pallete</button>
+      <button class="generate-color" @click="savePallete">Save Pallete</button>
     </div>
   </main>
   <transition name="modal">
-    <Modal v-if="showModal" @close="showModal = false" />
+    <CopyModal v-if="showCopyModal" @close="showCopyModal = false" />
+  </transition>
+  <transition name="modal">
+    <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
   </transition>
 </template>
 
@@ -30,9 +34,11 @@ import { useStore } from "vuex";
 import MainNav from "./components/MainNav.vue";
 import ColorsPane from "./components/ColorsPane.vue";
 import MiniSlots from "./components/MiniSlots.vue";
-import Modal from "./components/Modal.vue";
+import CopyModal from "./components/CopyModal.vue";
+import SaveModal from "./components/SaveModal.vue";
 
-const showModal = ref(false);
+const showCopyModal = ref(false);
+const showSaveModal = ref(false);
 
 const store = useStore();
 const uniqueColors = computed(() => store.getters.uniqueColors);
@@ -67,7 +73,11 @@ const setDarkText = () => {
 };
 
 const copyPallete = () => {
-  showModal.value = true;
+  showCopyModal.value = true;
+};
+
+const savePallete = () => {
+  showSaveModal.value = true;
 };
 </script>
 

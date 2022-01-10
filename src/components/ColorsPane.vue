@@ -47,6 +47,14 @@
         </button>
       </div>
     </form>
+    <form @submit.prevent="submitColor">
+      <div class="input">
+        <input type="color" id="colorInput" />
+        <button type="submit">
+          <i class="fas fa-chevron-circle-right"></i>
+        </button>
+      </div>
+    </form>
   </div>
   <!-- Pallete Pane  -->
   <section class="pallete-pane" v-if="mainHSL">
@@ -106,6 +114,13 @@ const submitHsl = (e) => {
   const hsl = `hsl(${h}, ${s}%, ${l}%)`;
   store.dispatch("SET_MAIN_COLOR", hsl);
   e.target.hslInput.value = "";
+};
+
+const submitColor = (e) => {
+  const color = e.target.colorInput.value.slice(1);
+  if (!color) return;
+  const hsl = hexToHsl(color);
+  store.dispatch("SET_MAIN_COLOR", hsl);
 };
 </script>
 
