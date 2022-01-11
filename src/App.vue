@@ -66,10 +66,12 @@ const setCssVars = () => {
 
 const setLightText = () => {
   document.documentElement.style.setProperty("--text-color", "#faebd7");
+  store.dispatch("SET_TEXT_COLOR", "light");
 };
 
 const setDarkText = () => {
   document.documentElement.style.setProperty("--text-color", "#0f131a");
+  store.dispatch("SET_TEXT_COLOR", "dark");
 };
 
 const copyPallete = () => {

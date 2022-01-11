@@ -26,7 +26,7 @@
             min="0"
             max="360"
             v-model="h"
-            @change="updateColor"
+            @input="updateColor"
           />
         </div>
         <div class="control-field">
@@ -38,7 +38,7 @@
             min="0"
             max="100"
             v-model="s"
-            @change="updateColor"
+            @input="updateColor"
           />
         </div>
         <div class="control-field">
@@ -50,7 +50,7 @@
             min="0"
             max="100"
             v-model="l"
-            @change="updateColor"
+            @input="updateColor"
           />
         </div>
       </fieldset>

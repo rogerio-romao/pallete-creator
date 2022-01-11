@@ -24,7 +24,7 @@
           <div class="pre" @click="selectAll">
             <p v-for="(label, i) in labels" :key="i" class="code">
               {{ syntax }}{{ label.toLowerCase() }}:
-              {{ currentScheme[`slot${i + 1}`][mode] }};
+              {{ currentScheme[`slot${i}`][mode] }};
             </p>
           </div>
         </div>
@@ -46,7 +46,7 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-const labels = computed(() => store.state.labels.slice(1));
+const labels = computed(() => store.state.labels);
 const currentScheme = computed(() => store.getters.currentScheme);
 
 const copied = ref(false);

@@ -42,6 +42,11 @@ const store = createStore({
           hex: ''
         }
       },
+      textColor: {
+        hsl: 'hsl(34, 78%, 91%)',
+        rgb: 'rgb(250, 235, 215)',
+        hex: '#faebd7'
+      },
       allColors: {
         hsl: [],
         rgb: [],
@@ -49,7 +54,7 @@ const store = createStore({
       },
       copiedColor: '',
       copiedColorIndex: null,
-      labels: [null, 'Main', 'Secondary', 'Accent', 'Light', 'Dark']
+      labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark']
     }
   },
   mutations: {
@@ -109,6 +114,9 @@ const store = createStore({
     },
     SET_COPIED_COLOR_INDEX(state, index) {
       state.copiedColorIndex = index
+    },
+    SET_TEXT_COLOR(state, colors) {
+      state.textColor = colors
     }
   },
   actions: {
@@ -171,6 +179,21 @@ const store = createStore({
       const rgb = hslToRgb(hsl)
       const hex = rgbToHex(rgb)
       commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
+    },
+    SET_TEXT_COLOR({ commit }, type) {
+      if (type === 'light') {
+        commit('SET_TEXT_COLOR', {
+          hsl: 'hsl(34, 78%, 91%)',
+          rgb: 'rgb(250, 235, 215)',
+          hex: '#faebd7'
+        })
+      } else if (type === 'dark') {
+        commit('SET_TEXT_COLOR', {
+          hsl: 'hsl(218, 27%, 8%)',
+          rgb: 'rgb(15, 19, 26)',
+          hex: '#0f131a'
+        })
+      }
     }
   },
   getters: {
@@ -179,6 +202,11 @@ const store = createStore({
       Object.values(state.slotColors).every(color => color.hsl !== ''),
     currentScheme: state => {
       return {
+        slot0: {
+          hsl: state.textColor.hsl,
+          rgb: state.textColor.rgb,
+          hex: state.textColor.hex
+        },
         slot1: {
           hsl: state.mainHSL,
           rgb: state.mainSlotColor.rgb,
