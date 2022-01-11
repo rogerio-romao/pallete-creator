@@ -4,7 +4,7 @@
       <span>
         <img src="../assets/logo.png" alt="logo" id="logo" />
       </span>
-      <span> Color Pallete Creator </span>
+      <span class="title"> Color Pallete Creator </span>
     </div>
     <div class="nav-links">
       <ul>

@@ -125,7 +125,7 @@ nav {
 }
 
 .brand {
-  font-family: 'Zen Antique', serif;
+  /* font-family: 'Zen Antique', serif; */
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -136,7 +136,12 @@ nav {
   height: 24px;
   filter: invert(0.72);
   margin-right: 0.3rem;
-  margin-bottom: -4px;
+  margin-bottom: -3px;
+}
+
+.brand .title {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 /* Main  */
@@ -169,7 +174,7 @@ h2 {
   height: 100%;
   margin-bottom: 2rem;
   padding: 10px;
-  color: var(--clr-accent);
+  color: var(--text-color);
   background-color: var(--clr-main);
   border-radius: 0.5rem;
   border: 1px solid var(--clr-main);
@@ -407,6 +412,9 @@ button[disabled] {
 
 .color-controls {
   width: min-content;
+  border: 1px solid var(--clr-main);
+  border-radius: 6px;
+  padding: 0.5rem;
 }
 
 .color-controls fieldset {
@@ -416,7 +424,7 @@ button[disabled] {
 }
 
 .color-controls input {
-  max-width: 75%;
+  max-width: 65%;
 }
 
 .control-field {

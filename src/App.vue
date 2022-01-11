@@ -5,7 +5,7 @@
     </nav>
   </header>
   <main>
-    <h1 class="heading1">Build your pallete</h1>
+    <h2 class="heading2">Build your pallete</h2>
     <colors-pane></colors-pane>
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots v-if="uniqueColors.size"></mini-slots>

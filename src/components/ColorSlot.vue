@@ -15,7 +15,7 @@
       <span :style="{ color: lightOrDark }">{{ hex }}</span>
       <span :style="{ color: lightOrDark }">{{ hsl }}</span>
     </div>
-    <div class="color-controls" v-if="hsl">
+    <div class="color-controls">
       <fieldset>
         <div class="control-field">
           <label for="hueControl">H</label>
@@ -25,7 +25,7 @@
             id="hueControl"
             min="0"
             max="360"
-            :value="h"
+            v-model="h"
             @change="updateColor"
           />
         </div>
@@ -37,7 +37,7 @@
             id="satControl"
             min="0"
             max="100"
-            :value="s"
+            v-model="s"
             @change="updateColor"
           />
         </div>
@@ -49,7 +49,7 @@
             id="lumControl"
             min="0"
             max="100"
-            :value="l"
+            v-model="l"
             @change="updateColor"
           />
         </div>
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 
 const props = defineProps({
@@ -79,26 +79,20 @@ const hsl = computed(() => {
     : store.state.slotColors[`slot${props.slotNumber}`].hsl;
 });
 
-const h = computed(() => {
-  return props.slotNumber === 1
-    ? store.state.mainSlotColor.hsl.match(/\d+/g).map(Number)[0]
-    : store.state.slotColors[`slot${props.slotNumber}`].hsl
-        .match(/\d+/g)
-        .map(Number)[0];
-});
-const s = computed(() => {
-  return props.slotNumber === 1
-    ? store.state.mainSlotColor.hsl.match(/\d+/g).map(Number)[1]
-    : store.state.slotColors[`slot${props.slotNumber}`].hsl
-        .match(/\d+/g)
-        .map(Number)[1];
-});
-const l = computed(() => {
-  return props.slotNumber === 1
-    ? store.state.mainSlotColor.hsl.match(/\d+/g).map(Number)[2]
-    : store.state.slotColors[`slot${props.slotNumber}`].hsl
-        .match(/\d+/g)
-        .map(Number)[2];
+const h = ref(0);
+const s = ref(0);
+const l = ref(0);
+
+watchEffect(() => {
+  if (hsl.value) {
+    h.value = hsl.value.match(/\d+/g).map(Number)[0];
+    s.value = hsl.value.match(/\d+/g).map(Number)[1];
+    l.value = hsl.value.match(/\d+/g).map(Number)[2];
+  } else {
+    h.value = 0;
+    s.value = 0;
+    l.value = 0;
+  }
 });
 
 const rgb = computed(() => {
