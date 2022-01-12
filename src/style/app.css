@@ -310,11 +310,11 @@ button[disabled] {
   color: var(--clr-accent-light);
 }
 
-.test-buttons {
+.utility-buttons {
   margin-top: 2rem;
 }
 
-.test-buttons button {
+.utility-buttons button {
   font-size: 1.1rem;
 }
 

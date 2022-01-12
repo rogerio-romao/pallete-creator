@@ -9,7 +9,7 @@
     <colors-pane></colors-pane>
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots v-if="uniqueColors.size"></mini-slots>
-    <div class="test-buttons" v-if="showPalleteButtons">
+    <div class="utility-buttons" v-if="showPalleteButtons">
       <button class="generate-color" @click="setCssVars">
         Test this pallete
       </button>

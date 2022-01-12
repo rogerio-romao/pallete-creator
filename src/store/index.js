@@ -148,12 +148,16 @@ const store = createStore({
       commit('SET_COPIED_COLOR', color)
       commit('SET_COPIED_COLOR_INDEX', index)
     },
-    PASTE_COLOR({ commit, state }, slot) {
-      if (!state.copiedColor || slot === 1) return
+    PASTE_COLOR({ commit, state, dispatch }, slot) {
+      if (!state.copiedColor) return
       const hsl = state.copiedColor
       const rgb = hslToRgb(hsl)
       const hex = rgbToHex(rgb)
-      commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
+      if (slot === 1) {
+        dispatch('SET_MAIN_COLOR', hsl)
+      } else {
+        commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
+      }
     },
     SET_RANDOM_SCHEME({ commit, state, getters }) {
       const unique = [...getters.uniqueColors]
