@@ -316,6 +316,7 @@ button[disabled] {
 
 .utility-buttons button {
   font-size: 1.1rem;
+  margin-right: 1px;
 }
 
 /* Modal */
@@ -365,7 +366,7 @@ button[disabled] {
   text-align: center;
   color: var(--text-color);
   padding: 0.5rem 1rem;
-  margin-right: 0.1rem;
+  margin-right: 1px;
 }
 
 .pre {
