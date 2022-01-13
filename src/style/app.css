@@ -387,9 +387,30 @@ button[disabled] {
 }
 
 .msg {
-  font-size: 0.8rem;
-  color: var(--clr-complementary);
+  font-size: 1.1rem;
+  color: var(--clr-light);
   margin-left: 1rem;
+}
+
+.msg > * {
+  font-size: 1.3rem;
+  margin-right: 0.4rem;
+  color: var(--clr-light);
+}
+
+.pre-info {
+  text-align: center;
+  color: var(--clr-light);
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+#cancel-btn {
+  background-color: var(--clr-accent);
+}
+
+#chevron:hover {
+  color: var(--clr-accent);
 }
 
 /*

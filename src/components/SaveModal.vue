@@ -2,12 +2,12 @@
   <div class="modal-mask">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
-        <div class="modal-header">
-          <h3>Save this pallete</h3>
-        </div>
+        <form @submit.prevent="savePallete">
+          <div class="modal-header">
+            <h3>Save this pallete</h3>
+          </div>
 
-        <div class="modal-body">
-          <form @submit.prevent="savePallete">
+          <div class="modal-body">
             <div class="input">
               <input
                 type="text"
@@ -15,20 +15,27 @@
                 v-model="palleteName"
                 id="savePalleteName"
               />
-              <button type="submit">
+              <button type="submit" id="chevron">
                 <i class="fas fa-chevron-circle-right"></i>
               </button>
             </div>
-          </form>
-        </div>
+          </div>
 
-        <div class="modal-footer">
-          <button class="generate-color" @click="$emit('close')">OK</button>
-          <span class="msg" v-show="saved">
-            <i class="fas fa-check"></i>
-            Saved!
-          </span>
-        </div>
+          <div class="modal-footer">
+            <button
+              class="generate-color"
+              @click="$emit('close')"
+              id="cancel-btn"
+            >
+              Cancel
+            </button>
+            <button class="generate-color" type="submit">Save</button>
+            <span class="msg" v-show="saved">
+              <i class="fas fa-check"></i>
+              Saved!
+            </span>
+          </div>
+        </form>
       </div>
     </div>
   </div>

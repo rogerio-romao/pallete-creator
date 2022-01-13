@@ -22,6 +22,7 @@
             </button>
           </div>
           <div class="pre" @click="selectAll">
+            <p class="pre-info">Click here to copy</p>
             <p v-for="(label, i) in labels" :key="i" class="code">
               {{ syntax }}{{ label.toLowerCase() }}:
               {{ currentScheme[`slot${i}`][mode] }};
@@ -33,7 +34,7 @@
           <button class="generate-color" @click="$emit('close')">OK</button>
           <span class="msg" v-show="copied">
             <i class="fas fa-check"></i>
-            Copied!
+            Code was copied.
           </span>
         </div>
       </div>
