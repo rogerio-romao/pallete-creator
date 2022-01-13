@@ -405,12 +405,12 @@ button[disabled] {
   font-weight: 600;
 }
 
-#cancel-btn {
-  background-color: var(--clr-accent);
+.invalid {
+  outline: var(--clr-main) solid 3px;
 }
 
-#chevron:hover {
-  color: var(--clr-accent);
+#cancel-btn {
+  background-color: var(--clr-accent);
 }
 
 /*

@@ -8,16 +8,13 @@
           </div>
 
           <div class="modal-body">
-            <div class="input">
+            <div :class="invalid ? 'invalid input' : 'input'">
               <input
                 type="text"
-                placeholder="Pallete name"
+                :placeholder="placeholder"
                 v-model="palleteName"
                 id="savePalleteName"
               />
-              <button type="submit" id="chevron">
-                <i class="fas fa-chevron-circle-right"></i>
-              </button>
             </div>
           </div>
 
@@ -49,6 +46,8 @@ const store = useStore();
 
 const palleteName = ref("");
 const saved = ref(false);
+const placeholder = ref("Pallete name");
+const invalid = ref(false);
 
 const savePallete = () => {
   if (palleteName.value) {
@@ -58,6 +57,10 @@ const savePallete = () => {
     });
     palleteName.value = "";
     saved.value = true;
+    invalid.value = false;
+  } else {
+    placeholder.value = "Please enter name";
+    invalid.value = true;
   }
 };
 </script>
