@@ -1,5 +1,5 @@
 <template>
-  <section class="pallete-pane" v-if="mainHSL">
+  <section class="pallete-pane">
     <template class="color-slots" v-for="i in 5" :key="i">
       <ColorSlot :slotNumber="i" />
     </template>
@@ -8,13 +8,7 @@
 
 <script setup>
 import { computed } from "vue";
-import { useStore } from "vuex";
-
 import ColorSlot from "./ColorSlot.vue";
-
-const store = useStore();
-
-const mainHSL = computed(() => store.state.mainHSL);
 </script>
 
 <style>

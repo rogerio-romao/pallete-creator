@@ -9,6 +9,7 @@
         <input
           type="text"
           placeholder="RGB - 255,255,255"
+          autocomplete="on"
           title="Enter 3 numbers between 0 and 255, separated by commas"
           :pattern="rgbPattern"
           id="rgbInput"
@@ -23,6 +24,7 @@
         <input
           type="text"
           placeholder="HEX # - ffffff"
+          autocomplete="on"
           title="Enter a hex color code, without the #"
           :pattern="hexPattern"
           id="hexInput"
@@ -37,6 +39,7 @@
         <input
           type="text"
           placeholder="HSL - 190,75,80"
+          autocomplete="on"
           title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
           :pattern="hslPattern"
           id="hslInput"

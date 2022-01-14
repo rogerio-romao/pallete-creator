@@ -225,6 +225,7 @@ h2 {
   display: flex;
   background: white;
   border-radius: 2px;
+  padding-right: 3px;
   align-items: center;
 }
 
@@ -236,11 +237,19 @@ h2 {
   border: 0;
 }
 
+.input-wrapper input:invalid + button {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.input-wrapper input:valid + button {
+  cursor: pointer;
+}
+
 .input-wrapper button {
   padding: 3px;
   border: 0;
   background: transparent;
-  cursor: pointer;
   color: var(--clr-accent-light);
 }
 
