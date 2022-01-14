@@ -454,3 +454,28 @@ button[disabled] {
   display: flex;
   justify-content: space-between;
 }
+
+.saved-pallete-pane {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  color: var(--text-color);
+  border: 1px solid var(--clr-main);
+  border-radius: 6px;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.saved-pallete {
+  border: 1px solid var(--clr-main);
+  padding: 0.5rem;
+}
+
+.saved-pallete-colors {
+  display: flex;
+  justify-content: space-between;
+}
+
+.saved-pallete-color {
+  width: 50px;
+  height: 50px;
+}

@@ -54,7 +54,8 @@ const store = createStore({
       },
       copiedColor: '',
       copiedColorIndex: null,
-      labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark']
+      labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
+      savedPallettes: JSON.parse(localStorage.getItem('pallettes')) || []
     }
   },
   mutations: {
@@ -117,6 +118,9 @@ const store = createStore({
     },
     SET_TEXT_COLOR(state, colors) {
       state.textColor = colors
+    },
+    SET_SAVED_PALLETES(state, pallettes) {
+      state.savedPallettes = pallettes
     }
   },
   actions: {
@@ -176,8 +180,11 @@ const store = createStore({
         slot++
       })
     },
-    SAVE_PALLETE({ state }, { name, scheme }) {
-      localStorage.setItem(name, JSON.stringify(scheme))
+    SAVE_PALLETE({ commit }, { name, scheme }) {
+      const pallettes = JSON.parse(localStorage.getItem('pallettes')) || []
+      pallettes.push({ name, scheme, id: pallettes.length })
+      commit('SET_SAVED_PALLETES', pallettes)
+      localStorage.setItem('pallettes', JSON.stringify(pallettes))
     },
     UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
       const rgb = hslToRgb(hsl)
@@ -205,38 +212,38 @@ const store = createStore({
     fullSchemeSet: state =>
       Object.values(state.slotColors).every(color => color.hsl !== ''),
     currentScheme: state => {
-      return {
-        slot0: {
+      return [
+        {
           hsl: state.textColor.hsl,
           rgb: state.textColor.rgb,
           hex: state.textColor.hex
         },
-        slot1: {
+        {
           hsl: state.mainHSL,
           rgb: state.mainSlotColor.rgb,
           hex: state.mainSlotColor.hex
         },
-        slot2: {
+        {
           hsl: state.slotColors.slot2.hsl,
           rgb: state.slotColors.slot2.rgb,
           hex: state.slotColors.slot2.hex
         },
-        slot3: {
+        {
           hsl: state.slotColors.slot3.hsl,
           rgb: state.slotColors.slot3.rgb,
           hex: state.slotColors.slot3.hex
         },
-        slot4: {
+        {
           hsl: state.slotColors.slot4.hsl,
           rgb: state.slotColors.slot4.rgb,
           hex: state.slotColors.slot4.hex
         },
-        slot5: {
+        {
           hsl: state.slotColors.slot5.hsl,
           rgb: state.slotColors.slot5.rgb,
           hex: state.slotColors.slot5.hex
         }
-      }
+      ]
     }
   }
 })

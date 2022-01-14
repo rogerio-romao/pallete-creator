@@ -1,18 +1,16 @@
 <template>
-  <header>
-    <nav>
-      <main-nav></main-nav>
-    </nav>
-  </header>
+  <MainNav></MainNav>
   <main>
     <h2 class="heading2">Build your pallete</h2>
-    <colors-pane></colors-pane>
+    <ColorsPane />
     <h2 v-if="uniqueColors.size" class="heading2">Pick your variations</h2>
     <mini-slots v-if="uniqueColors.size"></mini-slots>
-    <utility-buttons
+    <UtilityButtons
       @copyPallete="showCopyModal = true"
       @savePallete="showSaveModal = true"
     />
+    <h2 class="heading2">Saved Palletes</h2>
+    <SavedPalletes />
   </main>
   <transition name="modal">
     <CopyModal v-if="showCopyModal" @close="showCopyModal = false" />
@@ -32,6 +30,7 @@ import MiniSlots from "./components/MiniSlots.vue";
 import CopyModal from "./components/CopyModal.vue";
 import SaveModal from "./components/SaveModal.vue";
 import UtilityButtons from "./components/UtilityButtons.vue";
+import SavedPalletes from "./components/SavedPalletes.vue";
 
 const store = useStore();
 const showCopyModal = ref(false);
