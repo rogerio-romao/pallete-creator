@@ -1,12 +1,11 @@
 <template>
   <div class="main-color-box">
-    <p>Set Main Color:</p>
     <button class="generate-color" @click="setMainColor">
       <i class="fas fa-random" title="Generate random color" />
       Random
     </button>
     <form @submit.prevent="submitRgb">
-      <div class="input">
+      <div class="input-wrapper">
         <input
           type="text"
           placeholder="RGB - 255,255,255"
@@ -20,7 +19,7 @@
       </div>
     </form>
     <form @submit.prevent="submitHex">
-      <div class="input">
+      <div class="input-wrapper">
         <input
           type="text"
           placeholder="HEX # - ffffff"
@@ -34,7 +33,7 @@
       </div>
     </form>
     <form @submit.prevent="submitHsl">
-      <div class="input">
+      <div class="input-wrapper">
         <input
           type="text"
           placeholder="HSL - 190,75,80"
@@ -48,7 +47,7 @@
       </div>
     </form>
     <form @submit.prevent="submitColor">
-      <div class="input">
+      <div class="input-wrapper">
         <input type="color" id="colorInput" />
         <button type="submit">
           <i class="fas fa-chevron-circle-right"></i>
@@ -60,6 +59,7 @@
 
 <script setup>
 import { useStore } from "vuex";
+import { hexToHsl, rgbToHsl } from "../lib/utils";
 
 const store = useStore();
 

@@ -1,10 +1,7 @@
 <template>
-  <!-- Main Color Box  -->
-  <main-color-box />
-  <!-- Pallete Pane  -->
   <section class="pallete-pane" v-if="mainHSL">
     <template class="color-slots" v-for="i in 5" :key="i">
-      <color-slot :slotNumber="i" />
+      <ColorSlot :slotNumber="i" />
     </template>
   </section>
 </template>
@@ -14,7 +11,6 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 
 import ColorSlot from "./ColorSlot.vue";
-import MainColorBox from "./MainColorBox.vue";
 
 const store = useStore();
 

@@ -10,6 +10,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  text-rendering: optimizeLegibility;
 }
 
 /* Remove default margin */
@@ -24,6 +25,11 @@ blockquote,
 dl,
 dd {
   margin: 0;
+}
+
+h1,
+h2 {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Remove list styles on ul, ol elements  */
@@ -82,7 +88,10 @@ select {
   }
 }
 
-/* Custom Properties  */
+/* ----- END RESET -----  */
+
+/* ---- CUSTOM PROPERTIES ----  */
+
 :root {
   --clr-main: #435;
   --clr-complementary: #e3ced7;
@@ -92,9 +101,17 @@ select {
   --text-color: #faebd7;
   --slot-size: 100px;
   --mini-slot-size: 50px;
+  --base-radius: 0.5rem;
 }
 
 /* ----- STYLES -----  */
+
+/* Utilities  */
+.centered {
+  text-align: center;
+}
+
+/* Global */
 
 html {
   background-color: var(--clr-accent);
@@ -104,10 +121,27 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Utilities  */
-.centered {
-  text-align: center;
+.generate-color {
+  font-size: 0.75rem;
+  cursor: pointer;
+  background-color: var(--clr-accent-light);
+  color: var(--text-color);
+  border: 1px solid var(--clr-accent-light);
+  flex: 1;
+  padding: 0.3rem;
 }
+
+.generate-color:hover {
+  background-color: var(--clr-accent-light);
+  border: 1px solid var(--clr-light);
+  color: var(--clr-main);
+}
+
+.generate-color:active {
+  color: var(--clr-light);
+}
+
+/* Navbar  */
 
 nav {
   position: fixed;
@@ -125,7 +159,7 @@ nav {
 }
 
 .brand {
-  /* font-family: 'Zen Antique', serif; */
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -139,13 +173,15 @@ nav {
   margin-bottom: -3px;
 }
 
-.brand .title {
+.title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--clr-accent);
+  color: var(--clr-light);
 }
 
-/* Main  */
+/* End Navbar  */
+
+/* Main Page  */
 
 main {
   margin-top: 50px;
@@ -161,6 +197,59 @@ h2 {
   color: var(--text-color);
 }
 
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+/* End Main Page   */
+
+/* Main Color Box  */
+
+.main-color-box {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.5rem;
+  color: var(--text-color);
+  background-color: var(--clr-main);
+  border-radius: var(--base-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  background: white;
+  border-radius: 2px;
+  align-items: center;
+}
+
+.input-wrapper input {
+  padding-inline: 6px;
+  flex: 1 1 100%;
+  outline: none;
+  background: transparent;
+  border: 0;
+}
+
+.input-wrapper button {
+  padding: 3px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--clr-accent-light);
+}
+
+.input-wrapper button:hover {
+  color: var(--clr-accent);
+}
+
+/* End Main Color Box   */
+
 .pallete-pane {
   display: flex;
   justify-content: center;
@@ -168,26 +257,6 @@ h2 {
   border: 1px solid var(--clr-main);
   border-radius: 0.5rem;
   padding: 0.5rem;
-}
-
-.main-color-box {
-  width: 100%;
-  height: 100%;
-  margin-bottom: 2rem;
-  padding: 10px;
-  color: var(--text-color);
-  background-color: var(--clr-main);
-  border-radius: 0.5rem;
-  border: 1px solid var(--clr-main);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.75rem;
-}
-
-.main-color-box input {
-  padding-inline: 6px;
-  flex: 1;
 }
 
 .slot-container {
@@ -218,26 +287,6 @@ h2 {
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
-}
-
-.generate-color {
-  font-size: 0.75rem;
-  cursor: pointer;
-  background-color: var(--clr-accent-light);
-  color: var(--text-color);
-  border: 1px solid var(--clr-accent-light);
-  flex: 1;
-  padding: 0.3rem;
-}
-
-.generate-color:hover {
-  background-color: var(--clr-accent-light);
-  border: 1px solid var(--clr-light);
-  color: var(--clr-main);
-}
-
-.generate-color:active {
-  color: var(--clr-light);
 }
 
 button[disabled] {
@@ -287,27 +336,6 @@ button[disabled] {
 
 .copied {
   outline: #50a5f2 solid 5px;
-}
-
-.input {
-  display: flex;
-  background: white;
-  padding: 2px;
-  border-radius: 2px;
-  align-items: center;
-}
-
-.input input {
-  background: transparent;
-  border: 0;
-}
-
-.input button {
-  padding: 3px;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  color: var(--clr-accent-light);
 }
 
 .utility-buttons {
