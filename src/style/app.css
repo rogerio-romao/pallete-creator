@@ -470,6 +470,12 @@ button[disabled] {
   padding: 0.5rem;
 }
 
+.saved-pallete:hover {
+  cursor: pointer;
+  border-color: var(--clr-light);
+  box-shadow: 1px 1px 0 1px var(--clr-main), -1px -1px 0 1px var(--clr-main);
+}
+
 .saved-pallete-colors {
   display: flex;
   justify-content: space-between;

@@ -1,6 +1,11 @@
 <template>
   <div class="saved-pallete-pane">
-    <div v-for="pallete in palletes" :key="pallete.id" class="saved-pallete">
+    <div
+      v-for="pallete in palletes"
+      :key="pallete.id"
+      class="saved-pallete"
+      @click="editPallette(pallete.scheme.slice(1))"
+    >
       <div class="saved-pallete-header">
         <h4>{{ pallete.name }}</h4>
       </div>
@@ -23,6 +28,10 @@ import { useStore } from "vuex";
 const store = useStore();
 
 const palletes = computed(() => store.state.savedPallettes);
+
+const editPallette = (pallete) => {
+  store.dispatch("SET_PALLETE_FROM_SAVED", pallete);
+};
 </script>
 
 <style>

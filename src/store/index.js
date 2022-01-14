@@ -205,6 +205,13 @@ const store = createStore({
           hex: '#0f131a'
         })
       }
+    },
+    SET_PALLETE_FROM_SAVED({ commit, dispatch }, pallette) {
+      const [main, ...others] = pallette
+      dispatch('SET_MAIN_COLOR', main.hsl)
+      others.forEach((slot, index) => {
+        dispatch('UPDATE_SLOT_COLOR', { slot: index + 2, hsl: slot.hsl })
+      })
     }
   },
   getters: {
