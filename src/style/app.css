@@ -149,6 +149,27 @@ body {
   color: var(--clr-light);
 }
 
+.secondary-button {
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: white;
+  color: var(--clr-main);
+  border: 1px solid var(--clr-complementary);
+  border-radius: 3px;
+  padding: 0.4rem 1rem;
+  transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+}
+
+.secondary-button:hover {
+  border: 1px solid var(--clr-main);
+}
+
+.secondary-button:active {
+  color: var(--clr-complementary);
+  box-shadow: 1px 1px 0 0 var(--clr-main);
+}
+
 /* Navbar  */
 
 nav {
@@ -272,7 +293,7 @@ h2 {
   gap: 1.75rem;
   border: var(--bd-lg) solid var(--clr-main);
   border-radius: var(--base-radius);
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: var(--clr-light);
   margin-bottom: var(--mb-lg);
 }
@@ -337,10 +358,11 @@ h2 {
 /* slot controls  */
 
 .color-controls {
-  border: 2px solid var(--clr-complementary);
+  border: 1px solid var(--clr-accent);
+  background-color: #fff;
   border-radius: var(--base-radius);
   padding: 0.3rem 1rem;
-  box-shadow: 0 2px 2px 0 var(--clr-main);
+  box-shadow: 0 1px 4px 1px var(--clr-complementary);
 }
 
 .color-controls fieldset {
@@ -356,38 +378,380 @@ h2 {
 }
 
 .control-field label {
-  color: var(--clr-accent);
+  color: var(--clr-main);
   font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.8px;
   margin-bottom: 0.4rem;
 }
 
-.color-controls input {
+/* custom range control  */
+
+.color-controls input[type='range'] {
   max-width: 75%;
+  align-items: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  min-height: 30px;
+  overflow: hidden;
 }
+
+.color-controls input[type='range']:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.color-controls input[type='range']::-webkit-slider-runnable-track {
+  background: var(--clr-accent);
+  content: '';
+  height: 2px;
+  pointer-events: none;
+}
+
+.color-controls input[type='range']::-webkit-slider-thumb {
+  height: 18px;
+  width: 28px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 5px 0 0 -8px var(--clr-complementary),
+    6px 0 0 -8px var(--clr-complementary), 7px 0 0 -8px var(--clr-complementary),
+    8px 0 0 -8px var(--clr-complementary), 9px 0 0 -8px var(--clr-complementary),
+    10px 0 0 -8px var(--clr-complementary),
+    11px 0 0 -8px var(--clr-complementary),
+    12px 0 0 -8px var(--clr-complementary),
+    13px 0 0 -8px var(--clr-complementary),
+    14px 0 0 -8px var(--clr-complementary),
+    15px 0 0 -8px var(--clr-complementary),
+    16px 0 0 -8px var(--clr-complementary),
+    17px 0 0 -8px var(--clr-complementary),
+    18px 0 0 -8px var(--clr-complementary),
+    19px 0 0 -8px var(--clr-complementary),
+    20px 0 0 -8px var(--clr-complementary),
+    21px 0 0 -8px var(--clr-complementary),
+    22px 0 0 -8px var(--clr-complementary),
+    23px 0 0 -8px var(--clr-complementary),
+    24px 0 0 -8px var(--clr-complementary),
+    25px 0 0 -8px var(--clr-complementary),
+    26px 0 0 -8px var(--clr-complementary),
+    27px 0 0 -8px var(--clr-complementary),
+    28px 0 0 -8px var(--clr-complementary),
+    29px 0 0 -8px var(--clr-complementary),
+    30px 0 0 -8px var(--clr-complementary),
+    31px 0 0 -8px var(--clr-complementary),
+    32px 0 0 -8px var(--clr-complementary),
+    33px 0 0 -8px var(--clr-complementary),
+    34px 0 0 -8px var(--clr-complementary),
+    35px 0 0 -8px var(--clr-complementary),
+    36px 0 0 -8px var(--clr-complementary),
+    37px 0 0 -8px var(--clr-complementary),
+    38px 0 0 -8px var(--clr-complementary),
+    39px 0 0 -8px var(--clr-complementary),
+    40px 0 0 -8px var(--clr-complementary),
+    41px 0 0 -8px var(--clr-complementary),
+    42px 0 0 -8px var(--clr-complementary),
+    43px 0 0 -8px var(--clr-complementary),
+    44px 0 0 -8px var(--clr-complementary),
+    45px 0 0 -8px var(--clr-complementary),
+    46px 0 0 -8px var(--clr-complementary),
+    47px 0 0 -8px var(--clr-complementary),
+    48px 0 0 -8px var(--clr-complementary),
+    49px 0 0 -8px var(--clr-complementary),
+    50px 0 0 -8px var(--clr-complementary),
+    51px 0 0 -8px var(--clr-complementary),
+    52px 0 0 -8px var(--clr-complementary),
+    53px 0 0 -8px var(--clr-complementary),
+    54px 0 0 -8px var(--clr-complementary),
+    55px 0 0 -8px var(--clr-complementary),
+    56px 0 0 -8px var(--clr-complementary),
+    57px 0 0 -8px var(--clr-complementary),
+    58px 0 0 -8px var(--clr-complementary),
+    59px 0 0 -8px var(--clr-complementary),
+    60px 0 0 -8px var(--clr-complementary),
+    61px 0 0 -8px var(--clr-complementary),
+    62px 0 0 -8px var(--clr-complementary),
+    63px 0 0 -8px var(--clr-complementary),
+    64px 0 0 -8px var(--clr-complementary),
+    65px 0 0 -8px var(--clr-complementary),
+    66px 0 0 -8px var(--clr-complementary),
+    67px 0 0 -8px var(--clr-complementary),
+    68px 0 0 -8px var(--clr-complementary),
+    69px 0 0 -8px var(--clr-complementary),
+    70px 0 0 -8px var(--clr-complementary),
+    71px 0 0 -8px var(--clr-complementary),
+    72px 0 0 -8px var(--clr-complementary),
+    73px 0 0 -8px var(--clr-complementary),
+    74px 0 0 -8px var(--clr-complementary),
+    75px 0 0 -8px var(--clr-complementary),
+    76px 0 0 -8px var(--clr-complementary),
+    77px 0 0 -8px var(--clr-complementary),
+    78px 0 0 -8px var(--clr-complementary),
+    79px 0 0 -8px var(--clr-complementary),
+    80px 0 0 -8px var(--clr-complementary),
+    81px 0 0 -8px var(--clr-complementary),
+    82px 0 0 -8px var(--clr-complementary),
+    83px 0 0 -8px var(--clr-complementary),
+    84px 0 0 -8px var(--clr-complementary),
+    85px 0 0 -8px var(--clr-complementary),
+    86px 0 0 -8px var(--clr-complementary),
+    87px 0 0 -8px var(--clr-complementary),
+    88px 0 0 -8px var(--clr-complementary),
+    89px 0 0 -8px var(--clr-complementary),
+    90px 0 0 -8px var(--clr-complementary),
+    91px 0 0 -8px var(--clr-complementary),
+    92px 0 0 -8px var(--clr-complementary),
+    93px 0 0 -8px var(--clr-complementary),
+    94px 0 0 -8px var(--clr-complementary),
+    95px 0 0 -8px var(--clr-complementary),
+    96px 0 0 -8px var(--clr-complementary),
+    97px 0 0 -8px var(--clr-complementary),
+    98px 0 0 -8px var(--clr-complementary),
+    99px 0 0 -8px var(--clr-complementary),
+    100px 0 0 -8px var(--clr-complementary),
+    101px 0 0 -8px var(--clr-complementary),
+    102px 0 0 -8px var(--clr-complementary),
+    103px 0 0 -8px var(--clr-complementary),
+    104px 0 0 -8px var(--clr-complementary),
+    105px 0 0 -8px var(--clr-complementary),
+    106px 0 0 -8px var(--clr-complementary),
+    107px 0 0 -8px var(--clr-complementary),
+    108px 0 0 -8px var(--clr-complementary),
+    109px 0 0 -8px var(--clr-complementary),
+    110px 0 0 -8px var(--clr-complementary),
+    111px 0 0 -8px var(--clr-complementary),
+    112px 0 0 -8px var(--clr-complementary),
+    113px 0 0 -8px var(--clr-complementary),
+    114px 0 0 -8px var(--clr-complementary),
+    115px 0 0 -8px var(--clr-complementary),
+    116px 0 0 -8px var(--clr-complementary),
+    117px 0 0 -8px var(--clr-complementary),
+    118px 0 0 -8px var(--clr-complementary),
+    119px 0 0 -8px var(--clr-complementary),
+    120px 0 0 -8px var(--clr-complementary),
+    121px 0 0 -8px var(--clr-complementary),
+    122px 0 0 -8px var(--clr-complementary),
+    123px 0 0 -8px var(--clr-complementary),
+    124px 0 0 -8px var(--clr-complementary),
+    125px 0 0 -8px var(--clr-complementary),
+    126px 0 0 -8px var(--clr-complementary),
+    127px 0 0 -8px var(--clr-complementary),
+    128px 0 0 -8px var(--clr-complementary),
+    129px 0 0 -8px var(--clr-complementary),
+    130px 0 0 -8px var(--clr-complementary),
+    131px 0 0 -8px var(--clr-complementary),
+    132px 0 0 -8px var(--clr-complementary),
+    133px 0 0 -8px var(--clr-complementary),
+    134px 0 0 -8px var(--clr-complementary),
+    135px 0 0 -8px var(--clr-complementary),
+    136px 0 0 -8px var(--clr-complementary),
+    137px 0 0 -8px var(--clr-complementary),
+    138px 0 0 -8px var(--clr-complementary),
+    139px 0 0 -8px var(--clr-complementary),
+    140px 0 0 -8px var(--clr-complementary),
+    141px 0 0 -8px var(--clr-complementary),
+    142px 0 0 -8px var(--clr-complementary),
+    143px 0 0 -8px var(--clr-complementary),
+    144px 0 0 -8px var(--clr-complementary),
+    145px 0 0 -8px var(--clr-complementary),
+    146px 0 0 -8px var(--clr-complementary),
+    147px 0 0 -8px var(--clr-complementary),
+    148px 0 0 -8px var(--clr-complementary),
+    149px 0 0 -8px var(--clr-complementary),
+    150px 0 0 -8px var(--clr-complementary),
+    151px 0 0 -8px var(--clr-complementary),
+    152px 0 0 -8px var(--clr-complementary),
+    153px 0 0 -8px var(--clr-complementary),
+    154px 0 0 -8px var(--clr-complementary),
+    155px 0 0 -8px var(--clr-complementary),
+    156px 0 0 -8px var(--clr-complementary),
+    157px 0 0 -8px var(--clr-complementary),
+    158px 0 0 -8px var(--clr-complementary),
+    159px 0 0 -8px var(--clr-complementary),
+    160px 0 0 -8px var(--clr-complementary),
+    161px 0 0 -8px var(--clr-complementary),
+    162px 0 0 -8px var(--clr-complementary),
+    163px 0 0 -8px var(--clr-complementary),
+    164px 0 0 -8px var(--clr-complementary),
+    165px 0 0 -8px var(--clr-complementary),
+    166px 0 0 -8px var(--clr-complementary),
+    167px 0 0 -8px var(--clr-complementary),
+    168px 0 0 -8px var(--clr-complementary),
+    169px 0 0 -8px var(--clr-complementary),
+    170px 0 0 -8px var(--clr-complementary),
+    171px 0 0 -8px var(--clr-complementary),
+    172px 0 0 -8px var(--clr-complementary),
+    173px 0 0 -8px var(--clr-complementary),
+    174px 0 0 -8px var(--clr-complementary),
+    175px 0 0 -8px var(--clr-complementary),
+    176px 0 0 -8px var(--clr-complementary),
+    177px 0 0 -8px var(--clr-complementary),
+    178px 0 0 -8px var(--clr-complementary),
+    179px 0 0 -8px var(--clr-complementary),
+    180px 0 0 -8px var(--clr-complementary),
+    181px 0 0 -8px var(--clr-complementary),
+    182px 0 0 -8px var(--clr-complementary),
+    183px 0 0 -8px var(--clr-complementary),
+    184px 0 0 -8px var(--clr-complementary),
+    185px 0 0 -8px var(--clr-complementary),
+    186px 0 0 -8px var(--clr-complementary),
+    187px 0 0 -8px var(--clr-complementary),
+    188px 0 0 -8px var(--clr-complementary),
+    189px 0 0 -8px var(--clr-complementary),
+    190px 0 0 -8px var(--clr-complementary),
+    191px 0 0 -8px var(--clr-complementary),
+    192px 0 0 -8px var(--clr-complementary),
+    193px 0 0 -8px var(--clr-complementary),
+    194px 0 0 -8px var(--clr-complementary),
+    195px 0 0 -8px var(--clr-complementary),
+    196px 0 0 -8px var(--clr-complementary),
+    197px 0 0 -8px var(--clr-complementary),
+    198px 0 0 -8px var(--clr-complementary),
+    199px 0 0 -8px var(--clr-complementary),
+    200px 0 0 -8px var(--clr-complementary),
+    201px 0 0 -8px var(--clr-complementary),
+    202px 0 0 -8px var(--clr-complementary),
+    203px 0 0 -8px var(--clr-complementary),
+    204px 0 0 -8px var(--clr-complementary),
+    205px 0 0 -8px var(--clr-complementary),
+    206px 0 0 -8px var(--clr-complementary),
+    207px 0 0 -8px var(--clr-complementary),
+    208px 0 0 -8px var(--clr-complementary),
+    209px 0 0 -8px var(--clr-complementary),
+    210px 0 0 -8px var(--clr-complementary),
+    211px 0 0 -8px var(--clr-complementary),
+    212px 0 0 -8px var(--clr-complementary),
+    213px 0 0 -8px var(--clr-complementary),
+    214px 0 0 -8px var(--clr-complementary),
+    215px 0 0 -8px var(--clr-complementary),
+    216px 0 0 -8px var(--clr-complementary),
+    217px 0 0 -8px var(--clr-complementary),
+    218px 0 0 -8px var(--clr-complementary),
+    219px 0 0 -8px var(--clr-complementary),
+    220px 0 0 -8px var(--clr-complementary),
+    221px 0 0 -8px var(--clr-complementary),
+    222px 0 0 -8px var(--clr-complementary),
+    223px 0 0 -8px var(--clr-complementary),
+    224px 0 0 -8px var(--clr-complementary),
+    225px 0 0 -8px var(--clr-complementary),
+    226px 0 0 -8px var(--clr-complementary),
+    227px 0 0 -8px var(--clr-complementary),
+    228px 0 0 -8px var(--clr-complementary),
+    229px 0 0 -8px var(--clr-complementary),
+    230px 0 0 -8px var(--clr-complementary),
+    231px 0 0 -8px var(--clr-complementary),
+    232px 0 0 -8px var(--clr-complementary),
+    233px 0 0 -8px var(--clr-complementary),
+    234px 0 0 -8px var(--clr-complementary),
+    235px 0 0 -8px var(--clr-complementary),
+    236px 0 0 -8px var(--clr-complementary),
+    237px 0 0 -8px var(--clr-complementary),
+    238px 0 0 -8px var(--clr-complementary),
+    239px 0 0 -8px var(--clr-complementary),
+    240px 0 0 -8px var(--clr-complementary);
+  margin-top: -8px;
+  border: 1px solid var(--clr-accent-light);
+}
+
+.color-controls input[type='range']::-moz-range-track {
+  width: 240px;
+  height: 2px;
+}
+
+.color-controls input[type='range']::-moz-range-thumb {
+  height: 18px;
+  width: 28px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--clr-accent-light);
+  position: relative;
+}
+
+.color-controls input[type='range']::-moz-range-progress {
+  height: 2px;
+  background: var(--clr-accent);
+  border: 0;
+  margin-top: 0;
+}
+
+.color-controls input[type='range']::-ms-track {
+  background: transparent;
+  border: 0;
+  border-color: transparent;
+  border-radius: 0;
+  border-width: 0;
+  color: transparent;
+  height: 2px;
+  margin-top: 10px;
+  width: 240px;
+}
+
+.color-controls input[type='range']::-ms-thumb {
+  height: 18px;
+  width: 28px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--clr-accent-light);
+}
+
+.color-controls input[type='range']::-ms-fill-lower {
+  background: var(--clr-complementary);
+  border-radius: 0;
+}
+
+.color-controls input[type='range']::-ms-fill-upper {
+  background: var(--clr-complementary);
+  border-radius: 0;
+}
+
+.color-controls input[type='range']::-ms-tooltip {
+  display: none;
+}
+
+/* Mini Slots Panel  */
 
 .mini-slots {
   border: var(--bd-lg) solid var(--clr-main);
   background-color: var(--clr-light);
-  padding: 1rem 2rem;
+  padding: 1.5rem;
   border-radius: var(--base-radius);
-  margin-top: 5px;
+}
+
+.mini-slots-header {
+  margin-bottom: var(--mb-md);
+}
+
+.mini-slots-slots {
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--mini-slot-size));
   gap: 1.5rem;
+  margin-bottom: var(--mb-lg);
 }
 
 .mini-slot {
   width: var(--mini-slot-size);
   height: var(--mini-slot-size);
-  border: 1px solid black;
+  border: 1px solid var(--clr-main);
   border-radius: 50%;
   cursor: pointer;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 2px rgba(233, 233, 233, 0.4);
+  transition: box-shadow 0.075s ease-in-out;
+}
+
+.mini-slot:hover,
+.mini-slot:active {
+  box-shadow: none;
 }
 
 .copied {
-  outline: #50a5f2 solid 5px;
+  outline: var(--clr-accent) solid 7px;
+  outline-offset: 3px;
 }
 
 .utility-buttons {

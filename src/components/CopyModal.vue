@@ -25,7 +25,7 @@
             <p class="pre-info">Click here to copy</p>
             <p v-for="(label, i) in labels" :key="i" class="code">
               {{ syntax }}{{ label.toLowerCase() }}:
-              {{ currentScheme[`slot${i}`][mode] }};
+              {{ currentScheme[i][mode] }};
             </p>
           </div>
         </div>
