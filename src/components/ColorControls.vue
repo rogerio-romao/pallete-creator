@@ -1,6 +1,8 @@
 <template>
+  <!-- wrapper  -->
   <div class="color-controls">
     <fieldset>
+      <!-- individual H slider  -->
       <div class="control-field">
         <label for="hueControl">H</label>
         <input
@@ -13,6 +15,7 @@
           @input="updateColor"
         />
       </div>
+      <!-- individual S slider  -->
       <div class="control-field">
         <label for="satControl">S</label>
         <input
@@ -25,6 +28,7 @@
           @input="updateColor"
         />
       </div>
+      <!-- individual L slider  -->
       <div class="control-field">
         <label for="lumControl">L</label>
         <input
@@ -88,6 +92,3 @@ const updateColor = () => {
   }
 };
 </script>
-
-<style>
-</style>

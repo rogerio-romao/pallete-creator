@@ -61,8 +61,10 @@ import UtilityButtons from "./components/UtilityButtons.vue";
 import SavedPalletes from "./components/SavedPalletes.vue";
 
 const store = useStore();
+
 const showCopyModal = ref(false);
 const showSaveModal = ref(false);
+
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);
 const savedPalletes = computed(() => store.state.savedPallettes.length);

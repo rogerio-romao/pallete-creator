@@ -1,9 +1,14 @@
 <template>
+  <!-- wrapper  -->
   <div class="main-color-box">
-    <button class="generate-color" @click="setMainColor">
+    <!-- random button  -->
+    <button class="main-button" @click="setMainColor">
       <i class="fas fa-random" title="Generate random color" />
       Random
     </button>
+
+    <!-- INPUTS -->
+    <!-- rgb input  -->
     <form @submit.prevent="submitRgb">
       <div class="input-wrapper">
         <input
@@ -19,7 +24,8 @@
         </button>
       </div>
     </form>
-    <form @submit.prevent="submitHex">
+    <!-- hex input  -->
+    <form @submit.prevent="submitColor('hex')">
       <div class="input-wrapper">
         <input
           type="text"
@@ -34,7 +40,8 @@
         </button>
       </div>
     </form>
-    <form @submit.prevent="submitHsl">
+    <!-- hsl input  -->
+    <form @submit.prevent="submitColor('hsl')">
       <div class="input-wrapper">
         <input
           type="text"
@@ -49,15 +56,22 @@
         </button>
       </div>
     </form>
-    <form @submit.prevent="submitColor">
+    <!-- color input  -->
+    <form @submit.prevent="submitColor('color')">
       <div class="input-wrapper">
-        <input type="color" id="colorInput" />
+        <input
+          type="color"
+          id="colorInput"
+          title="Click to select from color wheel"
+        />
         <button type="submit">
           <i class="fas fa-chevron-circle-right"></i>
         </button>
       </div>
     </form>
+    <!-- end INPUTS  -->
   </div>
+  <!-- end wrapper   -->
 </template>
 
 <script setup>
@@ -66,17 +80,18 @@ import { hexToHsl, rgbToHsl } from "../lib/utils";
 
 const store = useStore();
 
+const hexPattern = "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$";
 const rgbPattern =
   "\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b";
-
-const hexPattern = "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$";
-
 const hslPattern =
   "\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b";
 
 const setMainColor = () => {
   store.dispatch("SET_MAIN_COLOR");
 };
+
+/* --- maybe refactor these handlers --- */
+/* ---  vvvvvvvvvv     vvvvvvvvvvv   --- */
 
 const submitRgb = (e) => {
   const rgb = e.target.rgbInput.value;
@@ -109,6 +124,3 @@ const submitColor = (e) => {
   store.dispatch("SET_MAIN_COLOR", hsl);
 };
 </script>
-
-<style>
-</style>

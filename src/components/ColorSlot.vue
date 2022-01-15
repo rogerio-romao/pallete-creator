@@ -1,9 +1,11 @@
 <template>
+  <!-- Individual color Slot  -->
   <div class="slot-container">
+    <!-- label edit div  -->
     <div class="label centered">
-      <i class="fas fa-edit edit-label" title="Edit color name" />
       <input type="text" :value="labels[slotNumber]" @change="updateLabel" />
     </div>
+    <!-- slot  -->
     <div
       class="color-slot"
       @click="pasteColor"
@@ -11,12 +13,14 @@
         backgroundColor: slotBg,
       }"
     >
-      <span :style="{ color: lightOrDark }">{{ rgb }}</span>
+      <!-- text inside slots  -->
+      <span :style="{ color: lightOrDark }">{{ format(hsl) }}</span>
       <span :style="{ color: lightOrDark }">{{ hex }}</span>
-      <span :style="{ color: lightOrDark }">{{ hsl }}</span>
+      <span :style="{ color: lightOrDark }">{{ format(rgb) }}</span>
     </div>
-
-    <color-controls :slotNumber="slotNumber" />
+    <!--  end slot  -->
+    <!-- controls  -->
+    <ColorControls :slotNumber="slotNumber" />
   </div>
 </template>
 
@@ -55,6 +59,8 @@ const hex = computed(() => {
     : store.state.slotColors[`slot${props.slotNumber}`].hex;
 });
 
+const format = (str) => str.replace(/ /g, "");
+
 const slotBg = computed(() =>
   props.slotNumber === 1
     ? store.state.mainHSL
@@ -77,6 +83,3 @@ const updateLabel = (e) => {
   });
 };
 </script>
-
-<style>
-</style>
