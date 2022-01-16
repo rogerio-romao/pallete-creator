@@ -29,7 +29,10 @@
           </div>
 
           <div class="modal-footer">
-            <button class="main-button" @click="$emit('close')">Close</button>
+            <button class="main-button" @click="$emit('close')">
+              <i class="fas fa-times"></i>
+              Close
+            </button>
           </div>
         </div>
       </div>

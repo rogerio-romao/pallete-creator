@@ -13,7 +13,25 @@
 
     <!-- color pallete pane  -->
     <div v-if="mainHSL">
-      <h2>Build your pallete</h2>
+      <h2>
+        Build your pallete
+        <span
+          class="collapse"
+          title="Click to collapse"
+          @click="collapseColorPane"
+          v-if="!isColorPaneCollapsed"
+        >
+          <i class="far fa-minus-square"></i>
+        </span>
+        <span
+          class="collapse"
+          title="Click to expand"
+          @click="collapseColorPane"
+          v-if="isColorPaneCollapsed"
+        >
+          <i class="far fa-plus-square"></i>
+        </span>
+      </h2>
       <ColorsPane />
     </div>
 
@@ -28,13 +46,49 @@
 
     <!-- mini slots / variations  -->
     <div v-if="uniqueColors.size">
-      <h2>Pick your variations</h2>
+      <h2>
+        Pick your variations
+        <span
+          class="collapse"
+          title="Click to collapse"
+          @click="collapseMiniPane"
+          v-if="!isMiniPaneCollapsed"
+        >
+          <i class="far fa-minus-square"></i>
+        </span>
+        <span
+          class="collapse"
+          title="Click to expand"
+          @click="collapseMiniPane"
+          v-if="isMiniPaneCollapsed"
+        >
+          <i class="far fa-plus-square"></i>
+        </span>
+      </h2>
       <MiniSlots />
     </div>
 
     <!-- saved palletes -->
     <div v-if="savedPalletes">
-      <h2>Saved Palletes</h2>
+      <h2>
+        Saved Palletes
+        <span
+          class="collapse"
+          title="Click to collapse"
+          @click="collapseSavedPane"
+          v-if="!isSavedPaneCollapsed"
+        >
+          <i class="far fa-minus-square"></i>
+        </span>
+        <span
+          class="collapse"
+          title="Click to expand"
+          @click="collapseSavedPane"
+          v-if="isSavedPaneCollapsed"
+        >
+          <i class="far fa-plus-square"></i>
+        </span>
+      </h2>
       <SavedPalletes />
     </div>
   </main>
@@ -81,10 +135,53 @@ const showCopyModal = ref(false);
 const showSaveModal = ref(false);
 const showInstructionsModal = ref(false);
 
+const isColorPaneCollapsed = ref(false);
+const isMiniPaneCollapsed = ref(false);
+const isSavedPaneCollapsed = ref(false);
+
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);
 const savedPalletes = computed(() => store.state.savedPallettes.length);
 const showUtilityButtons = computed(() => store.getters.fullSchemeSet);
+
+const collapseColorPane = () => {
+  isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
+  if (isColorPaneCollapsed.value) {
+    document
+      .querySelector(".pallete-pane")
+      .setAttribute("style", "display: none");
+  } else {
+    document
+      .querySelector(".pallete-pane")
+      .setAttribute("style", "display: block");
+  }
+};
+
+const collapseMiniPane = () => {
+  isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
+  if (isMiniPaneCollapsed.value) {
+    document
+      .querySelector(".mini-slots")
+      .setAttribute("style", "display: none");
+  } else {
+    document
+      .querySelector(".mini-slots")
+      .setAttribute("style", "display: block%");
+  }
+};
+
+const collapseSavedPane = () => {
+  isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
+  if (isSavedPaneCollapsed.value) {
+    document
+      .querySelector(".saved-pallete-pane")
+      .setAttribute("style", "display: none");
+  } else {
+    document
+      .querySelector(".saved-pallete-pane")
+      .setAttribute("style", "display: block%");
+  }
+};
 </script>
 
 

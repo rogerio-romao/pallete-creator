@@ -116,6 +116,14 @@ select {
   text-align: center;
 }
 
+.collapse {
+  cursor: pointer;
+}
+
+.collapse:hover {
+  color: var(--clr-accent-light);
+}
+
 /* Global */
 
 html {
@@ -265,6 +273,7 @@ h2 {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+  overflow: hidden;
 }
 
 .input-wrapper {
@@ -315,6 +324,9 @@ h2 {
   padding: 1.5rem;
   background-color: var(--clr-light);
   margin-bottom: var(--mb-lg);
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .pallete-pane-header {
