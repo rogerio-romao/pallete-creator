@@ -14,10 +14,6 @@
     <!-- color pallete pane  -->
     <div v-if="mainHSL">
       <h2>Build your pallete</h2>
-      <p class="description">
-        Setting main color resets everything. You can edit color labels and
-        adjust color properties with the controls.
-      </p>
       <ColorsPane />
     </div>
 
@@ -33,10 +29,7 @@
     <!-- mini slots / variations  -->
     <div v-if="uniqueColors.size">
       <h2>Pick your variations</h2>
-      <MiniSlots
-        @copyPallete="showCopyModal = true"
-        @savePallete="showSaveModal = true"
-      />
+      <MiniSlots />
     </div>
 
     <!-- saved palletes -->

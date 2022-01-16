@@ -294,14 +294,22 @@ h2 {
 /* Pallette Pane  */
 
 .pallete-pane {
-  display: flex;
-  justify-content: center;
-  gap: 1.75rem;
   border: var(--bd-lg) solid var(--clr-main);
   border-radius: var(--base-radius);
   padding: 1.5rem;
   background-color: var(--clr-light);
   margin-bottom: var(--mb-lg);
+}
+
+.pallete-pane-header {
+  color: var(--clr-main);
+  margin-bottom: var(--mb-md);
+}
+
+.pallete-pane-slots {
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
 }
 
 /* color slots  */
