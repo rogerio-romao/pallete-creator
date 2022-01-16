@@ -1,12 +1,25 @@
 <template>
-  <div class="utility-buttons" v-if="showPalleteButtons">
-    <button class="generate-color" @click="setCssVars">
+  <div class="utility-buttons">
+    <button class="secondary-button" @click="setCssVars">
+      <i class="fas fa-vial"></i>
       Test this pallete
     </button>
-    <button class="generate-color" @click="setLightText">Light Text</button>
-    <button class="generate-color" @click="setDarkText">Dark Text</button>
-    <button class="generate-color" @click="copyPallete">Copy Pallete</button>
-    <button class="generate-color" @click="savePallete">Save Pallete</button>
+    <button class="secondary-button" @click="setLightText">
+      <i class="far fa-lightbulb"></i>
+      Light Text
+    </button>
+    <button class="secondary-button" @click="setDarkText">
+      <i class="fas fa-lightbulb"></i>
+      Dark Text
+    </button>
+    <button class="secondary-button" @click="copyPallete">
+      <i class="far fa-copy"></i>
+      Copy Pallete
+    </button>
+    <button class="secondary-button" @click="savePallete">
+      <i class="fas fa-save"></i>
+      Save Pallete
+    </button>
   </div>
 </template>
 
@@ -17,8 +30,6 @@ import { useStore } from "vuex";
 const emit = defineEmits(["copyPallete", "savePallete"]);
 
 const store = useStore();
-
-const showPalleteButtons = computed(() => store.getters.fullSchemeSet);
 
 const setLightText = () => {
   document.documentElement.style.setProperty("--text-color", "#faebd7");

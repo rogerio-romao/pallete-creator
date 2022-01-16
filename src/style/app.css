@@ -50,6 +50,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   line-height: 1.5;
+  color: var(--text-color);
 }
 
 /* A elements that don't have a class get default styles */
@@ -204,8 +205,8 @@ nav {
 
 .title {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--clr-light);
+  color: var(--clr-complementary);
+  text-shadow: 2px 2px 1px black;
 }
 
 /* End Navbar  */
@@ -225,11 +226,16 @@ h2 {
 h2 {
   font-size: 1.25rem;
   margin-bottom: var(--mb-sm);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.63);
 }
 
 /* End Main Page   */
 
 /* Main Color Box  */
+
+.description {
+  margin-bottom: var(--mb-sm);
+}
 
 .main-color-box {
   width: 100%;
@@ -720,10 +726,12 @@ h2 {
   background-color: var(--clr-light);
   padding: 1.5rem;
   border-radius: var(--base-radius);
+  margin-bottom: var(--mb-lg);
 }
 
 .mini-slots-header {
   margin-bottom: var(--mb-md);
+  color: var(--clr-main);
 }
 
 .mini-slots-slots {
@@ -754,13 +762,45 @@ h2 {
   outline-offset: 3px;
 }
 
+/* Utility buttons bar  */
+
 .utility-buttons {
-  margin-top: 2rem;
+  margin-bottom: var(--mb-lg);
+  background: var(--clr-light);
+  padding: 20px 40px;
+  border-radius: var(--base-radius);
+  border: 10px solid var(--clr-main);
+  display: flex;
+  gap: 20px;
 }
 
 .utility-buttons button {
-  font-size: 1.1rem;
-  margin-right: 1px;
+  box-shadow: 1px 1px 1px var(--clr-accent);
+  border: 1px solid var(--clr-accent-light);
+}
+
+.utility-buttons button:active {
+  box-shadow: 2px 2px 1px var(--clr-accent);
+}
+
+/* Instructions  */
+
+.instructions-wrapper {
+  margin-bottom: var(--mb-lg);
+  color: var(--clr-main);
+  background: var(--clr-accent-light);
+  border-radius: var(--base-radius);
+  display: flex;
+  flex-direction: column;
+  border: 10px solid var(--clr-complementary);
+}
+
+.instructions-wrapper p {
+  padding: 15px 30px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 /* Modal */
