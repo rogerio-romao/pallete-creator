@@ -9,6 +9,7 @@
       </div>
       <div class="nav-links">
         <ul>
+          <li @click="emit('openInstructionsModal')">Instructions</li>
           <li>Login</li>
         </ul>
       </div>
@@ -16,10 +17,8 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: "MainNav",
-};
+<script setup>
+const emit = defineEmits(["openInstructionsModal"]);
 </script>
 
 <style>

@@ -1,6 +1,6 @@
 <template>
   <!-- NAV  -->
-  <MainNav></MainNav>
+  <MainNav @openInstructionsModal="showInstructionsModal = true" />
 
   <!-- MAIN  -->
   <main>
@@ -37,26 +37,18 @@
       <h2>Saved Palletes</h2>
       <SavedPalletes />
     </div>
-
-    <!-- instructions  -->
-    <h2>Instructions</h2>
-    <div class="instructions-wrapper">
-      <p>
-        First generate a main color by using the inputs or the random button.
-        The slots will appear and variations will be generated based on color
-        theory. When you change the main slot, everything else resets and new
-        variations are added. You can click on the variations to select the
-        color, then click on one of the pallette slots to paste it. Or press the
-        random scheme button to generate a new scheme from the variations. Then
-        the colors can be adjusted using the sliders. You can then save the
-        scheme or export the css, test the scheme on the page, change color
-        names, test dark and light text, etc...
-      </p>
-    </div>
   </main>
   <!-- END MAIN  -->
 
   <!-- MODALS  -->
+
+  <!-- instructions modal -->
+  <transition name="modal">
+    <Instructions
+      v-if="showInstructionsModal"
+      @close="showInstructionsModal = false"
+    />
+  </transition>
 
   <!-- copy modal -->
   <transition name="modal">
@@ -76,16 +68,18 @@ import { useStore } from "vuex";
 import MainNav from "./components/MainNav.vue";
 import MainColorBox from "./components/MainColorBox.vue";
 import ColorsPane from "./components/ColorsPane.vue";
+import UtilityButtons from "./components/UtilityButtons.vue";
 import MiniSlots from "./components/MiniSlots.vue";
+import SavedPalletes from "./components/SavedPalletes.vue";
+import Instructions from "./components/InstructionsModal.vue";
 import CopyModal from "./components/CopyModal.vue";
 import SaveModal from "./components/SaveModal.vue";
-import UtilityButtons from "./components/UtilityButtons.vue";
-import SavedPalletes from "./components/SavedPalletes.vue";
 
 const store = useStore();
 
 const showCopyModal = ref(false);
 const showSaveModal = ref(false);
+const showInstructionsModal = ref(false);
 
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);

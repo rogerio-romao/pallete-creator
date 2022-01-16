@@ -209,6 +209,22 @@ nav {
   text-shadow: 2px 2px 1px black;
 }
 
+.nav-links ul {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links ul li {
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
+}
+
+.nav-links ul li:hover {
+  color: var(--clr-complementary);
+}
+
 /* End Navbar  */
 
 /* Main Page  */
@@ -793,22 +809,18 @@ h2 {
 
 /* Instructions  */
 
-.instructions-wrapper {
-  margin-bottom: var(--mb-lg);
-  color: var(--clr-main);
-  background: var(--clr-accent-light);
-  border-radius: var(--base-radius);
-  display: flex;
-  flex-direction: column;
-  border: 10px solid var(--clr-complementary);
+.modal-container.instructions {
+  margin: 0 auto;
+  color: var(--clr-complementary);
+  background: var(--clr-accent);
 }
 
-.instructions-wrapper p {
+.instructions p {
+  text-align: left;
   padding: 15px 30px;
   margin: 0;
   font-size: 1rem;
   font-weight: 500;
-  line-height: 1.4;
 }
 
 /* Modal */
@@ -824,12 +836,17 @@ h2 {
 }
 
 .modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+  display: grid;
+  place-items: center;
+  height: 100vh;
 }
 
 .modal-container {
+  display: grid;
+  place-items: center;
+  width: 100vw;
   width: max-content;
+  max-width: 50%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: var(--clr-accent);
