@@ -14,7 +14,7 @@
     </button>
     <button class="secondary-button" @click="copyPallete">
       <i class="far fa-copy"></i>
-      Copy Pallete
+      Export CSS
     </button>
     <button class="secondary-button" @click="savePallete">
       <i class="fas fa-save"></i>

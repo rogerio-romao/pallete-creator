@@ -11,6 +11,15 @@
     </p>
     <MainColorBox />
 
+    <!-- utility buttons  -->
+    <div v-if="showUtilityButtons">
+      <h2>Utilities</h2>
+      <UtilityButtons
+        @copyPallete="showCopyModal = true"
+        @savePallete="showSaveModal = true"
+      />
+    </div>
+
     <!-- color pallete pane  -->
     <div v-if="mainHSL">
       <h2>
@@ -32,16 +41,7 @@
           <i class="far fa-plus-square"></i>
         </span>
       </h2>
-      <ColorsPane />
-    </div>
-
-    <!-- utility buttons  -->
-    <div v-if="showUtilityButtons">
-      <h2>Utilities</h2>
-      <UtilityButtons
-        @copyPallete="showCopyModal = true"
-        @savePallete="showSaveModal = true"
-      />
+      <ColorsPane :isColorPaneCollapsed="isColorPaneCollapsed" />
     </div>
 
     <!-- mini slots / variations  -->
@@ -65,7 +65,7 @@
           <i class="far fa-plus-square"></i>
         </span>
       </h2>
-      <MiniSlots />
+      <MiniSlots :isMiniPaneCollapsed="isMiniPaneCollapsed" />
     </div>
 
     <!-- saved palletes -->
@@ -89,7 +89,7 @@
           <i class="far fa-plus-square"></i>
         </span>
       </h2>
-      <SavedPalletes />
+      <SavedPalletes :isSavedPaneCollapsed="isSavedPaneCollapsed" />
     </div>
   </main>
   <!-- END MAIN  -->
@@ -146,41 +146,14 @@ const showUtilityButtons = computed(() => store.getters.fullSchemeSet);
 
 const collapseColorPane = () => {
   isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
-  if (isColorPaneCollapsed.value) {
-    document
-      .querySelector(".pallete-pane")
-      .setAttribute("style", "display: none");
-  } else {
-    document
-      .querySelector(".pallete-pane")
-      .setAttribute("style", "display: block");
-  }
 };
 
 const collapseMiniPane = () => {
   isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
-  if (isMiniPaneCollapsed.value) {
-    document
-      .querySelector(".mini-slots")
-      .setAttribute("style", "display: none");
-  } else {
-    document
-      .querySelector(".mini-slots")
-      .setAttribute("style", "display: block%");
-  }
 };
 
 const collapseSavedPane = () => {
   isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
-  if (isSavedPaneCollapsed.value) {
-    document
-      .querySelector(".saved-pallete-pane")
-      .setAttribute("style", "display: none");
-  } else {
-    document
-      .querySelector(".saved-pallete-pane")
-      .setAttribute("style", "display: block%");
-  }
 };
 </script>
 
