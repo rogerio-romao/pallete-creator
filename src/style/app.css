@@ -809,7 +809,7 @@ nav .title {
 }
 
 .copied {
-  outline: var(--clr-accent) solid 7px;
+  outline: var(--clr-complementary) solid 7px;
   outline-offset: 3px;
 }
 
@@ -834,6 +834,11 @@ nav .title {
   color: var(--text-color);
   border-color: var(--clr-light);
   box-shadow: 1px 1px 0 1px var(--clr-main), -1px -1px 0 1px var(--clr-main);
+}
+
+.saved-pallete-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 .saved-pallete-colors {

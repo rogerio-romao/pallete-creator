@@ -4,6 +4,10 @@
       <i class="fas fa-vial"></i>
       Test this pallete
     </button>
+    <button class="secondary-button" @click="resetSiteColors">
+      <i class="far fa-window-restore"></i>
+      Reset site colors
+    </button>
     <button class="secondary-button" @click="setLightText">
       <i class="far fa-lightbulb"></i>
       Light Text
@@ -47,6 +51,21 @@ const copyPallete = () => {
 
 const savePallete = () => {
   emit("savePallete");
+};
+
+const resetSiteColors = () => {
+  const siteColors = store.state.siteColors;
+  document.documentElement.style.setProperty("--clr-main", siteColors.main);
+  document.documentElement.style.setProperty(
+    "--clr-complementary",
+    siteColors.complementary
+  );
+  document.documentElement.style.setProperty("--clr-light", siteColors.light);
+  document.documentElement.style.setProperty("--clr-accent", siteColors.accent);
+  document.documentElement.style.setProperty(
+    "--clr-accent-light",
+    siteColors.dark
+  );
 };
 
 const setCssVars = () => {

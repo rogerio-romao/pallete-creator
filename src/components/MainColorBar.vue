@@ -14,7 +14,6 @@
         <input
           type="text"
           placeholder="RGB - 255,255,255"
-          autocomplete="on"
           title="Enter 3 numbers between 0 and 255, separated by commas"
           :pattern="rgbPattern"
           id="rgbInput"
@@ -25,12 +24,11 @@
       </div>
     </form>
     <!-- hex input  -->
-    <form @submit.prevent="submitColor('hex')">
+    <form @submit.prevent="submitHex">
       <div class="input-wrapper">
         <input
           type="text"
           placeholder="HEX # - ffffff"
-          autocomplete="on"
           title="Enter a hex color code, without the #"
           :pattern="hexPattern"
           id="hexInput"
@@ -41,12 +39,11 @@
       </div>
     </form>
     <!-- hsl input  -->
-    <form @submit.prevent="submitColor('hsl')">
+    <form @submit.prevent="submitHsl">
       <div class="input-wrapper">
         <input
           type="text"
           placeholder="HSL - 190,75,80"
-          autocomplete="on"
           title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
           :pattern="hslPattern"
           id="hslInput"
@@ -57,7 +54,7 @@
       </div>
     </form>
     <!-- color input  -->
-    <form @submit.prevent="submitColor('color')">
+    <form @submit.prevent="submitColor">
       <div class="input-wrapper">
         <input
           type="color"

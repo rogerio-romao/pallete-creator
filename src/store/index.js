@@ -55,7 +55,14 @@ const store = createStore({
       copiedColor: '',
       copiedColorIndex: null,
       labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
-      savedPallettes: JSON.parse(localStorage.getItem('pallettes')) || []
+      savedPallettes: JSON.parse(localStorage.getItem('pallettes')) || [],
+      siteColors: {
+        main: '#435',
+        complementary: '#e3ced7',
+        light: '#f1f3f6',
+        accent: '#1662a6',
+        dark: '#50a5f2'
+      }
     }
   },
   mutations: {
@@ -212,6 +219,12 @@ const store = createStore({
       others.forEach((slot, index) => {
         dispatch('UPDATE_SLOT_COLOR', { slot: index + 2, hsl: slot.hsl })
       })
+    },
+    DELETE_PALLETE({ commit, state, dispatch }, id) {
+      const pallettes = JSON.parse(localStorage.getItem('pallettes'))
+      const newPallettes = pallettes.filter(p => p.id !== id)
+      localStorage.setItem('pallettes', JSON.stringify(newPallettes))
+      commit('SET_SAVED_PALLETES', newPallettes)
     }
   },
   getters: {
