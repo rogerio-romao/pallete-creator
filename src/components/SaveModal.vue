@@ -8,7 +8,7 @@
           </div>
 
           <div class="modal-body">
-            <div :class="invalid ? 'invalid input' : 'input'">
+            <div :class="invalid ? 'invalid save-input' : 'save-input'">
               <input
                 type="text"
                 :placeholder="placeholder"
@@ -18,16 +18,16 @@
             </div>
           </div>
 
-          <div class="modal-footer">
-            <button
-              class="generate-color"
-              @click="$emit('close')"
-              id="cancel-btn"
-            >
-              Cancel
+          <div class="modal-footer save-modal-footer">
+            <button class="main-button" @click="$emit('close')">
+              <i class="fas fa-times"></i>
+              Close
             </button>
-            <button class="generate-color" type="submit">Save</button>
-            <span class="msg" v-show="saved">
+            <button class="main-button" type="submit">
+              <i class="fas fa-save"></i>
+              Save
+            </button>
+            <span class="footer-msg" v-show="saved">
               <i class="fas fa-check"></i>
               Saved!
             </span>

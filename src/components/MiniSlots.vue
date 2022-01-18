@@ -1,10 +1,10 @@
 <template>
   <!-- wrapper   -->
-  <section class="mini-slots">
+  <section class="mini-slots-pane panel">
     <p v-if="isMiniPaneCollapsed">Click the plus sign to reopen panel.</p>
     <div class="hide" v-if="!isMiniPaneCollapsed">
       <!-- header text  -->
-      <div class="mini-slots-header">
+      <div class="panel-header">
         <p>
           Click any variation to copy it, then click on one of the main color
           slots above to paste it. Or click the randomize button to generate a

@@ -1,6 +1,6 @@
 <template>
   <!-- wrapper  -->
-  <div class="main-color-box">
+  <div class="main-color-bar">
     <!-- random button  -->
     <button class="main-button" @click="setMainColor">
       <i class="fas fa-random" title="Generate random color" />

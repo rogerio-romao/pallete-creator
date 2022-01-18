@@ -1,9 +1,11 @@
-/* External Fonts  */
+/*  EXTERNAL FONTS  */
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;700&family=Zen+Antique&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap');
 
-/* ----- RESET -----  */
+/* ---------------------------  */
+/* ---------- RESET ----------  */
+/* ---------------------------  */
 
 /* Box sizing rules */
 *,
@@ -89,9 +91,9 @@ select {
   }
 }
 
-/* ----- END RESET -----  */
-
+/* ---------------------------  */
 /* ---- CUSTOM PROPERTIES ----  */
+/* ---------------------------  */
 
 :root {
   --clr-main: #435;
@@ -109,9 +111,10 @@ select {
   --mb-sm: 0.6rem;
 }
 
-/* ----- STYLES -----  */
+/* ---------------------------  */
+/* -------- UTILITIES --------  */
+/* ---------------------------  */
 
-/* Utilities  */
 .centered {
   text-align: center;
 }
@@ -125,7 +128,9 @@ select {
   color: var(--clr-accent-light);
 }
 
-/* Global */
+/* ---------------------------  */
+/* --------- GLOBAL ----------  */
+/* ---------------------------  */
 
 html {
   background-color: var(--clr-accent);
@@ -135,6 +140,28 @@ body {
   font-family: 'Montserrat', sans-serif;
   user-select: none;
 }
+
+main {
+  margin-top: 50px;
+  padding: 2rem;
+}
+
+h1,
+h2 {
+  color: var(--text-color);
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--mb-sm);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.63);
+}
+
+/* ---------------------------  */
+/* ------- COMPONENTS --------  */
+/* ---------------------------  */
+
+/* buttons  */
 
 .main-button {
   font-size: 0.8rem;
@@ -180,7 +207,30 @@ body {
   box-shadow: 1px 1px 0 0 var(--clr-main);
 }
 
-/* Navbar  */
+/* panels  */
+
+.panel {
+  border: var(--bd-lg) solid var(--clr-main);
+  border-radius: var(--base-radius);
+  padding: 1.5rem;
+  background-color: var(--clr-light);
+  margin-bottom: var(--mb-lg);
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  color: var(--clr-main);
+}
+
+.panel-header {
+  color: var(--clr-main);
+  margin-bottom: var(--mb-md);
+}
+
+/* ---------------------------  */
+/* -------- SECTIONS ---------  */
+/* ---------------------------  */
+
+/* ----- NAVBAR ----- */
 
 nav {
   position: fixed;
@@ -212,7 +262,7 @@ nav {
   margin-bottom: -3px;
 }
 
-.title {
+nav .title {
   font-size: 1.5rem;
   color: var(--clr-complementary);
   text-shadow: 2px 2px 1px black;
@@ -234,35 +284,30 @@ nav {
   color: var(--clr-complementary);
 }
 
-/* End Navbar  */
+/* ----- UTILITY BUTTONS BAR ----- */
 
-/* Main Page  */
-
-main {
-  margin-top: 50px;
-  padding: 2rem;
+.utility-buttons {
+  margin-bottom: var(--mb-lg);
+  background: var(--clr-light);
+  padding: 20px 40px;
+  border-radius: var(--base-radius);
+  border: 10px solid var(--clr-main);
+  display: flex;
+  gap: 20px;
 }
 
-h1,
-h2 {
-  color: var(--text-color);
+.utility-buttons button {
+  box-shadow: 1px 1px 1px var(--clr-accent);
+  border: 1px solid var(--clr-accent-light);
 }
 
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: var(--mb-sm);
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.63);
+.utility-buttons button:active {
+  box-shadow: 2px 2px 1px var(--clr-accent);
 }
 
-/* End Main Page   */
+/* ----- MAIN COLOR BAR ----- */
 
-/* Main Color Box  */
-
-.description {
-  margin-bottom: var(--mb-sm);
-}
-
-.main-color-box {
+.main-color-bar {
   width: 100%;
   height: 100%;
   margin-bottom: var(--mb-lg);
@@ -277,7 +322,7 @@ h2 {
   overflow: hidden;
 }
 
-.input-wrapper {
+.main-color-bar .input-wrapper {
   flex: 0 1 1fr;
   display: flex;
   background: white;
@@ -286,7 +331,7 @@ h2 {
   align-items: center;
 }
 
-.input-wrapper input {
+.main-color-bar .input-wrapper input {
   display: inline-block;
   padding-inline: 6px;
   flex: 0 1 1fr;
@@ -295,61 +340,27 @@ h2 {
   border: 0;
 }
 
-.input-wrapper input:invalid + button {
+.main-color-bar .input-wrapper input:invalid + button {
   opacity: 0.25;
   pointer-events: none;
 }
 
-.input-wrapper input:valid + button {
+.main-color-bar .input-wrapper input:valid + button {
   cursor: pointer;
 }
 
-.input-wrapper button {
+.main-color-bar .input-wrapper button {
   padding: 3px;
   border: 0;
   background: transparent;
   color: var(--clr-accent-light);
 }
 
-.input-wrapper button:hover {
+.main-color-bar .input-wrapper button:hover {
   color: var(--clr-accent);
 }
 
-/* End Main Color Box   */
-
-/* Pallette Pane  */
-
-.pallete-pane {
-  border: var(--bd-lg) solid var(--clr-main);
-  border-radius: var(--base-radius);
-  padding: 1.5rem;
-  background-color: var(--clr-light);
-  margin-bottom: var(--mb-lg);
-  height: 100%;
-  max-height: 100%;
-  overflow: hidden;
-  color: var(--clr-main);
-}
-
-.pallete-pane-header {
-  color: var(--clr-main);
-  margin-bottom: var(--mb-md);
-}
-
-.pallete-pane-slots {
-  display: flex;
-  justify-content: center;
-  gap: 1.75rem;
-}
-
-/* color slots  */
-
-.slot-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+/* ----- COLOR PALLETTE PANEL ----- */
 
 /* slot labels  */
 
@@ -376,6 +387,21 @@ h2 {
 
 .label.icon {
   color: var(--clr-accent);
+}
+
+/* color slots  */
+
+.pallete-pane-slots {
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+.slot-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* individual slot  */
@@ -415,13 +441,13 @@ h2 {
   margin: 0;
 }
 
-.control-field {
+.color-controls .control-field {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.control-field label {
+.color-controls .control-field label {
   color: var(--clr-main);
   font-size: 0.8rem;
   font-weight: 900;
@@ -757,21 +783,7 @@ h2 {
   display: none;
 }
 
-/* Mini Slots Panel  */
-
-.mini-slots {
-  border: var(--bd-lg) solid var(--clr-main);
-  background-color: var(--clr-light);
-  padding: 1.5rem;
-  border-radius: var(--base-radius);
-  margin-bottom: var(--mb-lg);
-  color: var(--clr-main);
-}
-
-.mini-slots-header {
-  margin-bottom: var(--mb-md);
-  color: var(--clr-main);
-}
+/* ----- MINI SLOTS PANEL ----- */
 
 .mini-slots-slots {
   display: grid;
@@ -801,49 +813,113 @@ h2 {
   outline-offset: 3px;
 }
 
-/* Utility buttons bar  */
+/* ----- SAVED PALETTES PANEL ----- */
 
-.utility-buttons {
-  margin-bottom: var(--mb-lg);
-  background: var(--clr-light);
-  padding: 20px 40px;
-  border-radius: var(--base-radius);
-  border: 10px solid var(--clr-main);
+.palletes-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 1rem;
+}
+
+.saved-pallete {
+  border: 1px solid var(--clr-main);
+  padding: 0.5rem;
+  background-color: var(--clr-complementary);
+  transition: all 0.23s ease-in-out;
+}
+
+.saved-pallete:hover {
+  cursor: pointer;
+  background-color: var(--clr-accent-light);
+  color: var(--text-color);
+  border-color: var(--clr-light);
+  box-shadow: 1px 1px 0 1px var(--clr-main), -1px -1px 0 1px var(--clr-main);
+}
+
+.saved-pallete-colors {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
 }
 
-.utility-buttons button {
-  box-shadow: 1px 1px 1px var(--clr-accent);
-  border: 1px solid var(--clr-accent-light);
+.saved-pallete-color {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
 }
 
-.utility-buttons button:active {
-  box-shadow: 2px 2px 1px var(--clr-accent);
-}
+/* ---------------------------  */
+/* --------- MODALS ----------  */
+/* ---------------------------  */
 
-/* Instructions  */
+/* ----- INSTRUCTIONS ----- */
 
-.modal-container.instructions {
+.instructions {
   margin: 0;
   color: var(--clr-complementary);
   background: var(--clr-accent);
   font-family: 'JetBrains Mono', monospace;
-}
-
-.instructions {
   position: absolute;
 }
 
 .instructions p {
   text-align: left;
-  padding: 15px 30px;
+  padding: 10px 30px;
   margin: 0;
   font-size: 1rem;
   font-weight: 500;
 }
 
-/* Modal */
+/* ----- EXPORT CSS ----- */
+
+.export-modal-buttons button {
+  margin-right: 2px;
+}
+
+.code {
+  border: 1px solid var(--clr-main);
+  text-align: left;
+  padding: 1rem;
+  background-color: var(--clr-main);
+  margin-top: 1.5rem;
+  -webkit-user-select: all; /* for Safari */
+  user-select: all;
+  cursor: pointer;
+}
+
+.code p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4rem;
+}
+
+.code-info {
+  text-align: center;
+  color: var(--clr-light);
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+.export-modal-footer {
+  justify-self: start;
+  align-content: center;
+}
+
+/* ----- SAVE MODAL ----- */
+
+.save-input {
+  margin: var(--mb-lg);
+}
+
+.invalid {
+  outline: var(--clr-accent-light) solid 5px;
+}
+
+.save-modal-footer button {
+  margin-right: 2px;
+}
+
+/* ----- MODALS COMMON ----- */
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -873,7 +949,6 @@ h2 {
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header {
@@ -882,7 +957,7 @@ h2 {
 
 .modal-header h3 {
   margin-top: 0;
-  color: var(--clr-complementary);
+  color: var(--text-color);
 }
 
 .modal-body {
@@ -890,65 +965,25 @@ h2 {
   text-align: center;
 }
 
-.modal-buttons .generate-color,
-.modal-footer .generate-color {
-  text-align: center;
+.footer-msg {
+  font-size: 0.9rem;
   color: var(--text-color);
-  padding: 0.5rem 1rem;
-  margin-right: 1px;
-}
-
-.pre {
-  border: 1px solid var(--clr-main);
-  text-align: left;
-  padding: 1rem;
-  background-color: var(--clr-main);
-  margin-top: 1.5rem;
-  -webkit-user-select: all; /* for Safari */
-  user-select: all;
-  cursor: pointer;
-}
-
-.pre p {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  line-height: 1.4rem;
-}
-
-.msg {
-  font-size: 1.1rem;
-  color: var(--clr-light);
   margin-left: 1rem;
 }
 
-.msg > * {
-  font-size: 1.3rem;
+.footer-msg > * {
+  font-size: 1.5rem;
   margin-right: 0.4rem;
-  color: var(--clr-light);
+  color: var(--clr-complementary);
+  font-weight: 900;
 }
 
-.pre-info {
-  text-align: center;
-  color: var(--clr-light);
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-}
-
-.invalid {
-  outline: var(--clr-main) solid 3px;
-}
-
-#cancel-btn {
-  background-color: var(--clr-accent);
-}
+/* Modal Transitions  */
 
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled
  * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
  */
 
 .modal-enter-active,
@@ -960,44 +995,4 @@ h2 {
 .modal-leave-to {
   opacity: 0;
   transform: translateX(-100%);
-}
-
-.saved-pallete-pane {
-  color: var(--text-color);
-  border: 10px solid var(--clr-light);
-  border-radius: 6px;
-  padding: 1rem;
-  background-color: var(--clr-accent-light);
-  color: var(--clr-main);
-}
-
-.palletes-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  gap: 1rem;
-}
-
-.saved-pallete {
-  border: 1px solid var(--clr-main);
-  padding: 0.5rem;
-  background-color: var(--clr-complementary);
-}
-
-.saved-pallete:hover {
-  cursor: pointer;
-  background-color: var(--clr-accent);
-  color: var(--text-color);
-  border-color: var(--clr-light);
-  box-shadow: 1px 1px 0 1px var(--clr-main), -1px -1px 0 1px var(--clr-main);
-}
-
-.saved-pallete-colors {
-  display: flex;
-  justify-content: space-between;
-}
-
-.saved-pallete-color {
-  width: 50px;
-  height: 50px;
-  border: 1px solid black;
 }

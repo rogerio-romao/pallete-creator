@@ -3,36 +3,39 @@
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
         <div class="modal-header">
-          <h3>Copy CSS <small>- choose color mode</small></h3>
+          <h3>Export CSS <small>- choose color mode</small></h3>
         </div>
 
         <div class="modal-body">
-          <div class="modal-buttons">
-            <button class="generate-color" @click="changeMode('rgb')">
+          <div class="export-modal-buttons">
+            <button class="secondary-button" @click="changeMode('rgb')">
               RGB
             </button>
-            <button class="generate-color" @click="changeMode('hex')">
+            <button class="secondary-button" @click="changeMode('hex')">
               HEX
             </button>
-            <button class="generate-color" @click="changeMode('hsl')">
+            <button class="secondary-button" @click="changeMode('hsl')">
               HSL
             </button>
-            <button class="generate-color" @click="changeSyntax">
+            <button class="secondary-button" @click="changeSyntax">
               {{ syntaxLabel }}
             </button>
           </div>
-          <div class="pre" @click="selectAll">
-            <p class="pre-info">Click here to copy</p>
-            <p v-for="(label, i) in labels" :key="i" class="code">
+          <div class="code" @click="selectAll">
+            <p class="code-info">Click here to copy</p>
+            <p v-for="(label, i) in labels" :key="i" class="pre">
               {{ syntax }}{{ label.toLowerCase() }}:
               {{ currentScheme[i][mode] }};
             </p>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button class="generate-color" @click="$emit('close')">OK</button>
-          <span class="msg" v-show="copied">
+        <div class="modal-footer export-modal-footer">
+          <button class="main-button" @click="$emit('close')">
+            <i class="fas fa-times"></i>
+            Close
+          </button>
+          <span class="footer-msg" v-show="copied">
             <i class="fas fa-check"></i>
             Code was copied.
           </span>

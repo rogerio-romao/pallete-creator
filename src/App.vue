@@ -120,13 +120,13 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 
 import MainNav from "./components/MainNav.vue";
-import MainColorBox from "./components/MainColorBox.vue";
+import MainColorBox from "./components/MainColorBar.vue";
 import ColorsPane from "./components/ColorsPane.vue";
 import UtilityButtons from "./components/UtilityButtons.vue";
 import MiniSlots from "./components/MiniSlots.vue";
 import SavedPalletes from "./components/SavedPalletes.vue";
 import Instructions from "./components/InstructionsModal.vue";
-import CopyModal from "./components/CopyModal.vue";
+import CopyModal from "./components/ExportCssModal.vue";
 import SaveModal from "./components/SaveModal.vue";
 
 const store = useStore();

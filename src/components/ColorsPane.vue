@@ -1,11 +1,11 @@
 <template>
   <!-- wrapper  -->
-  <section class="pallete-pane">
+  <section class="pallete-pane panel">
     <p v-if="isColorPaneCollapsed">Click the plus sign to reopen panel.</p>
     <div class="hide" v-if="!isColorPaneCollapsed">
       <!-- header  -->
-      <div class="pallete-pane-header">
-        <p class="description">
+      <div class="panel-header">
+        <p>
           Setting main color resets everything. You can edit color labels and
           adjust color properties with the controls.
         </p>
