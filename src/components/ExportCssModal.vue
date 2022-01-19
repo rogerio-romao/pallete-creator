@@ -1,12 +1,16 @@
 <template>
+  <!-- overlay  -->
   <div class="modal-mask">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
+        <!-- header  -->
         <div class="modal-header">
           <h3>Export CSS <small>- choose color mode</small></h3>
         </div>
 
+        <!-- body  -->
         <div class="modal-body">
+          <!-- buttons  -->
           <div class="export-modal-buttons">
             <button class="secondary-button" @click="changeMode('rgb')">
               RGB
@@ -21,6 +25,8 @@
               {{ syntaxLabel }}
             </button>
           </div>
+
+          <!-- textarea  -->
           <div class="code" @click="selectAll">
             <p class="code-info">Click here to copy</p>
             <p v-for="(label, i) in labels" :key="i" class="pre">
@@ -30,6 +36,7 @@
           </div>
         </div>
 
+        <!-- footer  -->
         <div class="modal-footer export-modal-footer">
           <button class="main-button" @click="$emit('close')">
             <i class="fas fa-times"></i>
@@ -58,6 +65,7 @@ const mode = ref("hsl");
 const syntax = ref("--clr-");
 const syntaxLabel = ref("SCSS");
 
+// SCSS / CSS syntax when exporting
 const changeSyntax = () => {
   if (syntax.value === "--clr-") {
     syntax.value = "$clr-";
@@ -68,9 +76,13 @@ const changeSyntax = () => {
   }
 };
 
+// RGB / HSL / HEX mode when exporting
+
 const changeMode = (newMode) => {
   mode.value = newMode;
 };
+
+// Copying the code to the clipboard
 
 const selectAll = () => {
   // copy selected text to clipboard
@@ -88,5 +100,3 @@ const selectAll = () => {
 };
 </script>
 
-<style>
-</style>

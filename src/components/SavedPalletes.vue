@@ -11,6 +11,7 @@
           on the color slots for editing or exporting the CSS.
         </p>
       </div>
+
       <!-- palettes container  -->
       <div class="palletes-wrapper">
         <!-- one palette  -->
@@ -27,6 +28,7 @@
               <i class="fas fa-trash-alt"></i>
             </div>
           </div>
+
           <!-- palette colors  -->
           <div class="saved-pallete-colors">
             <div
@@ -57,9 +59,13 @@ const props = defineProps({
 
 const palletes = computed(() => store.state.savedPallettes);
 
+// Puts the clicked on palette on the color slots for editing.
+
 const editPallette = (pallete) => {
   store.dispatch("SET_PALLETE_FROM_SAVED", pallete);
 };
+
+// Deletes the clicked on palette from the saved palletes.
 
 const deletePalette = (id) => {
   const confirm = window.confirm(
@@ -70,6 +76,3 @@ const deletePalette = (id) => {
   }
 };
 </script>
-
-<style>
-</style>

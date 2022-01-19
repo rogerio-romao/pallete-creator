@@ -12,6 +12,7 @@
           full pallete.
         </p>
       </div>
+
       <!-- all the slots  -->
       <div class="mini-slots-slots">
         <!-- one slot  -->
@@ -26,7 +27,7 @@
           @click="copyColor(color, i)"
         ></div>
       </div>
-      <!-- end all slots  -->
+
       <!-- actions  -->
       <div class="mini-slots-actions">
         <button
@@ -59,14 +60,15 @@ const colors = computed(() => store.getters.uniqueColors);
 const colorCopied = computed(() => store.state.copiedColor);
 const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
 
+// Puts the clicked on variation in memory for pasting.
+
 const copyColor = (color, index) => {
   store.dispatch("COPY_COLOR", { color, index });
 };
+
+// Picks a unique random color from the variations and sets it on the main palette pane.
 
 const setRandomScheme = () => {
   store.dispatch("SET_RANDOM_SCHEME");
 };
 </script>
-
-<style>
-</style>

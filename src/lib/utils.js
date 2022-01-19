@@ -1,9 +1,13 @@
+// Generate random HSL color
+
 export const generateHsl = () => {
   const h = Math.floor(Math.random() * 360)
   const s = Math.floor(Math.random() * 100)
   const l = Math.floor(Math.random() * 100)
   return `hsl(${h}, ${s}%, ${l}%)`
 }
+
+// Convert HSL color to RGB
 
 export const hslToRgb = hsl => {
   let [h, s, l] = hsl.match(/\d+/g).map(Number)
@@ -32,6 +36,8 @@ export const hslToRgb = hsl => {
     b * 255
   )})`
 }
+
+// Convert RGB to HSL
 
 export const rgbToHsl = rgb => {
   let [r, g, b] = rgb.match(/\d+/g).map(Number)
@@ -66,6 +72,8 @@ export const rgbToHsl = rgb => {
   )}%)`
 }
 
+// Convert RGB to HEX
+
 export const rgbToHex = rgb => {
   const [r, g, b] = rgb.match(/\d+/g).map(Number)
   let hex = [r.toString(16), g.toString(16), b.toString(16)]
@@ -77,6 +85,8 @@ export const rgbToHex = rgb => {
   return `#${hex.join('')}`
 }
 
+// Convert HEX to HSL
+
 export const hexToHsl = hex => {
   const r = parseInt(hex.substring(0, 2), 16)
   const g = parseInt(hex.substring(2, 4), 16)
@@ -85,35 +95,7 @@ export const hexToHsl = hex => {
   return hsl
 }
 
-export const hslToHex = hsl => {
-  const rgb = hslToRgb(hsl)
-  return rgbToHex(rgb)
-}
-
-export const getRandomColor = () => {
-  const color = generateHsl()
-  return rgbToHex(hslToRgb(color))
-}
-
-export const getRandomColors = (num = 1) => {
-  const colors = []
-  for (let i = 0; i < num; i++) {
-    colors.push(getRandomColor())
-  }
-  return colors
-}
-
-export const getRandomColorFromArray = colors => {
-  return colors[Math.floor(Math.random() * colors.length)]
-}
-
-export const getRandomColorsFromArray = (colors, num = 1) => {
-  const newColors = []
-  for (let i = 0; i < num; i++) {
-    newColors.push(getRandomColorFromArray(colors))
-  }
-  return newColors
-}
+// Create complementary colors
 
 export const generateComplement = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
@@ -131,6 +113,8 @@ export const generateComplement = hsl => {
   ]
 }
 
+// Create monochromatic colors
+
 export const generateMono = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
   return [
@@ -145,6 +129,8 @@ export const generateMono = hsl => {
   ]
 }
 
+// Create triad colors
+
 export const generateTriad = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
   const h2 = (h + 120) % 360
@@ -158,6 +144,8 @@ export const generateTriad = hsl => {
     `hsl(${h3}, ${s}%, ${l + 20}%)`
   ]
 }
+
+// Create analogous colors
 
 export const generateAnalogous = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
@@ -177,6 +165,8 @@ export const generateAnalogous = hsl => {
     `hsl(${h7}, ${s}%, ${l}%)`
   ]
 }
+
+// Create saturation variations
 
 export const generateSaturations = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)

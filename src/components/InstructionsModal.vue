@@ -1,12 +1,15 @@
 <template>
+  <!-- overlay  -->
   <div class="modal-mask">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container instructions">
         <div class="instructions-wrapper">
+          <!-- header  -->
           <div class="modal-header">
             <h3>Instructions</h3>
           </div>
 
+          <!-- body  -->
           <div class="modal-body">
             <p>
               First generate a main color by using the inputs or the random
@@ -28,6 +31,7 @@
             </p>
           </div>
 
+          <!-- footer  -->
           <div class="modal-footer">
             <button class="main-button" @click="$emit('close')">
               <i class="fas fa-times"></i>
@@ -41,8 +45,7 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "InstructionsModal",
+};
 </script>
-
-<style>
-</style>

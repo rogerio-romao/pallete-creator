@@ -1,25 +1,32 @@
 <template>
+  <!-- wrapper  -->
   <div class="utility-buttons">
+    <!-- individual buttons  -->
     <button class="secondary-button" @click="setCssVars">
       <i class="fas fa-vial"></i>
       Test this pallete
     </button>
+
     <button class="secondary-button" @click="resetSiteColors">
       <i class="far fa-window-restore"></i>
       Reset site colors
     </button>
+
     <button class="secondary-button" @click="setLightText">
       <i class="far fa-lightbulb"></i>
       Light Text
     </button>
+
     <button class="secondary-button" @click="setDarkText">
       <i class="fas fa-lightbulb"></i>
       Dark Text
     </button>
+
     <button class="secondary-button" @click="copyPallete">
       <i class="far fa-copy"></i>
       Export CSS
     </button>
+
     <button class="secondary-button" @click="savePallete">
       <i class="fas fa-save"></i>
       Save Pallete
@@ -35,10 +42,14 @@ const emit = defineEmits(["copyPallete", "savePallete"]);
 
 const store = useStore();
 
+// Text color to light
+
 const setLightText = () => {
   document.documentElement.style.setProperty("--text-color", "#faebd7");
   store.dispatch("SET_TEXT_COLOR", "light");
 };
+
+// Text color to dark
 
 const setDarkText = () => {
   document.documentElement.style.setProperty("--text-color", "#0f131a");
@@ -52,6 +63,8 @@ const copyPallete = () => {
 const savePallete = () => {
   emit("savePallete");
 };
+
+// Back to default colors
 
 const resetSiteColors = () => {
   const siteColors = store.state.siteColors;
@@ -67,6 +80,8 @@ const resetSiteColors = () => {
     siteColors.dark
   );
 };
+
+// Test this pallete on the site
 
 const setCssVars = () => {
   const main = computed(() => store.state.mainSlotColor.hex);
@@ -88,6 +103,3 @@ const setCssVars = () => {
   );
 };
 </script>
-
-<style>
-</style>

@@ -7,7 +7,6 @@
       Random
     </button>
 
-    <!-- INPUTS -->
     <!-- rgb input  -->
     <form @submit.prevent="submitRgb">
       <div class="input-wrapper">
@@ -23,6 +22,7 @@
         </button>
       </div>
     </form>
+
     <!-- hex input  -->
     <form @submit.prevent="submitHex">
       <div class="input-wrapper">
@@ -38,6 +38,7 @@
         </button>
       </div>
     </form>
+
     <!-- hsl input  -->
     <form @submit.prevent="submitHsl">
       <div class="input-wrapper">
@@ -53,6 +54,7 @@
         </button>
       </div>
     </form>
+
     <!-- color input  -->
     <form @submit.prevent="submitColor">
       <div class="input-wrapper">
@@ -66,16 +68,16 @@
         </button>
       </div>
     </form>
-    <!-- end INPUTS  -->
   </div>
-  <!-- end wrapper   -->
 </template>
 
 <script setup>
 import { useStore } from "vuex";
-import { hexToHsl, rgbToHsl } from "../lib/utils";
+import { generateHsl, hexToHsl, rgbToHsl } from "../lib/utils";
 
 const store = useStore();
+
+// Regex patterns for inputs validation
 
 const hexPattern = "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$";
 const rgbPattern =
@@ -83,12 +85,13 @@ const rgbPattern =
 const hslPattern =
   "\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b";
 
-const setMainColor = () => {
-  store.dispatch("SET_MAIN_COLOR");
-};
-
 /* --- maybe refactor these handlers --- */
 /* ---  vvvvvvvvvv     vvvvvvvvvvv   --- */
+
+const setMainColor = () => {
+  const hsl = generateHsl();
+  store.dispatch("SET_MAIN_COLOR", hsl);
+};
 
 const submitRgb = (e) => {
   const rgb = e.target.rgbInput.value;
@@ -107,8 +110,9 @@ const submitHex = (e) => {
 };
 
 const submitHsl = (e) => {
-  if (!e.target.hslInput.value) return;
-  const [h, s, l] = e.target.hslInput.value.split(",").map(Number);
+  const val = e.target.hslInput.value;
+  if (!val) return;
+  const [h, s, l] = val.split(",").map(Number);
   const hsl = `hsl(${h}, ${s}%, ${l}%)`;
   store.dispatch("SET_MAIN_COLOR", hsl);
   e.target.hslInput.value = "";

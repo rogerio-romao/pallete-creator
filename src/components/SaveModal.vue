@@ -1,12 +1,15 @@
 <template>
+  <!-- overlay  -->
   <div class="modal-mask">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
         <form @submit.prevent="savePallete">
+          <!-- header  -->
           <div class="modal-header">
             <h3>Save this pallete</h3>
           </div>
 
+          <!-- body  -->
           <div class="modal-body">
             <div :class="invalid ? 'invalid save-input' : 'save-input'">
               <input
@@ -18,6 +21,7 @@
             </div>
           </div>
 
+          <!-- footer  -->
           <div class="modal-footer save-modal-footer">
             <button class="main-button" @click="$emit('close')">
               <i class="fas fa-times"></i>

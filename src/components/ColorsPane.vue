@@ -11,6 +11,7 @@
           color properties with the controls. Scroll down for variations.
         </p>
       </div>
+
       <!-- individual slots  -->
       <div class="pallete-pane-slots">
         <template v-for="i in 5" :key="i">
@@ -31,6 +32,3 @@ const props = defineProps({
   },
 });
 </script>
-
-<style>
-</style>

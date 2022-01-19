@@ -15,6 +15,7 @@
           @input="updateColor"
         />
       </div>
+
       <!-- individual S slider  -->
       <div class="control-field">
         <label for="satControl">S</label>
@@ -28,6 +29,7 @@
           @input="updateColor"
         />
       </div>
+
       <!-- individual L slider  -->
       <div class="control-field">
         <label for="lumControl">L</label>
@@ -68,6 +70,8 @@ const hsl = computed(() => {
     : store.state.slotColors[`slot${props.slotNumber}`].hsl;
 });
 
+// Populating the sliders with the current color, if any
+
 watchEffect(() => {
   if (hsl.value) {
     h.value = hsl.value.match(/\d+/g).map(Number)[0];
@@ -79,6 +83,8 @@ watchEffect(() => {
     l.value = 0;
   }
 });
+
+// Updating the color in the store after changing the sliders
 
 const updateColor = () => {
   const newColor = `hsl(${h.value}, ${s.value}%, ${l.value}%)`;
