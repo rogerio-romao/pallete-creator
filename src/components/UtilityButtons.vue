@@ -4,7 +4,7 @@
     <!-- individual buttons  -->
     <button class="secondary-button" @click="setCssVars">
       <i class="fas fa-vial"></i>
-      Test this pallete
+      Test this palette
     </button>
 
     <button class="secondary-button" @click="resetSiteColors">
@@ -22,14 +22,14 @@
       Dark Text
     </button>
 
-    <button class="secondary-button" @click="copyPallete">
+    <button class="secondary-button" @click="copyPalette">
       <i class="far fa-copy"></i>
       Export CSS
     </button>
 
-    <button class="secondary-button" @click="savePallete">
+    <button class="secondary-button" @click="savePalette">
       <i class="fas fa-save"></i>
-      Save Pallete
+      Save Palette
     </button>
   </div>
 </template>
@@ -38,7 +38,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-const emit = defineEmits(["copyPallete", "savePallete"]);
+const emit = defineEmits(["copyPalette", "savePalette"]);
 
 const store = useStore();
 
@@ -56,12 +56,12 @@ const setDarkText = () => {
   store.dispatch("SET_TEXT_COLOR", "dark");
 };
 
-const copyPallete = () => {
-  emit("copyPallete");
+const copyPalette = () => {
+  emit("copyPalette");
 };
 
-const savePallete = () => {
-  emit("savePallete");
+const savePalette = () => {
+  emit("savePalette");
 };
 
 // Back to default colors
@@ -81,7 +81,7 @@ const resetSiteColors = () => {
   );
 };
 
-// Test this pallete on the site
+// Test this palette on the site
 
 const setCssVars = () => {
   const main = computed(() => store.state.mainSlotColor.hex);

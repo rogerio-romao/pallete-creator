@@ -1,6 +1,6 @@
 <template>
   <!-- wrapper  -->
-  <section class="pallete-pane panel">
+  <section class="palette-pane panel">
     <!-- panel collapsed message  -->
     <p v-if="isColorPaneCollapsed">Click the plus sign to reopen panel.</p>
     <div class="hide" v-if="!isColorPaneCollapsed">
@@ -13,7 +13,7 @@
       </div>
 
       <!-- individual slots  -->
-      <div class="pallete-pane-slots">
+      <div class="palette-pane-slots">
         <template v-for="i in 5" :key="i">
           <ColorSlot :slotNumber="i" />
         </template>

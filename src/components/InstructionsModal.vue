@@ -19,7 +19,7 @@
             <p>
               When you change the main slot, everything else resets and new
               variations are added. You can click on the variations to select
-              the color, then click on one of the pallette slots to paste it.
+              the color, then click on one of the palette slots to paste it.
             </p>
             <p>
               Or press the random scheme button to generate a new scheme from

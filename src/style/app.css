@@ -360,7 +360,7 @@ nav .title {
   color: var(--clr-accent);
 }
 
-/* ----- COLOR PALLETTE PANEL ----- */
+/* ----- COLOR PALETTE PANEL ----- */
 
 /* slot labels  */
 
@@ -391,7 +391,7 @@ nav .title {
 
 /* color slots  */
 
-.pallete-pane-slots {
+.palette-pane-slots {
   display: flex;
   justify-content: center;
   gap: 1.75rem;
@@ -477,7 +477,7 @@ nav .title {
 }
 
 .color-controls input[type='range']::-webkit-slider-runnable-track {
-  background: var(--clr-accent);
+  background: var(--clr-accent-light);
   content: '';
   height: 2px;
   pointer-events: none;
@@ -744,7 +744,7 @@ nav .title {
 
 .color-controls input[type='range']::-moz-range-progress {
   height: 2px;
-  background: var(--clr-accent);
+  background: var(--clr-accent-light);
   border: 0;
   margin-top: 0;
 }
@@ -815,20 +815,20 @@ nav .title {
 
 /* ----- SAVED PALETTES PANEL ----- */
 
-.palletes-wrapper {
+.palettes-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
   gap: 1rem;
 }
 
-.saved-pallete {
+.saved-palette {
   border: 1px solid var(--clr-main);
   padding: 0.5rem;
   background-color: var(--clr-complementary);
   transition: all 0.23s ease-in-out;
 }
 
-.saved-pallete:hover {
+.saved-palette:hover {
   cursor: pointer;
   background-color: var(--clr-accent-light);
   color: var(--text-color);
@@ -836,17 +836,17 @@ nav .title {
   box-shadow: 1px 1px 0 1px var(--clr-main), -1px -1px 0 1px var(--clr-main);
 }
 
-.saved-pallete-header {
+.saved-palette-header {
   display: flex;
   justify-content: space-between;
 }
 
-.saved-pallete-colors {
+.saved-palette-colors {
   display: flex;
   justify-content: space-between;
 }
 
-.saved-pallete-color {
+.saved-palette-color {
   width: 50px;
   height: 50px;
   border: 1px solid black;

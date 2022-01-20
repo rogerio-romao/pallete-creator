@@ -1,6 +1,6 @@
 <template>
   <!-- panel wrapper  -->
-  <section class="saved-pallete-pane panel">
+  <section class="saved-palette-pane panel">
     <!-- panel collapsed message  -->
     <p v-if="isSavedPaneCollapsed">Click the plus sign to reopen panel.</p>
     <div class="hide" v-if="!isSavedPaneCollapsed">
@@ -13,28 +13,28 @@
       </div>
 
       <!-- palettes container  -->
-      <div class="palletes-wrapper">
+      <div class="palettes-wrapper">
         <!-- one palette  -->
         <div
-          v-for="pallete in palletes"
-          :key="pallete.id"
-          class="saved-pallete"
-          @click="editPallette(pallete.scheme.slice(1))"
+          v-for="palette in palettes"
+          :key="palette.id"
+          class="saved-palette"
+          @click="editPalette(palette.scheme.slice(1))"
         >
           <!-- palette info  -->
-          <div class="saved-pallete-header">
-            <h4>{{ pallete.name }}</h4>
-            <div @click.stop="deletePalette(pallete.id)">
+          <div class="saved-palette-header">
+            <h4>{{ palette.name }}</h4>
+            <div @click.stop="deletePalette(palette.id)">
               <i class="fas fa-trash-alt"></i>
             </div>
           </div>
 
           <!-- palette colors  -->
-          <div class="saved-pallete-colors">
+          <div class="saved-palette-colors">
             <div
-              v-for="(color, i) in pallete.scheme.slice(1)"
+              v-for="(color, i) in palette.scheme.slice(1)"
               :key="i"
-              class="saved-pallete-color"
+              class="saved-palette-color"
               :style="{ backgroundColor: color.hsl }"
             ></div>
           </div>
@@ -57,22 +57,22 @@ const props = defineProps({
   },
 });
 
-const palletes = computed(() => store.state.savedPallettes);
+const palettes = computed(() => store.state.savedPalettes);
 
 // Puts the clicked on palette on the color slots for editing.
 
-const editPallette = (pallete) => {
-  store.dispatch("SET_PALLETE_FROM_SAVED", pallete);
+const editPalette = (palette) => {
+  store.dispatch("SET_PALETTE_FROM_SAVED", palette);
 };
 
 // Deletes the clicked on palette from the saved palletes.
 
 const deletePalette = (id) => {
   const confirm = window.confirm(
-    "Are you sure you want to delete this pallete? This action cannot be undone."
+    "Are you sure you want to delete this palette? This action cannot be undone."
   );
   if (confirm) {
-    store.dispatch("DELETE_PALLETE", id);
+    store.dispatch("DELETE_PALETTE", id);
   }
 };
 </script>

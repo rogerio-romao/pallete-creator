@@ -3,10 +3,10 @@
   <div class="modal-mask">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
-        <form @submit.prevent="savePallete">
+        <form @submit.prevent="savePalette">
           <!-- header  -->
           <div class="modal-header">
-            <h3>Save this pallete</h3>
+            <h3>Save this palette</h3>
           </div>
 
           <!-- body  -->
@@ -15,8 +15,8 @@
               <input
                 type="text"
                 :placeholder="placeholder"
-                v-model="palleteName"
-                id="savePalleteName"
+                v-model="paletteName"
+                id="savePaletteName"
               />
             </div>
           </div>
@@ -48,18 +48,18 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-const palleteName = ref("");
+const paletteName = ref("");
 const saved = ref(false);
-const placeholder = ref("Pallete name");
+const placeholder = ref("Palette name");
 const invalid = ref(false);
 
-const savePallete = () => {
-  if (palleteName.value) {
-    store.dispatch("SAVE_PALLETE", {
-      name: palleteName.value,
+const savePalette = () => {
+  if (paletteName.value) {
+    store.dispatch("SAVE_PALETTE", {
+      name: paletteName.value,
       scheme: store.getters.currentScheme,
     });
-    palleteName.value = "";
+    paletteName.value = "";
     saved.value = true;
     invalid.value = false;
   } else {

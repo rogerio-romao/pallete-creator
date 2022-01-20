@@ -9,7 +9,7 @@
         <p>
           Click any variation to copy it, then click on one of the main color
           slots above to paste it. Or click the randomize button to generate a
-          full pallete.
+          full palette.
         </p>
       </div>
 

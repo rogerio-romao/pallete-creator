@@ -15,15 +15,15 @@
     <div v-if="showUtilityButtons">
       <h2>Utilities</h2>
       <UtilityButtons
-        @copyPallete="showCopyModal = true"
-        @savePallete="showSaveModal = true"
+        @copyPalette="showCopyModal = true"
+        @savePalette="showSaveModal = true"
       />
     </div>
 
     <!-- color pallete pane  -->
     <div v-if="mainHSL">
       <h2>
-        Build your pallete
+        Build your palette
         <span
           class="collapse"
           title="Click to collapse"
@@ -69,9 +69,9 @@
     </div>
 
     <!-- saved palletes -->
-    <div v-if="savedPalletes">
+    <div v-if="savedLocalPalettes">
       <h2>
-        Saved Palletes
+        Saved Palettes
         <span
           class="collapse"
           title="Click to collapse"
@@ -89,7 +89,7 @@
           <i class="far fa-plus-square"></i>
         </span>
       </h2>
-      <SavedPalletes :isSavedPaneCollapsed="isSavedPaneCollapsed" />
+      <SavedPalettes :isSavedPaneCollapsed="isSavedPaneCollapsed" />
     </div>
   </main>
   <!-- END MAIN  -->
@@ -124,7 +124,7 @@ import MainColorBox from "./components/MainColorBar.vue";
 import ColorsPane from "./components/ColorsPane.vue";
 import UtilityButtons from "./components/UtilityButtons.vue";
 import MiniSlots from "./components/MiniSlots.vue";
-import SavedPalletes from "./components/SavedPalletes.vue";
+import SavedPalettes from "./components/SavedPalettes.vue";
 import Instructions from "./components/InstructionsModal.vue";
 import CopyModal from "./components/ExportCssModal.vue";
 import SaveModal from "./components/SaveModal.vue";
@@ -141,7 +141,7 @@ const isSavedPaneCollapsed = ref(false);
 
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);
-const savedPalletes = computed(() => store.state.savedPallettes.length);
+const savedLocalPalettes = computed(() => store.state.savedPalettes.length);
 const showUtilityButtons = computed(() => store.getters.fullSchemeSet);
 
 const collapseColorPane = () => {

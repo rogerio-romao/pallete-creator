@@ -55,7 +55,7 @@ const store = createStore({
       copiedColor: '',
       copiedColorIndex: null,
       labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
-      savedPallettes: JSON.parse(localStorage.getItem('pallettes')) || [],
+      savedPalettes: JSON.parse(localStorage.getItem('palettes')) || [],
       siteColors: {
         main: '#435',
         complementary: '#e3ced7',
@@ -126,8 +126,8 @@ const store = createStore({
     SET_TEXT_COLOR(state, colors) {
       state.textColor = colors
     },
-    SET_SAVED_PALLETES(state, pallettes) {
-      state.savedPallettes = pallettes
+    SET_SAVED_PALETTES(state, palettes) {
+      state.savedPalettes = palettes
     }
   },
   actions: {
@@ -187,11 +187,11 @@ const store = createStore({
         slot++
       })
     },
-    SAVE_PALLETE({ commit }, { name, scheme }) {
-      const pallettes = JSON.parse(localStorage.getItem('pallettes')) || []
-      pallettes.push({ name, scheme, id: pallettes.length })
-      commit('SET_SAVED_PALLETES', pallettes)
-      localStorage.setItem('pallettes', JSON.stringify(pallettes))
+    SAVE_PALETTE({ commit }, { name, scheme }) {
+      const palettes = JSON.parse(localStorage.getItem('palettes')) || []
+      palettes.push({ name, scheme, id: palettes.length })
+      commit('SET_SAVED_PALETTES', palettes)
+      localStorage.setItem('palettes', JSON.stringify(palettes))
     },
     UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
       const rgb = hslToRgb(hsl)
@@ -213,18 +213,18 @@ const store = createStore({
         })
       }
     },
-    SET_PALLETE_FROM_SAVED({ commit, dispatch }, pallette) {
-      const [main, ...others] = pallette
+    SET_PALETTE_FROM_SAVED({ commit, dispatch }, palette) {
+      const [main, ...others] = palette
       dispatch('SET_MAIN_COLOR', main.hsl)
       others.forEach((slot, index) => {
         dispatch('UPDATE_SLOT_COLOR', { slot: index + 2, hsl: slot.hsl })
       })
     },
-    DELETE_PALLETE({ commit, state, dispatch }, id) {
-      const pallettes = JSON.parse(localStorage.getItem('pallettes'))
-      const newPallettes = pallettes.filter(p => p.id !== id)
-      localStorage.setItem('pallettes', JSON.stringify(newPallettes))
-      commit('SET_SAVED_PALLETES', newPallettes)
+    DELETE_PALETTE({ commit, state, dispatch }, id) {
+      const palettes = JSON.parse(localStorage.getItem('palettes'))
+      const newPalettes = palettes.filter(p => p.id !== id)
+      localStorage.setItem('palettes', JSON.stringify(newPalettes))
+      commit('SET_SAVED_PALETTES', newPalettes)
     }
   },
   getters: {
