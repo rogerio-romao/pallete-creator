@@ -96,11 +96,11 @@ select {
 /* ---------------------------  */
 
 :root {
-  --clr-main: #435;
-  --clr-complementary: #e3ced7;
-  --clr-light: #f1f3f6;
-  --clr-accent: #1662a6;
-  --clr-accent-light: #50a5f2;
+  --clr-main: #1d1702;
+  --clr-complementary: #f2edd9;
+  --clr-light: #d9def2;
+  --clr-accent: #087d65;
+  --clr-accent-light: #997d0a;
   --text-color: #faebd7;
   --slot-size: 120px;
   --mini-slot-size: 50px;

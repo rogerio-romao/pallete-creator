@@ -43,11 +43,11 @@ export default function state() {
     labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
     savedPalettes: JSON.parse(localStorage.getItem('palettes')) || [],
     siteColors: {
-      main: '#435',
-      complementary: '#e3ced7',
-      light: '#f1f3f6',
-      accent: '#1662a6',
-      dark: '#50a5f2'
+      main: '#1d1702',
+      complementary: '#f2edd9',
+      light: '#d9def2',
+      accent: '#087d65',
+      dark: '#997d0a'
     }
   }
 }
