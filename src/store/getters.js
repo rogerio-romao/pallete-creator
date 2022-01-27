@@ -1,7 +1,10 @@
 const getters = {
+  // used for the mini slots panel
   uniqueColors: state => new Set(state.allColors.hsl),
+  // used to display the utility buttons
   fullSchemeSet: state =>
     Object.values(state.slotColors).every(color => color.hsl !== ''),
+  // used for the export css and save palette modals
   currentScheme: state => {
     return [
       {
