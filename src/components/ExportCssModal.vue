@@ -29,10 +29,12 @@
           <!-- textarea  -->
           <div class="code" @click="selectAll">
             <p class="code-info">Click here to copy</p>
-            <p v-for="(label, i) in labels" :key="i" class="pre">
-              {{ syntax }}{{ label.toLowerCase() }}:
-              {{ currentScheme[i][mode] }};
-            </p>
+            <div class="code-wrapper">
+              <p v-for="(label, i) in labels" :key="i" class="pre">
+                {{ syntax }}{{ label.toLowerCase() }}:
+                {{ currentScheme[i][mode] }};
+              </p>
+            </div>
           </div>
         </div>
 
@@ -86,7 +88,7 @@ const changeMode = (newMode) => {
 
 const selectAll = () => {
   // copy selected text to clipboard
-  const text = document.querySelector(".pre").innerText;
+  const text = document.querySelector(".code-wrapper").innerText;
   const el = document.createElement("textarea");
   el.value = text;
   el.setAttribute("readonly", "");
