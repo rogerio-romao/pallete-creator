@@ -7,53 +7,55 @@
       Random
     </button>
 
-    <!-- rgb input  -->
-    <form @submit.prevent="submitRgb">
-      <div class="input-wrapper">
-        <input
-          type="text"
-          placeholder="RGB - 255,255,255"
-          title="Enter 3 numbers between 0 and 255, separated by commas"
-          :pattern="rgbPattern"
-          id="rgbInput"
-        />
-        <button type="submit">
-          <i class="fas fa-chevron-circle-right"></i>
-        </button>
-      </div>
-    </form>
-
-    <!-- hex input  -->
-    <form @submit.prevent="submitHex">
-      <div class="input-wrapper">
-        <input
-          type="text"
-          placeholder="HEX # - ffffff"
-          title="Enter a hex color code, without the #"
-          :pattern="hexPattern"
-          id="hexInput"
-        />
-        <button type="submit">
-          <i class="fas fa-chevron-circle-right"></i>
-        </button>
-      </div>
-    </form>
-
-    <!-- hsl input  -->
-    <form @submit.prevent="submitHsl">
-      <div class="input-wrapper">
-        <input
-          type="text"
-          placeholder="HSL - 190,75,80"
-          title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
-          :pattern="hslPattern"
-          id="hslInput"
-        />
-        <button type="submit">
-          <i class="fas fa-chevron-circle-right"></i>
-        </button>
-      </div>
-    </form>
+    <div class="inputs-wrapper">
+      <!-- rgb input  -->
+      <form @submit.prevent="submitRgb">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="RGB - 255,255,255"
+            title="Enter 3 numbers between 0 and 255, separated by commas"
+            :pattern="rgbPattern"
+            id="rgbInput"
+          />
+          <button type="submit">
+            <i class="fas fa-chevron-circle-right"></i>
+          </button>
+        </div>
+      </form>
+  
+      <!-- hex input  -->
+      <form @submit.prevent="submitHex">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="HEX # - ffffff"
+            title="Enter a hex color code, without the #"
+            :pattern="hexPattern"
+            id="hexInput"
+          />
+          <button type="submit">
+            <i class="fas fa-chevron-circle-right"></i>
+          </button>
+        </div>
+      </form>
+  
+      <!-- hsl input  -->
+      <form @submit.prevent="submitHsl">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="HSL - 190,75,80"
+            title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
+            :pattern="hslPattern"
+            id="hslInput"
+          />
+          <button type="submit">
+            <i class="fas fa-chevron-circle-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
 
     <!-- color input  -->
     <form @submit.prevent="submitColor">

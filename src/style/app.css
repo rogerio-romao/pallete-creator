@@ -364,9 +364,19 @@ nav .title {
   overflow: hidden;
 }
 
-.main-color-bar .input-wrapper {
-  flex: 0 1 1fr;
+.main-color-bar .main-button {
+  min-width: fit-content;
+}
+
+.main-color-bar .inputs-wrapper {
   display: flex;
+  gap: 1.5rem;
+}
+
+.main-color-bar .input-wrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
   background: white;
   border-radius: 2px;
   padding-right: 3px;
@@ -374,9 +384,7 @@ nav .title {
 }
 
 .main-color-bar .input-wrapper input {
-  display: inline-block;
   padding-inline: 6px;
-  flex: 0 1 1fr;
   outline: none;
   background: transparent;
   border: 0;
@@ -408,6 +416,20 @@ nav .title {
 @media (max-width: 1024px) {
   .main-color-bar {
     flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .main-color-bar .main-button {
+    order: -2;
+  }
+  .main-color-bar .inputs-wrapper {
+    gap: 1rem;
+  }
+  .main-color-bar form:last-of-type {
+    order: -1;
+    flex: 1;
+  }
+  .main-color-bar form:last-of-type input {
+    width: 100%;
   }
 }
 
@@ -420,6 +442,9 @@ nav .title {
   .main-color-bar form,
   .main-color-bar form input {
     width: 100%;
+  }
+  .main-color-bar .inputs-wrapper {
+    flex-direction: column;
   }
 }
 
