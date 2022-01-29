@@ -371,6 +371,11 @@ nav .title {
 .main-color-bar .inputs-wrapper {
   display: flex;
   gap: 1.5rem;
+  width: 100%;
+}
+
+.main-color-bar .inputs-wrapper > form {
+  flex: 1;
 }
 
 .main-color-bar .input-wrapper {
@@ -388,6 +393,8 @@ nav .title {
   outline: none;
   background: transparent;
   border: 0;
+  width: 100%;
+  min-width: 50px;
 }
 
 .main-color-bar .input-wrapper input:invalid + button {
