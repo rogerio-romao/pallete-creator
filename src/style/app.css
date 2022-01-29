@@ -128,6 +128,10 @@ select {
   color: var(--clr-accent-light);
 }
 
+.description {
+  margin-bottom: var(--mb-sm);
+}
+
 /* ---------------------------  */
 /* --------- GLOBAL ----------  */
 /* ---------------------------  */
@@ -281,7 +285,7 @@ nav .title {
 }
 
 .nav-links ul li:hover {
-  color: var(--clr-complementary);
+  color: var(--clr-accent-light);
 }
 
 /* Media Queries  */
@@ -335,6 +339,7 @@ nav .title {
   border-radius: var(--base-radius);
   border: 10px solid var(--clr-main);
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -487,8 +492,9 @@ nav .title {
 /* color slots  */
 
 .palette-pane-slots {
-  display: flex;
+  display: grid;
   justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1.75rem;
 }
 
@@ -885,6 +891,7 @@ nav .title {
   grid-template-columns: repeat(auto-fill, var(--mini-slot-size));
   gap: 1.5rem;
   margin-bottom: var(--mb-lg);
+  justify-content: center;
 }
 
 .mini-slot {
@@ -912,7 +919,8 @@ nav .title {
 
 .palettes-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
+  grid-template-columns: repeat(auto-fill, min(300px, 100%));
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -945,6 +953,16 @@ nav .title {
   width: 50px;
   height: 50px;
   border: 1px solid black;
+}
+
+@media (max-width: 420px) {
+  .palettes-wrapper {
+    gap: 0.5rem;
+  }
+  .saved-palette-color {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 /* ---------------------------  */
