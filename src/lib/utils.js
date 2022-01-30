@@ -104,9 +104,9 @@ export const generateComplement = hsl => {
   const h4 = (h + 150) % 360
   return [
     `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h}, ${s}%, ${l - 30}%)`,
+    `hsl(${h}, ${s}%, ${Math.abs((l - 30) % 100)}%)`,
     `hsl(${h}, ${50}%, ${90}%)`,
-    `hsl(${h2}, ${s}%, ${l - 30}%)`,
+    `hsl(${h2}, ${s}%, ${Math.abs((l - 30) % 100)}%)`,
     `hsl(${h2}, ${50}%, ${90}%)`,
     `hsl(${h3}, ${s}%, ${l}%)`,
     `hsl(${h4}, ${s}%, ${l}%)`
@@ -138,8 +138,8 @@ export const generateTriad = hsl => {
   return [
     `hsl(${h2}, ${s}%, ${l}%)`,
     `hsl(${h3}, ${s}%, ${l}%)`,
-    `hsl(${h2}, ${s}%, ${l - 20}%)`,
-    `hsl(${h3}, ${s}%, ${l - 20}%)`,
+    `hsl(${h2}, ${s}%, ${Math.abs((l - 20) % 100)}%)`,
+    `hsl(${h3}, ${s}%, ${Math.abs((l - 20) % 100)}%)`,
     `hsl(${h2}, ${s}%, ${l + 20}%)`,
     `hsl(${h3}, ${s}%, ${l + 20}%)`
   ]
@@ -149,11 +149,11 @@ export const generateTriad = hsl => {
 
 export const generateAnalogous = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
-  const h2 = (h - 60) % 360
-  const h3 = (h - 30) % 360
+  const h2 = Math.abs((h - 60) % 360)
+  const h3 = Math.abs((h - 30) % 360)
   const h4 = (h + 30) % 360
   const h5 = (h + 60) % 360
-  const h6 = (h - 90) % 360
+  const h6 = Math.abs((h - 90) % 360)
   const h7 = (h + 90) % 360
 
   return [
@@ -170,13 +170,13 @@ export const generateAnalogous = hsl => {
 
 export const generateSaturations = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
-  const s2 = (s - 10) % 100
+  const s2 = Math.abs((s - 10) % 100)
   const s3 = (s + 10) % 100
-  const s4 = (s - 20) % 100
+  const s4 = Math.abs((s - 20) % 100)
   const s5 = (s + 20) % 100
-  const s6 = (s - 30) % 100
+  const s6 = Math.abs((s - 30) % 100)
   const s7 = (s + 30) % 100
-  const s8 = (s - 40) % 100
+  const s8 = Math.abs((s - 40) % 100)
   const s9 = (s + 40) % 100
   return [
     `hsl(${h}, ${s2}%, ${l}%)`,
