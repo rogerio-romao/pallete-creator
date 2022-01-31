@@ -1,6 +1,6 @@
 <template>
   <!-- NAV  -->
-  <MainNav @openInstructionsModal="showInstructionsModal = true" />
+  <MainNav @openInstructionsModal="showInstructionsModal = true" @openSignInModal="showSignInModal = true" />
 
   <!-- MAIN  -->
   <main>
@@ -113,6 +113,11 @@
   <transition name="modal">
     <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
   </transition>
+
+  <!-- signin modal -->
+  <transition name="modal">
+    <SignInModal v-if="showSignInModal" @close="showSignInModal = false" />
+  </transition>
 </template>
 
 <script setup>
@@ -128,12 +133,14 @@ import SavedPalettes from "./components/SavedPalettes.vue";
 import Instructions from "./components/InstructionsModal.vue";
 import CopyModal from "./components/ExportCssModal.vue";
 import SaveModal from "./components/SaveModal.vue";
+import SignInModal from "./components/SignInModal.vue";
 
 const store = useStore();
 
 const showCopyModal = ref(false);
 const showSaveModal = ref(false);
 const showInstructionsModal = ref(false);
+const showSignInModal = ref(false);
 
 const isColorPaneCollapsed = ref(false);
 const isMiniPaneCollapsed = ref(false);

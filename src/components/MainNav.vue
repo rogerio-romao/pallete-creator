@@ -13,7 +13,7 @@
       <div class="nav-links">
         <ul>
           <li @click="emit('openInstructionsModal')">Instructions</li>
-          <li>Login</li>
+          <li @click="emit('openSignInModal')">Sign In</li>
         </ul>
       </div>
     </nav>
@@ -21,5 +21,5 @@
 </template>
 
 <script setup>
-const emit = defineEmits(["openInstructionsModal"]);
+const emit = defineEmits(["openInstructionsModal", "openSignInModal"]);
 </script>
