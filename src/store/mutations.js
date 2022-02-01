@@ -70,6 +70,11 @@ const mutations = {
   // set the text color
   SET_TEXT_COLOR(state, colors) {
     state.textColor = colors
+  },
+  // set user state
+  SET_USER(state, email) {
+    state.isUserSignedIn = email || false
+    state.userEmail = email || ''
   }
 }
 

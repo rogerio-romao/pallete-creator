@@ -32,19 +32,19 @@
                 />
               </label>
               <br>
-              <label for="confirm" v-if="mode === 'register'">
+              <label for="confirm" v-if="mode === 'signup'">
                 Confirm Password
                 <input
                   type="password"
                   placeholder="Confirm password"
-                  v-model="confirm"
+                  v-model="passwordConfirm"
                   id="confirm"
                 />
               </label>
             </div>
             <div v-if="mode === 'signin'">
               Don't have an account yet?
-              <span @click="mode = 'register'">Register</span>
+              <span @click="mode = 'signup'">Sign Up</span>
             </div>
             <div v-else>
               Already have an account?
@@ -62,9 +62,9 @@
               <i class="fas fa-save"></i>
               Sign In
             </button>
-            <button class="main-button" @click="register" v-else>
+            <button class="main-button" @click="signup" v-else>
               <i class="fas fa-save"></i>
-              Register
+              Sign Up
             </button>
           </div>
       </div>
@@ -74,6 +74,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+
+const auth = getAuth()
 
 const email = ref("");
 const password = ref("");
@@ -82,12 +85,46 @@ const passwordConfirm = ref("");
 const mode = ref("signin");
 
 const signIn = () => {
-  const user = {
+  const userData = {
     email: email.value,
     password: password.value
   };
-  console.log(user);
+  console.log(userData);
+  // validate user and clean up TODO
+  signInWithEmailAndPassword(auth, userData.email, userData.password)
+  .then(userCredential => {
+    const user = userCredential.user
+    console.log('User signed in', user)
+    $emit('close')
+  })
+  .catch(error => {
+    const errorCode = error.code
+    const errorMessage = error.message
+    console.error('Error signing in', errorCode, errorMessage)
+  })
 }
+
+const signup = () => {
+  const userData = {
+    email: email.value,
+    password: password.value,
+    passwordConfirm: passwordConfirm.value
+  };
+  console.log(userData);
+  // validate user and clean up TODO
+  createUserWithEmailAndPassword(auth, userData.email, userData.password)
+  .then(userCredential => {
+    const user = userCredential.user
+    console.log('User signed up', user)
+    $emit('close')
+  })
+  .catch(error => {
+    const errorCode = error.code
+    const errorMessage = error.message
+    console.error('Error signing up', errorCode, errorMessage)
+  })
+}
+
 </script>
 
 <style>

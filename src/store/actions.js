@@ -105,6 +105,14 @@ const actions = {
       })
     }
   },
+  // login user
+  SIGNIN_USER({ commit }, email) {
+    commit('SET_USER', email)
+  },
+  // logout user
+  SIGNOUT_USER({ commit }) {
+    commit('SET_USER', null)
+  },
   // updates the label of a specific slot
   UPDATE_LABEL({ commit }, { label, slotNumber }) {
     label = label[0].toUpperCase() + label.slice(1)

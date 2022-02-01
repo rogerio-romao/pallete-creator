@@ -58,6 +58,8 @@ export default function state() {
       light: '#d9def2',
       accent: '#087d65',
       dark: '#997d0a'
-    }
+    },
+    isUserSignedIn: false,
+    userEmail: ''
   }
 }
