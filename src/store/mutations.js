@@ -73,7 +73,7 @@ const mutations = {
   },
   // set user state
   SET_USER(state, email) {
-    state.isUserSignedIn = email || false
+    state.isUserSignedIn = email ? true : false
     state.userEmail = email || ''
   }
 }

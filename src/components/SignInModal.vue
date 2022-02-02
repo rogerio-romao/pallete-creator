@@ -17,7 +17,7 @@
                 <input
                   type="email"
                   placeholder="Enter email"
-                  v-model="email"
+                  v-model.trim="email"
                   id="email"
                 />
               </label>
@@ -27,7 +27,7 @@
                 <input
                   type="password"
                   placeholder="Enter password"
-                  v-model="password"
+                  v-model.trim="password"
                   id="password"
                 />
               </label>
@@ -37,7 +37,7 @@
                 <input
                   type="password"
                   placeholder="Confirm password"
-                  v-model="passwordConfirm"
+                  v-model.trim="passwordConfirm"
                   id="confirm"
                 />
               </label>
@@ -74,9 +74,24 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useStore } from 'vuex'
+import { app } from '../lib/firebase';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
+import xss from 'xss'
 
+const store = useStore()
 const auth = getAuth()
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    const email = user.email
+    store.dispatch('SIGNIN_USER', email)
+  } else {
+    store.dispatch('SIGNOUT_USER')
+  }
+})
+
+const emit = defineEmits(['close'])
 
 const email = ref("");
 const password = ref("");
@@ -86,8 +101,8 @@ const mode = ref("signin");
 
 const signIn = () => {
   const userData = {
-    email: email.value,
-    password: password.value
+    email: xss(email.value),
+    password: xss(password.value)
   };
   console.log(userData);
   // validate user and clean up TODO
@@ -95,7 +110,7 @@ const signIn = () => {
   .then(userCredential => {
     const user = userCredential.user
     console.log('User signed in', user)
-    $emit('close')
+    emit('close')
   })
   .catch(error => {
     const errorCode = error.code
@@ -106,17 +121,21 @@ const signIn = () => {
 
 const signup = () => {
   const userData = {
-    email: email.value,
-    password: password.value,
-    passwordConfirm: passwordConfirm.value
+    email: xss(email.value),
+    password: xss(password.value),
+    passwordConfirm: xss(passwordConfirm.value)
   };
   console.log(userData);
   // validate user and clean up TODO
+  if (userData.password !== userData.passwordConfirm) {
+    console.error('Passwords do not match')
+    return
+  }
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
   .then(userCredential => {
     const user = userCredential.user
     console.log('User signed up', user)
-    $emit('close')
+    emit('close')
   })
   .catch(error => {
     const errorCode = error.code

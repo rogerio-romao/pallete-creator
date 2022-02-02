@@ -16,7 +16,8 @@
     "@fortawesome/vue-fontawesome": "^2.0.6",
     "firebase": "^9.6.5",
     "vue": "^3.2.16",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "xss": "^1.0.10"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.3",

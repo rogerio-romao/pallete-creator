@@ -13,7 +13,8 @@
       <div class="nav-links">
         <ul>
           <li @click="emit('openInstructionsModal')">Instructions</li>
-          <li @click="emit('openSignInModal')">Sign In</li>
+          <li v-if="!isSignedIn" @click="emit('openSignInModal')">Sign In</li>
+          <li v-else @click="logout">Sign Out</li>
         </ul>
       </div>
     </nav>
@@ -21,5 +22,18 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex'
+import { app } from '../lib/firebase';
+
 const emit = defineEmits(["openInstructionsModal", "openSignInModal"]);
+
+const store = useStore()
+
+const isSignedIn = computed(() => store.state.isUserSignedIn)
+
+// TODO fix logout
+const logout = () => {
+  app.auth().signOut()
+}
 </script>
