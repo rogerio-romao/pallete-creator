@@ -25,15 +25,20 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex'
 import { app } from '../lib/firebase';
+import { getAuth, signOut } from "firebase/auth";
 
 const emit = defineEmits(["openInstructionsModal", "openSignInModal"]);
 
 const store = useStore()
+const auth = getAuth();
 
 const isSignedIn = computed(() => store.state.isUserSignedIn)
 
-// TODO fix logout
 const logout = () => {
-  app.auth().signOut()
+  signOut(auth).then(() => {
+    store.dispatch('SIGNOUT_USER')
+}).catch((error) => {
+    console.log(error)
+});
 }
 </script>
