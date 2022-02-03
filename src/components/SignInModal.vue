@@ -26,6 +26,7 @@
                 Password
                 <input
                   type="password"
+                  minlength="6"
                   placeholder="Enter password"
                   v-model.trim="password"
                   id="password"
@@ -36,6 +37,7 @@
                 Confirm Password
                 <input
                   type="password"
+                  minlength="6"
                   placeholder="Confirm password"
                   v-model.trim="passwordConfirm"
                   id="confirm"
@@ -49,6 +51,9 @@
             <div v-else>
               Already have an account?
               <span @click="mode = 'signin'">Sign In</span>
+            </div>
+            <div class="error-msg" v-if="errorMsg">
+              {{ errorMsg }}
             </div>
           </div>
 
@@ -96,6 +101,7 @@ const emit = defineEmits(['close'])
 const email = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
+const errorMsg = ref("");
 
 const mode = ref("signin");
 
@@ -104,18 +110,21 @@ const signIn = () => {
     email: xss(email.value),
     password: xss(password.value)
   };
-  console.log(userData);
+
+  if (!userData.email.match(emailRegex)) {
+    errorMsg.value = "Please enter a valid email address."
+    return
+  }
+
   // validate user and clean up TODO
   signInWithEmailAndPassword(auth, userData.email, userData.password)
   .then(userCredential => {
     const user = userCredential.user
-    console.log('User signed in', user)
     emit('close')
   })
   .catch(error => {
-    const errorCode = error.code
     const errorMessage = error.message
-    console.error('Error signing in', errorCode, errorMessage)
+    errorMsg.value = errorMessage.includes('user-not-found') ? 'User not found, try again or register first' : errorMessage.includes('wrong-password') ? 'Invalid credentials' : 'Something went wrong, try again'
   })
 }
 
@@ -125,12 +134,20 @@ const signup = () => {
     password: xss(password.value),
     passwordConfirm: xss(passwordConfirm.value)
   };
-  console.log(userData);
-  // validate user and clean up TODO
-  if (userData.password !== userData.passwordConfirm) {
-    console.error('Passwords do not match')
+  
+  if (!userData.email.match(emailRegex)) {
+    errorMsg.value = "Please enter a valid email address."
     return
   }
+  if (userData.password !== userData.passwordConfirm) {
+    errorMsg.value = 'Passwords do not match'
+    return
+  }
+  if (userData.password.length < 6) {
+    errorMsg.value = 'Password must be at least 6 characters'
+    return
+  }
+
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
   .then(userCredential => {
     const user = userCredential.user
@@ -138,11 +155,12 @@ const signup = () => {
     emit('close')
   })
   .catch(error => {
-    const errorCode = error.code
     const errorMessage = error.message
-    console.error('Error signing up', errorCode, errorMessage)
+    errorMsg.value = errorMessage.includes('email-already-in-use') ? 'Email already in use' : errorMessage.includes('invalid-email') ? 'Invalid email' : 'Something went wrong, try again'
   })
 }
+
+const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
 </script>
 
