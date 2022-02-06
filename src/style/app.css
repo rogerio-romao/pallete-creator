@@ -976,7 +976,6 @@ nav .title {
   margin: 0;
   color: var(--clr-complementary);
   background: var(--clr-accent);
-  font-family: 'JetBrains Mono', monospace;
   position: absolute;
 }
 
@@ -989,10 +988,6 @@ nav .title {
 }
 
 /* ----- SIGN IN ----- */
-
-.sign-in {
-  font-family: 'JetBrains Mono', monospace;
-}
 
 .sign-in .inputs-wrapper {
   padding: 1.3rem;
@@ -1043,7 +1038,6 @@ nav .title {
 }
 
 .code p {
-  font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
   line-height: 1.4rem;
 }
@@ -1105,6 +1099,7 @@ nav .title {
   color: var(--text-color);
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .modal-header {
