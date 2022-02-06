@@ -105,6 +105,7 @@ select {
   --slot-size: 120px;
   --mini-slot-size: 50px;
   --base-radius: 0.5rem;
+  --sm-radius: 0.2rem;
   --bd-lg: 1rem;
   --mb-lg: 2rem;
   --mb-md: 1.2rem;
@@ -987,6 +988,43 @@ nav .title {
   font-weight: 500;
 }
 
+/* ----- SIGN IN ----- */
+
+.sign-in {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.sign-in .inputs-wrapper {
+  padding: 1.3rem;
+}
+
+.sign-in .input-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: var(--mb-sm);
+}
+
+.sign-in .input-wrapper input {
+  padding: 0.2rem;
+}
+
+.sign-in .input-wrapper input::placeholder {
+  font-size: 0.9rem;
+}
+
+.sign-in .switch-mode-msg {
+  font-size: 0.9rem;
+}
+
+.sign-in .switch-mode-msg span {
+  cursor: pointer;
+  background-color: var(--clr-main);
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--sm-radius);
+}
+
 /* ----- EXPORT CSS ----- */
 
 .export-modal-buttons button {
@@ -1070,10 +1108,12 @@ nav .title {
 }
 
 .modal-header {
+  width: 100%;
   border-bottom: 1px solid var(--clr-main);
 }
 
 .modal-header h3 {
+  font-size: 1.3rem;
   margin-top: 0;
   color: var(--text-color);
 }
