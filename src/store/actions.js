@@ -8,6 +8,8 @@ import {
   generateAnalogous,
   generateSaturations
 } from '../lib/utils'
+import { app, db } from '../lib/firebase'
+import { collection, addDoc } from 'firebase/firestore'
 
 const actions = {
   // trigerred when user clicks on a mini slot for copying
@@ -49,6 +51,18 @@ const actions = {
     palettes.push({ name, scheme, id: palettes.length })
     commit('SET_SAVED_PALETTES', palettes)
     localStorage.setItem('palettes', JSON.stringify(palettes))
+  },
+  async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
+    try {
+      const docRef = await addDoc(collection(db, 'palettes'), {
+        user: state.userEmail,
+        name,
+        scheme
+      })
+      console.log('Document written with ID: ', docRef.id)
+    } catch (e) {
+      console.error('Error adding document: ', e)
+    }
   },
   // resets everything, sets the main color and generates variations
   SET_MAIN_COLOR({ commit, dispatch }, color) {

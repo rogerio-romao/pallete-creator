@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -52,13 +52,21 @@ const paletteName = ref("");
 const saved = ref(false);
 const placeholder = ref("Palette name");
 const invalid = ref(false);
+const isUserSignedIn = computed(() => store.state.isUserSignedIn);
 
 const savePalette = () => {
   if (paletteName.value) {
-    store.dispatch("SAVE_PALETTE", {
-      name: paletteName.value,
-      scheme: store.getters.currentScheme,
-    });
+    if (isUserSignedIn.value) {
+      store.dispatch("SAVE_TO_CLOUD", {
+        name: paletteName.value,
+        scheme: store.getters.currentScheme,
+      });
+    } else {
+      store.dispatch("SAVE_PALETTE", {
+        name: paletteName.value,
+        scheme: store.getters.currentScheme,
+      });
+    }
     paletteName.value = "";
     saved.value = true;
     invalid.value = false;
