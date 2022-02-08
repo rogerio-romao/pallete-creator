@@ -9,7 +9,7 @@ import {
   generateSaturations
 } from '../lib/utils'
 import { app, db } from '../lib/firebase'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs } from 'firebase/firestore'
 
 const actions = {
   // trigerred when user clicks on a mini slot for copying
@@ -33,6 +33,15 @@ const actions = {
       commit('ADD_COLOR', { hsl, rgb, hex })
     })
   },
+  async LOAD_PALETTES({ commit }) {
+    const querySnapshot = await getDocs(collection(db, 'palettes'))
+    const palettes = querySnapshot.docs.map(doc => {
+      const data = doc.data()
+      data.id = doc.id
+      return data
+    })
+    commit('SET_SAVED_PALETTES', palettes)
+  },
   // pastes the selected variation on the specific color slot
   PASTE_COLOR({ commit, state, dispatch }, slot) {
     if (!state.copiedColor) return
@@ -52,6 +61,7 @@ const actions = {
     commit('SET_SAVED_PALETTES', palettes)
     localStorage.setItem('palettes', JSON.stringify(palettes))
   },
+  // save to firebase
   async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
     try {
       const docRef = await addDoc(collection(db, 'palettes'), {
@@ -120,8 +130,9 @@ const actions = {
     }
   },
   // login user
-  SIGNIN_USER({ commit }, email) {
+  SIGNIN_USER({ commit, dispatch }, email) {
     commit('SET_USER', email)
+    dispatch('LOAD_PALETTES')
   },
   // logout user
   SIGNOUT_USER({ commit }) {
