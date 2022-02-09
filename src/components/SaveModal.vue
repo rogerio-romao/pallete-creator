@@ -23,11 +23,11 @@
 
           <!-- footer  -->
           <div class="modal-footer save-modal-footer">
-            <button class="main-button" @click="$emit('close')">
+            <button class="secondary-button" @click="$emit('close')">
               <i class="fas fa-times"></i>
               Close
             </button>
-            <button class="main-button" type="submit">
+            <button class="secondary-button" type="submit">
               <i class="fas fa-save"></i>
               Save
             </button>

@@ -292,7 +292,7 @@ nav .title {
 /* Media Queries  */
 
 /* small  */
-@media (max-width: 768px) {
+@media (min-width: 461px) and (max-width: 768px) {
   nav {
     padding: 1.5rem;
   }
@@ -426,7 +426,7 @@ nav .title {
 /* Media Queries  */
 
 /* medium  */
-@media (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1024px) {
   .main-color-bar {
     flex-wrap: wrap;
     gap: 1rem;
@@ -987,6 +987,22 @@ nav .title {
   font-weight: 500;
 }
 
+@media (max-width: 500px) {
+  .instructions p {
+    padding: 5px 5px;
+    font-size: 0.7rem;
+    font-weight: 400;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 900px) {
+  .instructions p {
+    padding: 5px 20px;
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+}
+
 /* ----- SIGN IN ----- */
 
 .sign-in .inputs-wrapper {
@@ -1018,6 +1034,26 @@ nav .title {
   background-color: var(--clr-main);
   padding: 0.2rem 0.4rem;
   border-radius: var(--sm-radius);
+  transition: color 0.2s;
+}
+
+.sign-in .switch-mode-msg span:hover {
+  color: var(--clr-accent);
+}
+
+.sign-in .error-msg {
+  color: var(--clr-main);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 460px) {
+  .sign-in .input-wrapper {
+    flex-direction: column;
+  }
+  .switch-mode-msg span {
+    display: block;
+  }
 }
 
 /* ----- EXPORT CSS ----- */
@@ -1066,6 +1102,7 @@ nav .title {
 
 .save-modal-footer button {
   margin-right: 2px;
+  padding: 4px 8px;
 }
 
 /* ----- MODALS COMMON ----- */
@@ -1092,7 +1129,7 @@ nav .title {
   place-items: center;
   width: 100vw;
   width: max-content;
-  max-width: 50%;
+  max-width: 55%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: var(--clr-accent);
@@ -1129,6 +1166,25 @@ nav .title {
   margin-right: 0.4rem;
   color: var(--clr-complementary);
   font-weight: 900;
+}
+
+@media (max-width: 400px) {
+  .modal-container {
+    max-width: 90vw;
+    padding: 5px 10px;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 640px) {
+  .modal-container {
+    max-width: 90vw;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .modal-container {
+    max-width: 70%;
+  }
 }
 
 /* Modal Transitions  */

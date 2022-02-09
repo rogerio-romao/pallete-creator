@@ -61,15 +61,15 @@
 
         <!-- footer  -->
         <div class="modal-footer save-modal-footer">
-          <button class="main-button" @click="$emit('close')">
+          <button class="secondary-button" @click="$emit('close')">
             <i class="fas fa-times"></i>
             Close
           </button>
-          <button class="main-button" @click="signIn" v-if="mode === 'signin'">
+          <button class="secondary-button" @click="signIn" v-if="mode === 'signin'">
             <i class="fas fa-save"></i>
             Sign In
           </button>
-          <button class="main-button" @click="signup" v-else>
+          <button class="secondary-button" @click="signup" v-else>
             <i class="fas fa-save"></i>
             Sign Up
           </button>

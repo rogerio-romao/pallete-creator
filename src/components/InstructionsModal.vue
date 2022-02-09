@@ -26,7 +26,7 @@
               the variations. Then the colors can be adjusted using the sliders.
             </p>
             <p>
-              You can then save the scheme or export the css, test the scheme on
+              You can then save the scheme (sign in first) or export the css, test the scheme on
               the page, change color names, test dark and light text, etc...
             </p>
           </div>
