@@ -9,7 +9,7 @@ import {
   generateSaturations
 } from '../lib/utils'
 import { app, db } from '../lib/firebase'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
 
 const actions = {
   // trigerred when user clicks on a mini slot for copying
@@ -18,11 +18,14 @@ const actions = {
     commit('SET_COPIED_COLOR_INDEX', index)
   },
   // deletes a scheme from local storage
-  DELETE_PALETTE({ commit, state, dispatch }, id) {
-    const palettes = JSON.parse(localStorage.getItem('palettes'))
-    const newPalettes = palettes.filter(p => p.id !== id)
-    localStorage.setItem('palettes', JSON.stringify(newPalettes))
-    commit('SET_SAVED_PALETTES', newPalettes)
+  async DELETE_PALETTE({ commit, state, dispatch }, id) {
+    await deleteDoc(doc(db, 'palettes', id))
+    console.log(`deleted ${id}`)
+    dispatch('LOAD_PALETTES')
+    // const palettes = JSON.parse(localStorage.getItem('palettes'))
+    // const newPalettes = palettes.filter(p => p.id !== id)
+    // localStorage.setItem('palettes', JSON.stringify(newPalettes))
+    // commit('SET_SAVED_PALETTES', newPalettes)
   },
   // trigerred when user generates a main color
   GENERATE_VARIATIONS({ commit }, { color, fn }) {
@@ -70,6 +73,7 @@ const actions = {
         scheme
       })
       console.log('Document written with ID: ', docRef.id)
+      dispatch('LOAD_PALETTES')
     } catch (e) {
       console.error('Error adding document: ', e)
     }
