@@ -61,15 +61,14 @@ const savePalette = () => {
         name: paletteName.value,
         scheme: store.getters.currentScheme,
       });
+      paletteName.value = "";
+      saved.value = true;
+      invalid.value = false;
     } else {
-      store.dispatch("SAVE_PALETTE", {
-        name: paletteName.value,
-        scheme: store.getters.currentScheme,
-      });
+      paletteName.value = "";
+      placeholder.value = "Login to save";
+      invalid.value = true;
     }
-    paletteName.value = "";
-    saved.value = true;
-    invalid.value = false;
   } else {
     placeholder.value = "Please enter name";
     invalid.value = true;

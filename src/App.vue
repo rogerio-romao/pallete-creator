@@ -1,14 +1,15 @@
 <template>
   <!-- NAV  -->
-  <MainNav @openInstructionsModal="showInstructionsModal = true" @openSignInModal="showSignInModal = true" />
+  <MainNav
+    @openInstructionsModal="showInstructionsModal = true"
+    @openSignInModal="showSignInModal = true"
+  />
 
   <!-- MAIN  -->
   <main>
     <!-- main color control bar  -->
     <h2>Set Main Color</h2>
-    <p class="description">
-      Click random color or use the inputs to start your color scheme.
-    </p>
+    <p class="description">Click random color or use the inputs to start your color scheme.</p>
     <MainColorBox />
 
     <!-- utility buttons  -->
@@ -17,6 +18,7 @@
       <UtilityButtons
         @copyPalette="showCopyModal = true"
         @savePalette="showSaveModal = true"
+        @openSignInModal="showSignInModal = true"
       />
     </div>
 
@@ -98,10 +100,7 @@
 
   <!-- instructions modal -->
   <transition name="modal">
-    <Instructions
-      v-if="showInstructionsModal"
-      @close="showInstructionsModal = false"
-    />
+    <Instructions v-if="showInstructionsModal" @close="showInstructionsModal = false" />
   </transition>
 
   <!-- copy modal -->

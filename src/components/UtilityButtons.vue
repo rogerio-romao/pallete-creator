@@ -29,7 +29,7 @@
 
     <button class="secondary-button" @click="savePalette">
       <i class="fas fa-save"></i>
-      Save Palette
+      {{ isUserSignedIn ? 'Save Palette' : 'Login to save' }}
     </button>
   </div>
 </template>
@@ -38,9 +38,11 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 
-const emit = defineEmits(["copyPalette", "savePalette"]);
+const emit = defineEmits(["copyPalette", "savePalette", "openSignInModal"]);
 
 const store = useStore();
+
+const isUserSignedIn = computed(() => store.state.isUserSignedIn);
 
 // Text color to light
 
@@ -61,7 +63,11 @@ const copyPalette = () => {
 };
 
 const savePalette = () => {
-  emit("savePalette");
+  if (isUserSignedIn.value) {
+    emit("savePalette");
+  } else {
+    emit("openSignInModal");
+  }
 };
 
 // Back to default colors

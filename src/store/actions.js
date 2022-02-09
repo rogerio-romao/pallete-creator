@@ -57,13 +57,15 @@ const actions = {
       commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
     }
   },
-  // saves the palette to local storage
+  // saves the palette to local storage (Deprecated)
+  /* 
   SAVE_PALETTE({ commit }, { name, scheme }) {
     const palettes = JSON.parse(localStorage.getItem('palettes')) || []
     palettes.push({ name, scheme, id: palettes.length })
     commit('SET_SAVED_PALETTES', palettes)
     localStorage.setItem('palettes', JSON.stringify(palettes))
   },
+  */
   // save to firebase
   async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
     try {

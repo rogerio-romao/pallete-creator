@@ -50,7 +50,7 @@ export default function state() {
     // the labels that appear over the color slots (editable)
     labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
     // holds all local storage saved color schemes
-    savedPalettes: JSON.parse(localStorage.getItem('palettes')) || [],
+    savedPalettes: [],
     // holds the default site color scheme, changeable i the interface
     siteColors: {
       main: '#1d1702',
