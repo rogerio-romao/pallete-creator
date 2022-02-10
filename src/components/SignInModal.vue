@@ -47,12 +47,12 @@
           <!-- signin / signup message  -->
           <div v-if="mode === 'signin'" class="switch-mode-msg">
             Don't have an account yet?
-            <span @click="mode = 'signup'">Sign Up</span>
+            <span @click="mode = 'signup'">Go Sign Up</span>
           </div>
 
           <div v-else class="switch-mode-msg">
             Already have an account?
-            <span @click="mode = 'signin'">Sign In</span>
+            <span @click="mode = 'signin'">Go Sign In</span>
           </div>
 
           <!-- error message  -->

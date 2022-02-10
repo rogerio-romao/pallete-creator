@@ -1040,6 +1040,9 @@ nav .title {
   padding: 0.2rem 0.4rem;
   border-radius: var(--sm-radius);
   transition: color 0.2s;
+  display: block;
+  margin: 0 auto;
+  max-width: 50%;
 }
 
 .sign-in .switch-mode-msg span:hover {
@@ -1055,9 +1058,6 @@ nav .title {
 @media (max-width: 460px) {
   .sign-in .input-wrapper {
     flex-direction: column;
-  }
-  .switch-mode-msg span {
-    display: block;
   }
 }
 
