@@ -6,7 +6,7 @@
         <span>
           <img src="../assets/logo.png" alt="logo" id="logo" />
         </span>
-        <span class="title"> Color Palette Creator </span>
+        <span class="title">Color Palette Creator</span>
       </div>
 
       <!-- right side nav  -->
@@ -15,6 +15,12 @@
           <li @click="emit('openInstructionsModal')">Instructions</li>
           <li v-if="!isSignedIn" @click="emit('openSignInModal')">Sign In</li>
           <li v-else @click="logout">Sign Out</li>
+          <li v-if="!isFullscreen" @click="toggleFullscreen" title="Toggle FullScreen">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </li>
+          <li v-else @click="toggleFullscreen" title="Toggle FullScreen">
+            <i class="fas fa-window-minimize"></i>
+          </li>
         </ul>
       </div>
     </nav>
@@ -22,7 +28,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex'
 import { app } from '../lib/firebase';
 import { getAuth, signOut } from "firebase/auth";
@@ -33,12 +39,26 @@ const store = useStore()
 const auth = getAuth();
 
 const isSignedIn = computed(() => store.state.isUserSignedIn)
+const isFullscreen = ref(false)
 
 const logout = () => {
   signOut(auth).then(() => {
     store.dispatch('SIGNOUT_USER')
-}).catch((error) => {
+  }).catch((error) => {
     console.log(error)
-});
+  });
+}
+
+// function to make the app fullscreen
+const toggleFullscreen = () => {
+  const elem = document.documentElement;
+  elem.requestFullscreen = elem.requestFullscreen || elem.mozRequestFullScreen || elem.webkitRequestFullscreen;
+  if (!isFullscreen.value) {
+    elem.requestFullscreen();
+    isFullscreen.value = true;
+  } else {
+    document.exitFullscreen();
+    isFullscreen.value = false;
+  }
 }
 </script>

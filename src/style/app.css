@@ -107,9 +107,9 @@ select {
   --base-radius: 0.5rem;
   --sm-radius: 0.2rem;
   --bd-lg: 1rem;
-  --mb-lg: 2rem;
-  --mb-md: 1.2rem;
-  --mb-sm: 0.6rem;
+  --mb-lg: 1.5rem;
+  --mb-md: 1rem;
+  --mb-sm: 0.5rem;
 }
 
 /* ---------------------------  */
@@ -287,6 +287,10 @@ nav .title {
 
 .nav-links ul li:hover {
   color: var(--clr-accent-light);
+}
+
+.fa-window-minimize {
+  margin-bottom: 5px;
 }
 
 /* Media Queries  */
