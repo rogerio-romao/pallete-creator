@@ -148,7 +148,7 @@ const isSavedPaneCollapsed = ref(false);
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);
 const savedLocalPalettes = computed(() => store.state.savedPalettes.length);
-const showUtilityButtons = computed(() => store.getters.fullSchemeSet);
+const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
 
 const collapseColorPane = () => {
   isColorPaneCollapsed.value = !isColorPaneCollapsed.value;

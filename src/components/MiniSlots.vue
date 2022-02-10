@@ -8,7 +8,7 @@
       <div class="panel-header">
         <p>
           Click any variation to copy it, then click on one of the main color
-          slots above to paste it. Or click the randomize button to generate a
+          slots above to paste it. Or click the randomize button above to generate a
           full palette.
         </p>
       </div>
@@ -27,18 +27,6 @@
           @click="copyColor(color, i)"
         ></div>
       </div>
-
-      <!-- actions  -->
-      <div class="mini-slots-actions">
-        <button
-          v-if="colors.size"
-          class="secondary-button"
-          @click="setRandomScheme"
-        >
-          <i class="fas fa-random" title="Generate random scheme" />
-          Pick Random Variations
-        </button>
-      </div>
     </div>
   </section>
 </template>
@@ -56,19 +44,13 @@ const props = defineProps({
 
 const store = useStore();
 
-const colors = computed(() => store.getters.uniqueColors);
 const colorCopied = computed(() => store.state.copiedColor);
 const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
+const colors = computed(() => store.getters.uniqueColors);
 
 // Puts the clicked on variation in memory for pasting.
 
 const copyColor = (color, index) => {
   store.dispatch("COPY_COLOR", { color, index });
-};
-
-// Picks a unique random color from the variations and sets it on the main palette pane.
-
-const setRandomScheme = () => {
-  store.dispatch("SET_RANDOM_SCHEME");
 };
 </script>

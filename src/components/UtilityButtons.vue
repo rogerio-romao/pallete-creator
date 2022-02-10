@@ -2,32 +2,37 @@
   <!-- wrapper  -->
   <div class="utility-buttons">
     <!-- individual buttons  -->
-    <button class="secondary-button" @click="setCssVars">
+    <button class="secondary-button" @click="setRandomScheme">
+      <i class="fas fa-random" title="Generate random scheme" />
+      Random Variations
+    </button>
+
+    <button v-if="showButtons" class="secondary-button" @click="setCssVars">
       <i class="fas fa-vial"></i>
       Test this palette
     </button>
 
-    <button class="secondary-button" @click="resetSiteColors">
+    <button v-if="showButtons" class="secondary-button" @click="resetSiteColors">
       <i class="far fa-window-restore"></i>
       Reset site colors
     </button>
 
-    <button class="secondary-button" @click="setLightText">
+    <button v-if="showButtons" class="secondary-button" @click="setLightText">
       <i class="far fa-lightbulb"></i>
       Light Text
     </button>
 
-    <button class="secondary-button" @click="setDarkText">
+    <button v-if="showButtons" class="secondary-button" @click="setDarkText">
       <i class="fas fa-lightbulb"></i>
       Dark Text
     </button>
 
-    <button class="secondary-button" @click="copyPalette">
+    <button v-if="showButtons" class="secondary-button" @click="copyPalette">
       <i class="far fa-copy"></i>
       Export CSS
     </button>
 
-    <button class="secondary-button" @click="savePalette">
+    <button v-if="showButtons" class="secondary-button" @click="savePalette">
       <i class="fas fa-save"></i>
       {{ isUserSignedIn ? 'Save Palette' : 'Login to save' }}
     </button>
@@ -43,6 +48,7 @@ const emit = defineEmits(["copyPalette", "savePalette", "openSignInModal"]);
 const store = useStore();
 
 const isUserSignedIn = computed(() => store.state.isUserSignedIn);
+const showButtons = computed(() => store.getters.fullSchemeSet);
 
 // Text color to light
 
@@ -68,6 +74,12 @@ const savePalette = () => {
   } else {
     emit("openSignInModal");
   }
+};
+
+// Picks a unique random color from the variations and sets it on the main palette pane.
+
+const setRandomScheme = () => {
+  store.dispatch("SET_RANDOM_SCHEME");
 };
 
 // Back to default colors
