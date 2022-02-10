@@ -57,7 +57,7 @@ export default function state() {
       complementary: '#f2edd9',
       light: '#d9def2',
       accent: '#087d65',
-      dark: '#997d0a'
+      dark: '#404f4c'
     },
     isUserSignedIn: false,
     userEmail: ''

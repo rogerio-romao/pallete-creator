@@ -100,7 +100,7 @@ select {
   --clr-complementary: #f2edd9;
   --clr-light: #d9def2;
   --clr-accent: #087d65;
-  --clr-accent-light: #997d0a;
+  --clr-accent-light: #404f4c;
   --text-color: #faebd7;
   --slot-size: 120px;
   --mini-slot-size: 50px;
@@ -184,7 +184,7 @@ h2 {
 .main-button:hover {
   background-color: var(--clr-accent-light);
   border: 1px solid var(--clr-light);
-  color: var(--clr-main);
+  color: var(--clr-complementary);
 }
 
 .main-button:active {
@@ -376,6 +376,7 @@ nav .title {
 
 .main-color-bar .main-button {
   min-width: fit-content;
+  padding-inline: 15px;
 }
 
 .main-color-bar .inputs-wrapper {
