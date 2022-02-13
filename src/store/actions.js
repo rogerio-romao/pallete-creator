@@ -20,12 +20,7 @@ const actions = {
   // deletes a scheme from local storage
   async DELETE_PALETTE({ commit, state, dispatch }, id) {
     await deleteDoc(doc(db, 'palettes', id))
-    console.log(`deleted ${id}`)
     dispatch('LOAD_PALETTES')
-    // const palettes = JSON.parse(localStorage.getItem('palettes'))
-    // const newPalettes = palettes.filter(p => p.id !== id)
-    // localStorage.setItem('palettes', JSON.stringify(newPalettes))
-    // commit('SET_SAVED_PALETTES', newPalettes)
   },
   // trigerred when user generates a main color
   GENERATE_VARIATIONS({ commit }, { color, fn }) {
@@ -57,15 +52,6 @@ const actions = {
       commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
     }
   },
-  // saves the palette to local storage (Deprecated)
-  /* 
-  SAVE_PALETTE({ commit }, { name, scheme }) {
-    const palettes = JSON.parse(localStorage.getItem('palettes')) || []
-    palettes.push({ name, scheme, id: palettes.length })
-    commit('SET_SAVED_PALETTES', palettes)
-    localStorage.setItem('palettes', JSON.stringify(palettes))
-  },
-  */
   // save to firebase
   async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
     try {
@@ -74,11 +60,8 @@ const actions = {
         name,
         scheme
       })
-      console.log('Document written with ID: ', docRef.id)
       dispatch('LOAD_PALETTES')
-    } catch (e) {
-      console.error('Error adding document: ', e)
-    }
+    } catch (e) {}
   },
   // resets everything, sets the main color and generates variations
   SET_MAIN_COLOR({ commit, dispatch }, color) {
