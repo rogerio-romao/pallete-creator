@@ -47,6 +47,8 @@
 <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 const store = useStore();
 
@@ -73,6 +75,11 @@ const deletePalette = (id) => {
   );
   if (confirm) {
     store.dispatch("DELETE_PALETTE", id);
+    createToast('Palette deleted!', {
+      type: "info",
+      position: "bottom-right",
+      hideProgressBar: true,
+    })
   }
 };
 </script>

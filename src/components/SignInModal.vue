@@ -54,9 +54,6 @@
             Already have an account?
             <span @click="mode = 'signin'">Go Sign In</span>
           </div>
-
-          <!-- error message  -->
-          <div class="error-msg" v-if="errorMsg">{{ errorMsg }}</div>
         </div>
 
         <!-- footer  -->
@@ -80,11 +77,13 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useStore } from 'vuex'
 import { app } from '../lib/firebase';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import xss from 'xss'
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 const store = useStore()
 const auth = getAuth()
@@ -105,6 +104,17 @@ const password = ref("");
 const passwordConfirm = ref("");
 const errorMsg = ref("");
 
+watch(errorMsg, (newVal, oldVal) => {
+  if (newVal) {
+    createToast(newVal, {
+      type: 'danger',
+      position: "bottom-right",
+      hideProgressBar: true,
+    })
+  }
+})
+
+
 const mode = ref("signin");
 
 const signIn = () => {
@@ -118,14 +128,24 @@ const signIn = () => {
     return
   }
 
+  if (!userData.password) {
+    errorMsg.value = "Please enter your password."
+    return
+  }
+
   signInWithEmailAndPassword(auth, userData.email, userData.password)
     .then(userCredential => {
       const user = userCredential.user
+      createToast('Welcome back!', {
+        type: "success",
+        position: "bottom-right",
+        hideProgressBar: true,
+      })
       emit('close')
     })
     .catch(error => {
-      const errorMessage = error.message
-      errorMsg.value = errorMessage.includes('user-not-found') ? 'User not found, try again or register first' : errorMessage.includes('wrong-password') ? 'Invalid credentials' : 'Something went wrong, try again'
+      const displayErrMsg = error.message.includes('user-not-found') ? 'User not found, try again or register first' : error.message.includes('wrong-password') ? 'Invalid credentials' : 'Something went wrong, try again'
+      errorMsg.value = displayErrMsg
     })
 }
 
@@ -152,18 +172,18 @@ const signup = () => {
   createUserWithEmailAndPassword(auth, userData.email, userData.password)
     .then(userCredential => {
       const user = userCredential.user
-      console.log('User signed up', user)
+      createToast('Welcome, register successful!', {
+        type: "success",
+        position: "bottom-right",
+        hideProgressBar: true,
+      })
       emit('close')
     })
     .catch(error => {
-      const errorMessage = error.message
-      errorMsg.value = errorMessage.includes('email-already-in-use') ? 'Email already in use' : errorMessage.includes('invalid-email') ? 'Invalid email' : 'Something went wrong, try again'
+      errorMsg.value = error.message.includes('email-already-in-use') ? 'Email already in use' : error.message.includes('invalid-email') ? 'Invalid email' : 'Something went wrong, try again'
     })
 }
 
 const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
 </script>
-
-<style>
-</style>

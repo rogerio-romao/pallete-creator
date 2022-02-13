@@ -71,7 +71,7 @@
     </div>
 
     <!-- saved palletes -->
-    <div v-if="savedLocalPalettes">
+    <div v-if="isLoggedIn">
       <h2>
         Saved Palettes
         <span
@@ -147,8 +147,8 @@ const isSavedPaneCollapsed = ref(false);
 
 const uniqueColors = computed(() => store.getters.uniqueColors);
 const mainHSL = computed(() => store.state.mainHSL);
-const savedLocalPalettes = computed(() => store.state.savedPalettes.length);
 const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
+const isLoggedIn = computed(() => store.state.isUserSignedIn);
 
 const collapseColorPane = () => {
   isColorPaneCollapsed.value = !isColorPaneCollapsed.value;

@@ -31,10 +31,6 @@
               <i class="fas fa-save"></i>
               Save
             </button>
-            <span class="footer-msg" v-show="saved">
-              <i class="fas fa-check"></i>
-              Saved!
-            </span>
           </div>
         </form>
       </div>
@@ -45,8 +41,12 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 const store = useStore();
+
+const emit = defineEmits(["close"]);
 
 const paletteName = ref("");
 const saved = ref(false);
@@ -64,6 +64,12 @@ const savePalette = () => {
       paletteName.value = "";
       saved.value = true;
       invalid.value = false;
+      createToast('Palette saved!', {
+        type: "success",
+        position: "bottom-right",
+        hideProgressBar: true,
+      })
+      emit('close')
     } else {
       paletteName.value = "";
       placeholder.value = "Login to save";
@@ -72,6 +78,11 @@ const savePalette = () => {
   } else {
     placeholder.value = "Please enter name";
     invalid.value = true;
+    createToast('Please name the palette first', {
+      type: "warning",
+      position: "bottom-right",
+      hideProgressBar: true,
+    })
   }
 };
 </script>

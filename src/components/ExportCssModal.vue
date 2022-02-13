@@ -5,25 +5,20 @@
       <div class="modal-container">
         <!-- header  -->
         <div class="modal-header">
-          <h3>Export CSS <small>- choose color mode</small></h3>
+          <h3>
+            Export CSS
+            <small>- choose color mode</small>
+          </h3>
         </div>
 
         <!-- body  -->
         <div class="modal-body">
           <!-- buttons  -->
           <div class="export-modal-buttons">
-            <button class="secondary-button" @click="changeMode('rgb')">
-              RGB
-            </button>
-            <button class="secondary-button" @click="changeMode('hex')">
-              HEX
-            </button>
-            <button class="secondary-button" @click="changeMode('hsl')">
-              HSL
-            </button>
-            <button class="secondary-button" @click="changeSyntax">
-              {{ syntaxLabel }}
-            </button>
+            <button class="secondary-button" @click="changeMode('rgb')">RGB</button>
+            <button class="secondary-button" @click="changeMode('hex')">HEX</button>
+            <button class="secondary-button" @click="changeMode('hsl')">HSL</button>
+            <button class="secondary-button" @click="changeSyntax">{{ syntaxLabel }}</button>
           </div>
 
           <!-- textarea  -->
@@ -44,10 +39,6 @@
             <i class="fas fa-times"></i>
             Close
           </button>
-          <span class="footer-msg" v-show="copied">
-            <i class="fas fa-check"></i>
-            Code was copied.
-          </span>
         </div>
       </div>
     </div>
@@ -57,6 +48,8 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 const store = useStore();
 const labels = computed(() => store.state.labels);
@@ -99,6 +92,11 @@ const selectAll = () => {
   document.execCommand("copy");
   document.body.removeChild(el);
   copied.value = true;
+  createToast('CSS copied to clipboard', {
+    type: "success",
+    position: "bottom-right",
+    hideProgressBar: true,
+  })
 };
 </script>
 
