@@ -14,7 +14,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "@fortawesome/vue-fontawesome": "^3.0.0",
-    "firebase": "^10.0.0",
+    "firebase": "^10.9.0",
     "mosha-vue-toastify": "^1.0.23",
     "vue": "^3.2.16",
     "vuex": "^4.0.2",
