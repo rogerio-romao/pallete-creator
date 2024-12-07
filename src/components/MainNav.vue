@@ -12,13 +12,18 @@
       <!-- right side nav  -->
       <div class="nav-links">
         <ul>
-          <li @click="emit('openInstructionsModal')">Instructions</li>
-          <li v-if="!isSignedIn" @click="emit('openSignInModal')">Sign In</li>
-          <li v-else @click="logout">Sign Out</li>
-          <li v-if="!isFullscreen" @click="toggleFullscreen" title="Toggle FullScreen">
+          <li data-test="instructions-link" @click="emit('openInstructionsModal')">Instructions</li>
+          <li v-if="!isSignedIn" data-test="sign-in-link" @click="emit('openSignInModal')">Sign In</li>
+          <li v-else data-test="sign-out-link" @click="logout">Sign Out</li>
+          <li
+            data-test="fullscreen-link-minimised"
+            v-if="!isFullscreen"
+            @click="toggleFullscreen"
+            title="Toggle FullScreen"
+          >
             <i class="fas fa-expand-arrows-alt"></i>
           </li>
-          <li v-else @click="toggleFullscreen" title="Toggle FullScreen">
+          <li v-else @click="toggleFullscreen" title="Toggle FullScreen" data-test="fullscreen-link-maximised">
             <i class="fas fa-window-minimize"></i>
           </li>
         </ul>
@@ -28,10 +33,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex'
-import { app } from '../lib/firebase';
 import { getAuth, signOut } from "firebase/auth";
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
+import { app } from '../lib/firebase';
 
 const emit = defineEmits(["openInstructionsModal", "openSignInModal"]);
 
