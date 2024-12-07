@@ -11,5 +11,9 @@ export default defineConfig(({ mode }) => {
             ),
         },
         plugins: [vue()],
+        test: {
+            environment: 'jsdom',
+            globals: true
+        }
     };
 });
