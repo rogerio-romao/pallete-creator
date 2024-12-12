@@ -5,13 +5,13 @@ import MainNav from './MainNav.vue'
 
 // Create a mock store
 const createVuexStore = (state = {}) => {
-    return createStore({
-      state: {
-        isUserSignedIn: state.isUserSignedIn || false,
-        isFullscreen: state.isFullscreen || false,
-      }
-    })
-  }
+  return createStore({
+    state: {
+      isUserSignedIn: state.isUserSignedIn || false,
+      isFullscreen: state.isFullscreen || false,
+    },
+  })
+}
 
 describe('MainNav', () => {
   let wrapper
