@@ -8,6 +8,11 @@ const createVuexStore = (state = {}) => {
     return createStore({
         state: {
             mainHSL: 'hsl(20, 20%, 20%)',
+            mainSlotColor: {
+                hsl: '',
+                rgb: '',
+                hex: '',
+            },
             slotColors: {
                 slot2: {
                     hsl: '',
@@ -152,10 +157,22 @@ describe('UtilityButtons', () => {
         expect(slotColors.slot5.hex).toContain('#');
     });
 
-    it('shows the test palette button when the full scheme is set', async () => {
-        expect(wrapper.find('[data-test="test-palette-button"]').exists()).toBe(
-            false
-        );
+    it('shows all buttons when the full scheme is set', async () => {
+        const buttons = [
+            'test-palette-button',
+            'reset-site-colors-button',
+            'set-light-text-button',
+            'set-dark-text-button',
+            'export-css-button',
+            'save-palette-button',
+        ];
+
+        buttons.forEach((button) => {
+            expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(
+                false
+            );
+        });
+
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -163,88 +180,48 @@ describe('UtilityButtons', () => {
         // wait for the next tick
         await wrapper.vm.$nextTick();
 
-        expect(wrapper.find('[data-test="test-palette-button"]').exists()).toBe(
-            true
-        );
+        buttons.forEach((button) => {
+            expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(true);
+        });
     });
 
-    it('shows the reset site colors button when the full scheme is set', async () => {
-        expect(
-            wrapper.find('[data-test="reset-site-colors-button"]').exists()
-        ).toBe(false);
+    it('sets the theme colors when the test palette button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
-        // wait for the next tick
         await wrapper.vm.$nextTick();
 
-        expect(
-            wrapper.find('[data-test="reset-site-colors-button"]').exists()
-        ).toBe(true);
-    });
+        const mainSlotColor = store.state.mainSlotColor.hex;
+        const slot2Color = store.state.slotColors.slot2.hex;
+        const slot3Color = store.state.slotColors.slot3.hex;
+        const slot4Color = store.state.slotColors.slot4.hex;
+        const slot5Color = store.state.slotColors.slot5.hex;
 
-    it('shows the set light text button when the full scheme is set', async () => {
-        expect(
-            wrapper.find('[data-test="set-light-text-button"]').exists()
-        ).toBe(false);
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-test="test-palette-button"]')
             .trigger('click');
 
-        // wait for the next tick
-        await wrapper.vm.$nextTick();
+        const mainColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-main');
+        const complementaryColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-complementary');
+        const lightColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-light');
+        const accentColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-accent');
+        const accentLightColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-accent-light');
 
-        expect(
-            wrapper.find('[data-test="set-light-text-button"]').exists()
-        ).toBe(true);
-    });
-
-    it('shows the set dark text button when the full scheme is set', async () => {
-        expect(
-            wrapper.find('[data-test="set-dark-text-button"]').exists()
-        ).toBe(false);
-        await wrapper
-            .find('[data-test="random-scheme-button"]')
-            .trigger('click');
-
-        // wait for the next tick
-        await wrapper.vm.$nextTick();
-
-        expect(
-            wrapper.find('[data-test="set-dark-text-button"]').exists()
-        ).toBe(true);
-    });
-
-    it('shows the export css button when the full scheme is set', async () => {
-        expect(wrapper.find('[data-test="export-css-button"]').exists()).toBe(
-            false
-        );
-        await wrapper
-            .find('[data-test="random-scheme-button"]')
-            .trigger('click');
-
-        // wait for the next tick
-        await wrapper.vm.$nextTick();
-
-        expect(wrapper.find('[data-test="export-css-button"]').exists()).toBe(
-            true
-        );
-    });
-
-    it('shows the save palette button when the full scheme is set', async () => {
-        expect(wrapper.find('[data-test="save-palette-button"]').exists()).toBe(
-            false
-        );
-        await wrapper
-            .find('[data-test="random-scheme-button"]')
-            .trigger('click');
-
-        // wait for the next tick
-        await wrapper.vm.$nextTick();
-
-        expect(wrapper.find('[data-test="save-palette-button"]').exists()).toBe(
-            true
-        );
+        expect(mainColor).toBe(mainSlotColor);
+        expect(complementaryColor).toBe(slot2Color);
+        expect(lightColor).toBe(slot3Color);
+        expect(accentColor).toBe(slot4Color);
+        expect(accentLightColor).toBe(slot5Color);
     });
 });
