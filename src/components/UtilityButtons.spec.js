@@ -35,6 +35,13 @@ const createVuexStore = (state = {}) => {
                     hex: '',
                 },
             },
+            siteColors: {
+                main: '#1d1702',
+                complementary: '#f2edd9',
+                light: '#d9def2',
+                accent: '#087d65',
+                dark: '#404f4c',
+            },
         },
         getters: {
             // Mock the uniqueColors getter
@@ -53,6 +60,9 @@ const createVuexStore = (state = {}) => {
         mutations: {
             SET_SLOT_COLOR: (state, { slot, hsl, rgb, hex }) => {
                 state.slotColors[slot] = { hsl, rgb, hex };
+            },
+            SET_TEXT_COLOR(state, colors) {
+                state.textColor = colors;
             },
         },
         actions: {
@@ -78,6 +88,21 @@ const createVuexStore = (state = {}) => {
                     });
                     slot++;
                 });
+            },
+            SET_TEXT_COLOR({ commit }, type) {
+                if (type === 'light') {
+                    commit('SET_TEXT_COLOR', {
+                        hsl: 'hsl(34, 78%, 91%)',
+                        rgb: 'rgb(250, 235, 215)',
+                        hex: '#faebd7',
+                    });
+                } else if (type === 'dark') {
+                    commit('SET_TEXT_COLOR', {
+                        hsl: 'hsl(218, 27%, 8%)',
+                        rgb: 'rgb(15, 19, 26)',
+                        hex: '#0f131a',
+                    });
+                }
             },
         },
     });
@@ -223,5 +248,90 @@ describe('UtilityButtons', () => {
         expect(lightColor).toBe(slot3Color);
         expect(accentColor).toBe(slot4Color);
         expect(accentLightColor).toBe(slot5Color);
+    });
+
+    it('resets the site colors when the reset button is clicked', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        await wrapper
+            .find('[data-test="test-palette-button"]')
+            .trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        const mainColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-main');
+        expect(mainColor).not.toBe(store.state.siteColors.main);
+
+        await wrapper
+            .find('[data-test="reset-site-colors-button"]')
+            .trigger('click');
+
+        const mainColorAfterReset = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-main');
+        const complementaryColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-complementary');
+        const lightColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-light');
+        const accentColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-accent');
+        const accentLightColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--clr-accent-light');
+
+        expect(mainColorAfterReset).toBe(store.state.siteColors.main);
+        expect(complementaryColor).toBe(store.state.siteColors.complementary);
+        expect(lightColor).toBe(store.state.siteColors.light);
+        expect(accentColor).toBe(store.state.siteColors.accent);
+        expect(accentLightColor).toBe(store.state.siteColors.dark);
+    });
+
+    it('sets the text colors to light when the light button is clicked', async () => {
+        const LIGHT_TEXT_COLOR = '#faebd7';
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        await wrapper
+            .find('[data-test="set-light-text-button"]')
+            .trigger('click');
+
+        const mainTextColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--text-color');
+
+        expect(mainTextColor).toBe(store.state.textColor.hex);
+        expect(mainTextColor).toBe(LIGHT_TEXT_COLOR);
+    });
+
+    it('sets the text colors to dark when the dark button is clicked', async () => {
+        const DARK_TEXT_COLOR = '#0f131a';
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        await wrapper
+            .find('[data-test="set-dark-text-button"]')
+            .trigger('click');
+
+        const mainTextColor = getComputedStyle(
+            document.documentElement
+        ).getPropertyValue('--text-color');
+
+        expect(mainTextColor).toBe(store.state.textColor.hex);
+        expect(mainTextColor).toBe(DARK_TEXT_COLOR);
     });
 });
