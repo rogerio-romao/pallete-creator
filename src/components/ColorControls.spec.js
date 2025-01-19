@@ -1,80 +1,12 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { createStore } from 'vuex';
-import { hslToRgb, rgbToHex } from '../lib/utils';
+import store from '../store';
 import ColorControls from './ColorControls.vue';
-
-const createVuexStore = (state = {}) => {
-    return createStore({
-        state: {
-            mainHSL: null,
-            mainSlotColor: {
-                hsl: '',
-                rgb: '',
-                hex: '',
-            },
-            slotColors: {
-                slot2: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot3: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot4: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot5: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-            },
-        },
-        mutations: {
-            SET_MAIN_COLOR(state, colors) {
-                const { hsl, rgb, hex } = colors;
-                state.mainHSL = hsl;
-                state.mainSlotColor.hsl = hsl;
-                state.mainSlotColor.rgb = rgb;
-                state.mainSlotColor.hex = hex;
-            },
-            SET_SLOT_COLOR(state, { slot, hsl, rgb, hex }) {
-                state.slotColors[slot].hsl = hsl;
-                state.slotColors[slot].rgb = rgb;
-                state.slotColors[slot].hex = hex;
-            },
-        },
-        actions: {
-            SET_MAIN_COLOR({ commit }, color) {
-                const hsl = color;
-                commit('SET_MAIN_COLOR', { hsl });
-            },
-            UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
-                const rgb = hslToRgb(hsl);
-                const hex = rgbToHex(rgb);
-                commit('SET_SLOT_COLOR', {
-                    slot: `slot${slot}`,
-                    hsl,
-                    rgb,
-                    hex,
-                });
-            },
-        },
-    });
-};
 
 describe('ColorControls', () => {
     let wrapper;
-    let store;
 
     beforeEach(() => {
-        store = createVuexStore();
         wrapper = mount(ColorControls, {
             global: { plugins: [store] },
         });

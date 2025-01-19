@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createStore } from 'vuex';
+// import store from '../store/index';
 import UtilityButtons from './UtilityButtons.vue';
 
 // Create a mock store
