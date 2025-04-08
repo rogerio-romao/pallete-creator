@@ -134,19 +134,26 @@ describe('UtilityButtons', () => {
     });
 
     it('calls SET_RANDOM_SCHEME when random button is clicked', async () => {
-        const spy = vi.spyOn(store, 'dispatch');
+        const spy = vi.spyOn(store, 'dispatch').mockResolvedValue();
 
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
         expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
+        spy.mockRestore();
     });
 
     it('fills the slots with random colors', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
+
+        // wait for all promises to resolve
+        await wrapper.vm.$nextTick();
+        await wrapper.vm.$nextTick();
+        await wrapper.vm.$nextTick();
+
         const slotColors = store.state.slotColors;
         expect(slotColors.slot2.hsl).not.toBe('');
         expect(slotColors.slot2.hsl).not.toBe(store.state.mainHSL);

@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import store from '../store';
 import ColorControls from './ColorControls.vue';
 
@@ -83,5 +83,36 @@ describe('ColorControls', () => {
             );
             expect(store.state.slotColors[`slot${i}`].hex).toMatch(/#356020/);
         }
+    });
+
+    it('dispatches UPDATE_SLOT_COLOR action when updating non-main slot colors', async () => {
+        // Create a spy on the store.dispatch method
+        const dispatchSpy = vi.spyOn(store, 'dispatch');
+
+        // Set the component to use a non-main slot
+        wrapper = mount(ColorControls, {
+            props: {
+                slotNumber: 3,
+            },
+            global: { plugins: [store] },
+        });
+
+        // Set the HSL values
+        const hueButton = wrapper.find('[data-test="hue-input"]');
+        const saturationButton = wrapper.find('[data-test="sat-input"]');
+        const lightnessButton = wrapper.find('[data-test="lum-input"]');
+
+        await hueButton.setValue('180');
+        await saturationButton.setValue('60');
+        await lightnessButton.setValue('45');
+
+        // Check if the UPDATE_SLOT_COLOR action was dispatched with correct parameters
+        expect(dispatchSpy).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
+            slot: 3,
+            hsl: 'hsl(180, 60%, 45%)',
+        });
+
+        // Restore the spy
+        dispatchSpy.mockRestore();
     });
 });

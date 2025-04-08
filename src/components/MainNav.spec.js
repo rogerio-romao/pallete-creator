@@ -3,6 +3,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import store from '../store/index';
 import MainNav from './MainNav.vue';
 
+// Mock Firebase auth
+vi.mock('firebase/auth', () => ({
+    getAuth: vi.fn(),
+    signOut: vi.fn(() => Promise.resolve()),
+}));
+
+// Mock the firebase app
+vi.mock('../lib/firebase', () => ({
+    app: {},
+}));
+
 describe('MainNav', () => {
     let wrapper;
 
@@ -38,6 +49,34 @@ describe('MainNav', () => {
         expect(wrapper.find('[data-test="sign-in-link"]').text()).toBe(
             'Sign In'
         );
+    });
+
+    it('logs out the user when the sign out button is clicked', async () => {
+        store.state.isUserSignedIn = true;
+        await wrapper.vm.$nextTick();
+
+        // Setup the mock dispatch to resolve immediately
+        const dispatchSpy = vi.spyOn(store, 'dispatch').mockResolvedValue();
+
+        const signOutButton = wrapper.find('[data-test="sign-out-link"]');
+        await signOutButton.trigger('click');
+
+        // Wait for all promises to resolve
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Now check that dispatch was called correctly
+        expect(dispatchSpy).toHaveBeenCalledWith('SIGNOUT_USER');
+
+        // Manually update the state since we mocked the dispatch
+        store.state.isUserSignedIn = false;
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.find('[data-test="sign-in-link"]').text()).toBe(
+            'Sign In'
+        );
+
+        // Clean up
+        dispatchSpy.mockRestore();
     });
 
     it('renders the fullscreen button with the correct icon when minimized', () => {
