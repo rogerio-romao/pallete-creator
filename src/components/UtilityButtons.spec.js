@@ -347,7 +347,7 @@ describe('UtilityButtons', () => {
         expect(mainTextColor).toBe(DARK_TEXT_COLOR);
     });
 
-    it('sends copyPallete event when the export css button is clicked', async () => {
+    it('sends copyPalette event when the export css button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
