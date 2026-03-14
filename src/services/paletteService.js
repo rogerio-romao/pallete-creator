@@ -1,46 +1,29 @@
-import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDocs,
-    query,
-    where,
-} from 'firebase/firestore';
-import { db } from '../lib/firebase';
+const STORAGE_KEY = 'palettes';
 
-const COLLECTION_NAME = 'palettes';
+const getPalettes = () => {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        console.error('Failed to parse palettes from localStorage:', error);
+        return [];
+    }
+};
 
-const checkDb = () => {
-    if (!db) {
-        throw new Error(
-            'Firebase not initialized. Check your environment variables.',
-        );
+const savePalettes = (palettes) => {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(palettes));
+    } catch (error) {
+        console.error('Failed to save palettes to localStorage:', error);
     }
 };
 
 export const paletteService = {
-    async getByUser(userEmail) {
-        checkDb();
-        const q = query(
-            collection(db, COLLECTION_NAME),
-            where('user', '==', userEmail),
-        );
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map((docSnapshot) => {
-            const data = docSnapshot.data();
-            data.id = docSnapshot.id;
-            return data;
-        });
+    getAll() {
+        return getPalettes();
     },
 
-    async save({ userEmail, name, scheme }) {
-        checkDb();
-
-        if (!userEmail) {
-            throw new Error('User email is required to save a palette.');
-        }
-
+    save({ name, scheme }) {
         if (!name) {
             throw new Error('Palette name is required.');
         }
@@ -49,16 +32,26 @@ export const paletteService = {
             throw new Error('Palette scheme is required.');
         }
 
-        const docRef = await addDoc(collection(db, COLLECTION_NAME), {
-            user: userEmail,
+        const palettes = getPalettes();
+        const id = Date.now().toString();
+        const newPalette = {
+            id,
             name,
             scheme,
-        });
-        return docRef.id;
+            createdAt: new Date().toISOString(),
+        };
+        palettes.push(newPalette);
+        savePalettes(palettes);
+        return id;
     },
 
-    async delete(id) {
-        checkDb();
-        await deleteDoc(doc(db, COLLECTION_NAME, id));
+    delete(id) {
+        try {
+            const palettes = getPalettes();
+            const filtered = palettes.filter((p) => p.id !== id);
+            savePalettes(filtered);
+        } catch (error) {
+            console.error('Failed to delete palette from localStorage:', error);
+        }
     },
 };

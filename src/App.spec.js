@@ -8,7 +8,7 @@ const createVuexStore = (state = {}) => {
     return createStore({
         state: {
             mainHSL: state.mainHSL || null,
-            isUserSignedIn: state.isUserSignedIn || false,
+            savedPalettes: state.savedPalettes || [],
             // Add labels to prevent errors in ColorSlot component
             labels: state.labels || [
                 'Main',
@@ -93,9 +93,9 @@ describe('App.vue', () => {
         );
     });
 
-    it('shows saved palettes section when user is logged in', async () => {
+    it('shows saved palettes section when there are saved palettes', async () => {
         const store = createVuexStore({
-            isUserSignedIn: true,
+            savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
         });
 
         wrapper = mount(App, {
@@ -178,9 +178,9 @@ describe('App.vue', () => {
     });
 
     it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
-        // Setup with isUserSignedIn to make the saved palettes visible
+        // Setup with savedPalettes to make the saved palettes visible
         const store = createVuexStore({
-            isUserSignedIn: true,
+            savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
         });
 
         wrapper = mount(App, {

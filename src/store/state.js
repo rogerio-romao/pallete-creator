@@ -50,8 +50,6 @@ export default function state() {
     // the labels that appear over the color slots (editable)
     labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
     // holds all local storage saved color schemes
-    savedPalettes: [],
-    isUserSignedIn: false,
-    userEmail: ''
+    savedPalettes: []
   }
 }

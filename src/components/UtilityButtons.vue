@@ -68,7 +68,7 @@
             @click="savePalette"
         >
             <i class="fas fa-save"></i>
-            {{ isUserSignedIn ? 'Save Palette' : 'Login to save' }}
+            Save Palette
         </button>
     </div>
 </template>
@@ -79,11 +79,10 @@
     import { useStore } from 'vuex';
     import { DEFAULT_COLORS } from '../lib/colors';
 
-    const emit = defineEmits(['copyPalette', 'savePalette', 'openSignInModal']);
+    const emit = defineEmits(['copyPalette', 'savePalette']);
 
     const store = useStore();
 
-    const isUserSignedIn = computed(() => store.state.isUserSignedIn);
     const showButtons = computed(() => store.getters.fullSchemeSet);
 
     // Text color to light
@@ -107,11 +106,7 @@
     };
 
     const savePalette = () => {
-        if (isUserSignedIn.value) {
-            emit('savePalette');
-        } else {
-            emit('openSignInModal');
-        }
+        emit('savePalette');
     };
 
     // Picks a unique random color from the variations and sets it on the main palette pane.
