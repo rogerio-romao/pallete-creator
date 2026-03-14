@@ -1,12 +1,21 @@
 const STORAGE_KEY = 'palettes';
 
 const getPalettes = () => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        console.error('Failed to parse palettes from localStorage:', error);
+        return [];
+    }
 };
 
 const savePalettes = (palettes) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(palettes));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(palettes));
+    } catch (error) {
+        console.error('Failed to save palettes to localStorage:', error);
+    }
 };
 
 export const paletteService = {
@@ -37,8 +46,12 @@ export const paletteService = {
     },
 
     delete(id) {
-        const palettes = getPalettes();
-        const filtered = palettes.filter((p) => p.id !== id);
-        savePalettes(filtered);
+        try {
+            const palettes = getPalettes();
+            const filtered = palettes.filter((p) => p.id !== id);
+            savePalettes(filtered);
+        } catch (error) {
+            console.error('Failed to delete palette from localStorage:', error);
+        }
     },
 };

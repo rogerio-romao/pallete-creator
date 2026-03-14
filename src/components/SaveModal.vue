@@ -81,7 +81,6 @@
     };
 
     const paletteName = ref('');
-    const saved = ref(false);
     const placeholder = ref('Palette name');
     const invalid = ref(false);
 
@@ -93,7 +92,6 @@
                     scheme: store.getters.currentScheme,
                 });
                 paletteName.value = '';
-                saved.value = true;
                 invalid.value = false;
                 createToast('Palette saved!', {
                     type: 'success',
