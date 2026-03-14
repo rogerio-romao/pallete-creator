@@ -44,6 +44,11 @@ const createVuexStore = (state = {}) => {
                 accent: '#087d65',
                 dark: '#404f4c',
             },
+            textColor: {
+                hsl: 'hsl(38, 35%, 62%)',
+                rgb: 'rgb(184, 168, 134)',
+                hex: '#b8a886'
+            },
         },
         getters: {
             // Mock the uniqueColors getter
@@ -97,9 +102,9 @@ const createVuexStore = (state = {}) => {
             SET_TEXT_COLOR({ commit }, type) {
                 if (type === 'light') {
                     commit('SET_TEXT_COLOR', {
-                        hsl: 'hsl(34, 78%, 91%)',
-                        rgb: 'rgb(250, 235, 215)',
-                        hex: '#faebd7',
+                        hsl: 'hsl(38, 35%, 62%)',
+                        rgb: 'rgb(184, 168, 134)',
+                        hex: '#b8a886',
                     });
                 } else if (type === 'dark') {
                     commit('SET_TEXT_COLOR', {
@@ -308,7 +313,7 @@ describe('UtilityButtons', () => {
     });
 
     it('sets the text colors to light when the light button is clicked', async () => {
-        const LIGHT_TEXT_COLOR = '#faebd7';
+        const LIGHT_TEXT_COLOR = '#b8a886';
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');

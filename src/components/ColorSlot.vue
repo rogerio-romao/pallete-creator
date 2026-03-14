@@ -3,7 +3,14 @@
   <div class="slot-container">
     <!-- label edit div  -->
     <div class="label centered">
-      <input type="text" :value="labels[slotNumber]" @change="updateLabel" />
+      <label :for="`slot-label-${slotNumber}`" class="sr-only">Slot label</label>
+      <input 
+        type="text" 
+        :value="labels[slotNumber]" 
+        @change="updateLabel" 
+        :id="`slot-label-${slotNumber}`"
+        :aria-label="`Color label for slot ${slotNumber}`"
+      />
     </div>
 
     <!-- slot  -->
@@ -13,6 +20,8 @@
       :style="{
         backgroundColor: slotBg,
       }"
+      role="button"
+      :aria-label="`Color slot ${slotNumber}: ${hex}. Click to paste color.`"
     >
       <!-- text inside slots  -->
       <span :style="{ color: lightOrDark }">{{ format(hsl) }}</span>

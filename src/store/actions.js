@@ -109,9 +109,9 @@ const actions = {
   SET_TEXT_COLOR({ commit }, type) {
     if (type === 'light') {
       commit('SET_TEXT_COLOR', {
-        hsl: 'hsl(34, 78%, 91%)',
-        rgb: 'rgb(250, 235, 215)',
-        hex: '#faebd7'
+        hsl: 'hsl(38, 35%, 62%)',
+        rgb: 'rgb(184, 168, 134)',
+        hex: '#b8a886'
       })
     } else if (type === 'dark') {
       commit('SET_TEXT_COLOR', {

@@ -1,22 +1,24 @@
 <template>
   <!-- overlay  -->
-  <div class="modal-mask">
+  <div class="modal-mask" role="dialog" aria-modal="true" aria-labelledby="save-palette-title">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
         <form @submit.prevent="savePalette">
           <!-- header  -->
           <div class="modal-header">
-            <h3>Save this palette</h3>
+            <h3 id="save-palette-title">Save this palette</h3>
           </div>
 
           <!-- body  -->
           <div class="modal-body">
             <div :class="invalid ? 'invalid save-input' : 'save-input'">
+              <label for="savePaletteName" class="sr-only">Palette name</label>
               <input
                 type="text"
                 :placeholder="placeholder"
                 v-model="paletteName"
                 id="savePaletteName"
+                ref="nameInput"
               />
             </div>
           </div>
@@ -39,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
@@ -47,6 +49,22 @@ import 'mosha-vue-toastify/dist/style.css'
 const store = useStore();
 
 const emit = defineEmits(["close"]);
+const nameInput = ref(null);
+
+onMounted(() => {
+  nameInput.value?.focus();
+  document.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown);
+});
+
+const handleKeydown = (e) => {
+  if (e.key === 'Escape') {
+    emit('close');
+  }
+};
 
 const paletteName = ref("");
 const saved = ref(false);

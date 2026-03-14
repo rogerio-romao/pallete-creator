@@ -87,7 +87,7 @@
     // Text color to light
 
     const setLightText = () => {
-        document.documentElement.style.setProperty('--text-color', '#faebd7');
+        document.documentElement.style.setProperty('--text-color', '#b8a886');
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 

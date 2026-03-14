@@ -1,12 +1,12 @@
 <template>
     <!-- overlay  -->
-    <div class="modal-mask">
+    <div class="modal-mask" role="dialog" aria-modal="true" aria-labelledby="signin-title">
         <div class="modal-wrapper" @click.self="$emit('close')">
             <div class="modal-container sign-in">
                 <!-- header  -->
                 <div class="modal-header">
-                    <h3 v-if="mode === 'signin'">Sign In</h3>
-                    <h3 v-else>Register</h3>
+                    <h3 v-if="mode === 'signin'" id="signin-title">Sign In</h3>
+                    <h3 v-else id="signin-title">Register</h3>
                 </div>
 
                 <!-- body  -->
@@ -21,6 +21,7 @@
                                 placeholder="Enter email"
                                 v-model.trim="email"
                                 id="email"
+                                ref="emailInput"
                             />
                         </div>
 
@@ -94,11 +95,29 @@
     } from 'firebase/auth';
     import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted, onUnmounted } from 'vue';
     import { useStore } from 'vuex';
+
+    const emit = defineEmits(['close']);
 
     const store = useStore();
     const auth = getAuth();
+    const emailInput = ref(null);
+
+    onMounted(() => {
+        emailInput.value?.focus();
+        document.addEventListener('keydown', handleKeydown);
+    });
+
+    onUnmounted(() => {
+        document.removeEventListener('keydown', handleKeydown);
+    });
+
+    const handleKeydown = (e) => {
+        if (e.key === 'Escape') {
+            emit('close');
+        }
+    };
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -108,8 +127,6 @@
             store.dispatch('SIGNOUT_USER');
         }
     });
-
-    const emit = defineEmits(['close']);
 
     const email = ref('');
     const password = ref('');

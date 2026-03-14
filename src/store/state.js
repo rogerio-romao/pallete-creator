@@ -33,9 +33,9 @@ export default function state() {
     },
     // default light text, changes when using the dark text button
     textColor: {
-      hsl: 'hsl(34, 78%, 91%)',
-      rgb: 'rgb(250, 235, 215)',
-      hex: '#faebd7'
+      hsl: 'hsl(38, 35%, 62%)',
+      rgb: 'rgb(184, 168, 134)',
+      hex: '#b8a886'
     },
     // holds all the generated variations, before filtering them to unique values in the getter
     allColors: {
