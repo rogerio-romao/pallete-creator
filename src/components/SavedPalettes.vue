@@ -2,7 +2,7 @@
   <!-- panel wrapper  -->
   <section class="saved-palette-pane panel">
     <!-- panel collapsed message  -->
-    <p v-if="isSavedPaneCollapsed">Click the plus sign to reopen panel.</p>
+    <p v-if="isSavedPaneCollapsed">Click the arrow to expand panel.</p>
     <div class="hide" v-if="!isSavedPaneCollapsed">
       <!-- header text  -->
       <div class="panel-header">
@@ -69,17 +69,25 @@ const editPalette = (palette) => {
 
 // Deletes the clicked on palette from the saved palletes.
 
-const deletePalette = (id) => {
+const deletePalette = async (id) => {
   const confirm = window.confirm(
     "Are you sure you want to delete this palette? This action cannot be undone."
   );
   if (confirm) {
-    store.dispatch("DELETE_PALETTE", id);
-    createToast('Palette deleted!', {
-      type: "info",
-      position: "bottom-right",
-      hideProgressBar: true,
-    })
+    try {
+      await store.dispatch("DELETE_PALETTE", id);
+      createToast('Palette deleted!', {
+        type: "info",
+        position: "bottom-right",
+        hideProgressBar: true,
+      })
+    } catch (e) {
+      createToast('Failed to delete palette. Please try again.', {
+        type: "danger",
+        position: "bottom-right",
+        hideProgressBar: true,
+      })
+    }
   }
 };
 </script>

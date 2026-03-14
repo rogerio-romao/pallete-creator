@@ -72,22 +72,30 @@ const placeholder = ref("Palette name");
 const invalid = ref(false);
 const isUserSignedIn = computed(() => store.state.isUserSignedIn);
 
-const savePalette = () => {
+const savePalette = async () => {
   if (paletteName.value) {
     if (isUserSignedIn.value) {
-      store.dispatch("SAVE_TO_CLOUD", {
-        name: paletteName.value,
-        scheme: store.getters.currentScheme,
-      });
-      paletteName.value = "";
-      saved.value = true;
-      invalid.value = false;
-      createToast('Palette saved!', {
-        type: "success",
-        position: "bottom-right",
-        hideProgressBar: true,
-      })
-      emit('close')
+      try {
+        await store.dispatch("SAVE_TO_CLOUD", {
+          name: paletteName.value,
+          scheme: store.getters.currentScheme,
+        });
+        paletteName.value = "";
+        saved.value = true;
+        invalid.value = false;
+        createToast('Palette saved!', {
+          type: "success",
+          position: "bottom-right",
+          hideProgressBar: true,
+        })
+        emit('close')
+      } catch (e) {
+        createToast('Failed to save palette. Please try again.', {
+          type: "danger",
+          position: "bottom-right",
+          hideProgressBar: true,
+        })
+      }
     } else {
       paletteName.value = "";
       placeholder.value = "Login to save";

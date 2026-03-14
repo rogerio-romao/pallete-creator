@@ -19,8 +19,13 @@ const actions = {
   },
   // deletes a palette from cloud storage (only if owned by current user)
   async DELETE_PALETTE({ commit, state, dispatch }, id) {
-    await deleteDoc(doc(db, 'palettes', id))
-    dispatch('LOAD_PALETTES')
+    try {
+      await deleteDoc(doc(db, 'palettes', id))
+      dispatch('LOAD_PALETTES')
+    } catch (e) {
+      console.error('Failed to delete palette:', e)
+      throw e
+    }
   },
   // trigerred when user generates a main color
   GENERATE_VARIATIONS({ commit }, { color, fn }) {
@@ -36,14 +41,19 @@ const actions = {
       commit('SET_SAVED_PALETTES', [])
       return
     }
-    const q = query(collection(db, 'palettes'), where('user', '==', state.userEmail))
-    const querySnapshot = await getDocs(q)
-    const palettes = querySnapshot.docs.map(doc => {
-      const data = doc.data()
-      data.id = doc.id
-      return data
-    })
-    commit('SET_SAVED_PALETTES', palettes)
+    try {
+      const q = query(collection(db, 'palettes'), where('user', '==', state.userEmail))
+      const querySnapshot = await getDocs(q)
+      const palettes = querySnapshot.docs.map(doc => {
+        const data = doc.data()
+        data.id = doc.id
+        return data
+      })
+      commit('SET_SAVED_PALETTES', palettes)
+    } catch (e) {
+      console.error('Failed to load palettes:', e)
+      commit('SET_SAVED_PALETTES', [])
+    }
   },
   // pastes the selected variation on the specific color slot
   PASTE_COLOR({ commit, state, dispatch }, slot) {
@@ -94,14 +104,21 @@ const actions = {
   },
   // fills the slots with random unique colors from the variations
   SET_RANDOM_SCHEME({ commit, state, getters }) {
-    const unique = [...getters.uniqueColors]
+    const unique = [...getters.uniqueColors].filter(hsl => hsl !== state.mainHSL)
+    if (unique.length === 0) return
+    
     const randomScheme = new Set()
-    while (randomScheme.size < 4) {
+    const maxAttempts = 100
+    let attempts = 0
+    
+    while (randomScheme.size < 4 && attempts < maxAttempts) {
       const hsl = unique[Math.floor(Math.random() * unique.length)]
-      if (!randomScheme.has(hsl) && hsl !== state.mainHSL) {
+      if (!randomScheme.has(hsl)) {
         randomScheme.add(hsl)
       }
+      attempts++
     }
+    
     let slot = 2
     randomScheme.forEach(hsl => {
       const rgb = hslToRgb(hsl)

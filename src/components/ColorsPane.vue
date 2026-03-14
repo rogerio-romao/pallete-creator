@@ -2,7 +2,7 @@
   <!-- wrapper  -->
   <section class="palette-pane panel">
     <!-- panel collapsed message  -->
-    <p v-if="isColorPaneCollapsed">Click the plus sign to reopen panel.</p>
+    <p v-if="isColorPaneCollapsed">Click the arrow to expand panel.</p>
     <div class="hide" v-if="!isColorPaneCollapsed">
       <!-- header  -->
       <div class="panel-header">
