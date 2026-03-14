@@ -119,27 +119,11 @@
     // Back to default colors
 
     const resetSiteColors = () => {
-        const siteColors = store.state.siteColors;
-        document.documentElement.style.setProperty(
-            '--clr-main',
-            siteColors.main
-        );
-        document.documentElement.style.setProperty(
-            '--clr-complementary',
-            siteColors.complementary
-        );
-        document.documentElement.style.setProperty(
-            '--clr-light',
-            siteColors.light
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent',
-            siteColors.accent
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            siteColors.dark
-        );
+        document.documentElement.style.setProperty('--clr-main', '#1d1702');
+        document.documentElement.style.setProperty('--clr-complementary', '#f2edd9');
+        document.documentElement.style.setProperty('--clr-light', '#d9def2');
+        document.documentElement.style.setProperty('--clr-accent', '#087d65');
+        document.documentElement.style.setProperty('--clr-accent-light', '#404f4c');
     };
 
     // Test this palette on the site

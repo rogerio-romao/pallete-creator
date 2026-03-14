@@ -51,14 +51,6 @@ export default function state() {
     labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
     // holds all local storage saved color schemes
     savedPalettes: [],
-    // holds the default site color scheme, changeable i the interface
-    siteColors: {
-      main: '#1d1702',
-      complementary: '#f2edd9',
-      light: '#d9def2',
-      accent: '#087d65',
-      dark: '#404f4c'
-    },
     isUserSignedIn: false,
     userEmail: ''
   }

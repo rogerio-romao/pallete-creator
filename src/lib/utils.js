@@ -1,10 +1,12 @@
 // Generate random HSL color
 
+export const toHslString = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`
+
 export const generateHsl = () => {
   const h = Math.floor(Math.random() * 360)
   const s = Math.floor(Math.random() * 100)
   const l = Math.floor(Math.random() * 100)
-  return `hsl(${h}, ${s}%, ${l}%)`
+  return toHslString(h, s, l)
 }
 
 // Convert HSL color to RGB
@@ -104,13 +106,13 @@ export const generateComplement = hsl => {
   const h4 = (h + 150) % 360
   const l2 = (l - 30 + 100) % 100
   return [
-    `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h}, ${s}%, ${l2}%)`,
-    `hsl(${h}, ${50}%, ${90}%)`,
-    `hsl(${h2}, ${s}%, ${l2}%)`,
-    `hsl(${h2}, ${50}%, ${90}%)`,
-    `hsl(${h3}, ${s}%, ${l}%)`,
-    `hsl(${h4}, ${s}%, ${l}%)`
+    toHslString(h2, s, l),
+    toHslString(h, s, l2),
+    toHslString(h, 50, 90),
+    toHslString(h2, s, l2),
+    toHslString(h2, 50, 90),
+    toHslString(h3, s, l),
+    toHslString(h4, s, l)
   ]
 }
 
@@ -119,14 +121,14 @@ export const generateComplement = hsl => {
 export const generateMono = hsl => {
   const [h, s, l] = hsl.match(/\d+/g).map(Number)
   return [
-    `hsl(${h}, ${s}%, ${8}%)`,
-    `hsl(${h}, ${s}%, ${20}%)`,
-    `hsl(${h}, ${s}%, ${32}%)`,
-    `hsl(${h}, ${s}%, ${45}%)`,
-    `hsl(${h}, ${s}%, ${58}%)`,
-    `hsl(${h}, ${s}%, ${72}%)`,
-    `hsl(${h}, ${s}%, ${85}%)`,
-    `hsl(${h}, ${s}%, ${95}%)`
+    toHslString(h, s, 8),
+    toHslString(h, s, 20),
+    toHslString(h, s, 32),
+    toHslString(h, s, 45),
+    toHslString(h, s, 58),
+    toHslString(h, s, 72),
+    toHslString(h, s, 85),
+    toHslString(h, s, 95)
   ]
 }
 
@@ -137,12 +139,12 @@ export const generateTriad = hsl => {
   const h2 = (h + 120) % 360
   const h3 = (h + 240) % 360
   return [
-    `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h3}, ${s}%, ${l}%)`,
-    `hsl(${h2}, ${s}%, ${Math.abs((l - 20) % 100)}%)`,
-    `hsl(${h3}, ${s}%, ${Math.abs((l - 20) % 100)}%)`,
-    `hsl(${h2}, ${s}%, ${l + 20}%)`,
-    `hsl(${h3}, ${s}%, ${l + 20}%)`
+    toHslString(h2, s, l),
+    toHslString(h3, s, l),
+    toHslString(h2, s, Math.abs((l - 20) % 100)),
+    toHslString(h3, s, Math.abs((l - 20) % 100)),
+    toHslString(h2, s, l + 20),
+    toHslString(h3, s, l + 20)
   ]
 }
 
@@ -158,12 +160,12 @@ export const generateAnalogous = hsl => {
   const h7 = (h + 90) % 360
 
   return [
-    `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h3}, ${s}%, ${l}%)`,
-    `hsl(${h4}, ${s}%, ${l}%)`,
-    `hsl(${h5}, ${s}%, ${l}%)`,
-    `hsl(${h6}, ${s}%, ${l}%)`,
-    `hsl(${h7}, ${s}%, ${l}%)`
+    toHslString(h2, s, l),
+    toHslString(h3, s, l),
+    toHslString(h4, s, l),
+    toHslString(h5, s, l),
+    toHslString(h6, s, l),
+    toHslString(h7, s, l)
   ]
 }
 
@@ -180,13 +182,13 @@ export const generateSaturations = hsl => {
   const s8 = Math.abs((s - 40) % 100)
   const s9 = (s + 40) % 100
   return [
-    `hsl(${h}, ${s2}%, ${l}%)`,
-    `hsl(${h}, ${s3}%, ${l}%)`,
-    `hsl(${h}, ${s4}%, ${l}%)`,
-    `hsl(${h}, ${s5}%, ${l}%)`,
-    `hsl(${h}, ${s6}%, ${l}%)`,
-    `hsl(${h}, ${s7}%, ${l}%)`,
-    `hsl(${h}, ${s8}%, ${l}%)`,
-    `hsl(${h}, ${s9}%, ${l}%)`
+    toHslString(h, s2, l),
+    toHslString(h, s3, l),
+    toHslString(h, s4, l),
+    toHslString(h, s5, l),
+    toHslString(h, s6, l),
+    toHslString(h, s7, l),
+    toHslString(h, s8, l),
+    toHslString(h, s9, l)
   ]
 }

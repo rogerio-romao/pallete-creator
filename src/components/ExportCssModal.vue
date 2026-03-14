@@ -97,18 +97,9 @@ const changeMode = (newMode) => {
 
 // Copying the code to the clipboard
 
-const selectAll = () => {
-  // copy selected text to clipboard
+const selectAll = async () => {
   const text = document.querySelector(".code-wrapper").innerText;
-  const el = document.createElement("textarea");
-  el.value = text;
-  el.setAttribute("readonly", "");
-  el.style.position = "absolute";
-  el.style.left = "-9999px";
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
+  await navigator.clipboard.writeText(text);
   copied.value = true;
   createToast('CSS copied to clipboard', {
     type: "success",

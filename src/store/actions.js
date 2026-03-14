@@ -9,7 +9,7 @@ import {
   generateSaturations
 } from '../lib/utils'
 import { app, db } from '../lib/firebase'
-import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, doc, deleteDoc, where, query } from 'firebase/firestore'
 
 const actions = {
   // trigerred when user clicks on a mini slot for copying
@@ -17,7 +17,7 @@ const actions = {
     commit('SET_COPIED_COLOR', color)
     commit('SET_COPIED_COLOR_INDEX', index)
   },
-  // deletes a scheme from local storage
+  // deletes a palette from cloud storage (only if owned by current user)
   async DELETE_PALETTE({ commit, state, dispatch }, id) {
     await deleteDoc(doc(db, 'palettes', id))
     dispatch('LOAD_PALETTES')
@@ -31,8 +31,13 @@ const actions = {
       commit('ADD_COLOR', { hsl, rgb, hex })
     })
   },
-  async LOAD_PALETTES({ commit }) {
-    const querySnapshot = await getDocs(collection(db, 'palettes'))
+  async LOAD_PALETTES({ commit, state }) {
+    if (!state.userEmail) {
+      commit('SET_SAVED_PALETTES', [])
+      return
+    }
+    const q = query(collection(db, 'palettes'), where('user', '==', state.userEmail))
+    const querySnapshot = await getDocs(q)
     const palettes = querySnapshot.docs.map(doc => {
       const data = doc.data()
       data.id = doc.id

@@ -87,7 +87,7 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { generateHsl, hexToHsl, rgbToHsl } from "../lib/utils";
+import { generateHsl, hexToHsl, rgbToHsl, toHslString } from "../lib/utils";
 
 const store = useStore();
 
@@ -130,7 +130,7 @@ const submitHsl = (e) => {
   const val = hslInput.value
   if (!val) return;
   const [h, s, l] = val.split(",").map(Number);
-  const hsl = `hsl(${h}, ${s}%, ${l}%)`;
+  const hsl = toHslString(h, s, l);
   store.dispatch("SET_MAIN_COLOR", hsl);
   hslInput.value = "";
 };
