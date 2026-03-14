@@ -2,7 +2,6 @@
     <!-- NAV  -->
     <MainNav
         @openInstructionsModal="showInstructionsModal = true"
-        @openSignInModal="showSignInModal = true"
     />
 
     <!-- MAIN  -->
@@ -20,7 +19,6 @@
             <UtilityButtons
                 @copyPalette="showCopyModal = true"
                 @savePalette="showSaveModal = true"
-                @openSignInModal="showSignInModal = true"
             />
         </div>
 
@@ -65,7 +63,7 @@
         </div>
 
         <!-- saved palletes -->
-        <div v-if="isLoggedIn">
+        <div v-if="savedPalettes.length > 0">
             <h2>
                 Saved Palettes
                 <span
@@ -105,11 +103,6 @@
     <transition name="modal">
         <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
     </transition>
-
-    <!-- signin modal -->
-    <transition name="modal">
-        <SignInModal v-if="showSignInModal" @close="showSignInModal = false" />
-    </transition>
 </template>
 
 <script setup>
@@ -124,7 +117,6 @@
     import MiniSlots from './components/MiniSlots.vue';
     import SavedPalettes from './components/SavedPalettes.vue';
     import SaveModal from './components/SaveModal.vue';
-    import SignInModal from './components/SignInModal.vue';
     import UtilityButtons from './components/UtilityButtons.vue';
 
     const store = useStore();
@@ -132,7 +124,6 @@
     const showCopyModal = ref(false);
     const showSaveModal = ref(false);
     const showInstructionsModal = ref(false);
-    const showSignInModal = ref(false);
 
     const isColorPaneCollapsed = ref(false);
     const isMiniPaneCollapsed = ref(false);
@@ -141,7 +132,7 @@
     const uniqueColors = computed(() => store.getters.uniqueColors);
     const mainHSL = computed(() => store.state.mainHSL);
     const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
-    const isLoggedIn = computed(() => store.state.isUserSignedIn);
+    const savedPalettes = computed(() => store.state.savedPalettes);
 
     const collapseColorPane = () => {
         isColorPaneCollapsed.value = !isColorPaneCollapsed.value;

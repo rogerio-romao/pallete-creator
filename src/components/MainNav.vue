@@ -13,8 +13,6 @@
       <div class="nav-links">
         <ul>
           <li data-test="instructions-link" @click="emit('openInstructionsModal')">Instructions</li>
-          <li v-if="!isSignedIn" data-test="sign-in-link" @click="emit('openSignInModal')">Sign In</li>
-          <li v-else data-test="sign-out-link" @click="logout">Sign Out</li>
           <li
             data-test="fullscreen-link-minimised"
             v-if="!isFullscreen"
@@ -33,26 +31,11 @@
 </template>
 
 <script setup>
-import { getAuth, signOut } from "firebase/auth";
 import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
-import { app } from '../lib/firebase';
 
-const emit = defineEmits(["openInstructionsModal", "openSignInModal"]);
+const emit = defineEmits(["openInstructionsModal"]);
 
-const store = useStore()
-const auth = getAuth();
-
-const isSignedIn = computed(() => store.state.isUserSignedIn)
 const isFullscreen = ref(false)
-
-const logout = () => {
-  signOut(auth).then(() => {
-    store.dispatch('SIGNOUT_USER')
-  }).catch((error) => {
-    console.log(error)
-  });
-}
 
 // function to make the app fullscreen
 const toggleFullscreen = () => {

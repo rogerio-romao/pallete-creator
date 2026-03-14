@@ -8,7 +8,6 @@ import UtilityButtons from './UtilityButtons.vue';
 const createVuexStore = (state = {}) => {
     return createStore({
         state: {
-            isUserSignedIn: false,
             mainHSL: 'hsl(20, 20%, 20%)',
             mainSlotColor: {
                 hsl: '',
@@ -63,9 +62,6 @@ const createVuexStore = (state = {}) => {
             },
             SET_TEXT_COLOR(state, colors) {
                 state.textColor = colors;
-            },
-            SET_USER_SIGN_IN(state, value) {
-                state.isUserSignedIn = value;
             },
         },
         actions: {
@@ -358,7 +354,7 @@ describe('UtilityButtons', () => {
         expect(wrapper.emitted('copyPalette')).toBeTruthy();
     });
 
-    it('sends openSignInModal event when the save palette button is clicked by logged out user', async () => {
+    it('sends savePalette event when the save palette button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -369,24 +365,6 @@ describe('UtilityButtons', () => {
             .find('[data-test="save-palette-button"]')
             .trigger('click');
 
-        // expect to emit savePallete event
-        expect(wrapper.emitted('openSignInModal')).toBeTruthy();
-    });
-
-    it('sends savePalette event when the save palette button is clicked by logged in user', async () => {
-        store.commit('SET_USER_SIGN_IN', true); // Update the state correctly
-
-        await wrapper
-            .find('[data-test="random-scheme-button"]')
-            .trigger('click');
-
-        await wrapper.vm.$nextTick();
-
-        await wrapper
-            .find('[data-test="save-palette-button"]')
-            .trigger('click');
-
-        // expect to emit savePalette event
         expect(wrapper.emitted('savePalette')).toBeTruthy();
     });
 });

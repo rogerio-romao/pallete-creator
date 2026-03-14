@@ -16,14 +16,13 @@ const actions = {
         commit('SET_COPIED_COLOR', color);
         commit('SET_COPIED_COLOR_INDEX', index);
     },
-    // deletes a palette from cloud storage (only if owned by current user)
+    // deletes a palette from local storage
     async DELETE_PALETTE({ dispatch }, id) {
         try {
-            await paletteService.delete(id);
+            paletteService.delete(id);
             dispatch('LOAD_PALETTES');
         } catch (error) {
             console.error('Failed to delete palette:', error);
-            // Optionally, dispatch an error action or commit a mutation here
             throw error;
         }
     },
@@ -36,13 +35,9 @@ const actions = {
             commit('ADD_COLOR', { hsl, rgb, hex });
         });
     },
-    async LOAD_PALETTES({ commit, state }) {
-        if (!state.userEmail) {
-            commit('SET_SAVED_PALETTES', []);
-            return;
-        }
+    async LOAD_PALETTES({ commit }) {
         try {
-            const palettes = await paletteService.getByUser(state.userEmail);
+            const palettes = paletteService.getAll();
             commit('SET_SAVED_PALETTES', palettes);
         } catch (e) {
             console.error('Failed to load palettes:', e);
@@ -61,10 +56,9 @@ const actions = {
             commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex });
         }
     },
-    // save to cloud
-    async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
-        await paletteService.save({
-            userEmail: state.userEmail,
+    // save to local storage
+    async SAVE_TO_CLOUD({ dispatch }, { name, scheme }) {
+        paletteService.save({
             name,
             scheme,
         });
@@ -136,15 +130,6 @@ const actions = {
                 hex: '#0f131a',
             });
         }
-    },
-    // login user
-    SIGNIN_USER({ commit, dispatch }, email) {
-        commit('SET_USER', email);
-        dispatch('LOAD_PALETTES');
-    },
-    // logout user
-    SIGNOUT_USER({ commit }) {
-        commit('SET_USER', null);
     },
     // updates the label of a specific slot
     UPDATE_LABEL({ commit }, { label, slotNumber }) {
