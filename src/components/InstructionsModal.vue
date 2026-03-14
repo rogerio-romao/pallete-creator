@@ -1,12 +1,12 @@
 <template>
   <!-- overlay  -->
-  <div class="modal-mask">
+  <div class="modal-mask" role="dialog" aria-modal="true" aria-labelledby="instructions-title">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container instructions">
         <div class="instructions-wrapper">
           <!-- header  -->
           <div class="modal-header">
-            <h3>Instructions</h3>
+            <h3 id="instructions-title">Instructions</h3>
           </div>
 
           <!-- body  -->
@@ -33,7 +33,7 @@
 
           <!-- footer  -->
           <div class="modal-footer">
-            <button class="main-button" @click="$emit('close')">
+            <button class="main-button" @click="$emit('close')" ref="closeButton" autofocus>
               <i class="fas fa-times"></i>
               Close
             </button>
@@ -47,5 +47,19 @@
 <script>
 export default {
   name: "InstructionsModal",
+  mounted() {
+    this.$refs.closeButton?.focus();
+    document.addEventListener('keydown', this.handleKeydown);
+  },
+  beforeUnmount() {
+    document.removeEventListener('keydown', this.handleKeydown);
+  },
+  methods: {
+    handleKeydown(e) {
+      if (e.key === 'Escape') {
+        this.$emit('close');
+      }
+    }
+  }
 };
 </script>

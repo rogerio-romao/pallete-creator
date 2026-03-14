@@ -21,8 +21,7 @@
         "firebase": "^10.9.0",
         "mosha-vue-toastify": "^1.0.23",
         "vue": "^3.2.16",
-        "vuex": "^4.0.2",
-        "xss": "^1.0.10"
+        "vuex": "^4.0.2"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^5.0.0",

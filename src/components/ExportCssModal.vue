@@ -1,11 +1,11 @@
 <template>
   <!-- overlay  -->
-  <div class="modal-mask">
+  <div class="modal-mask" role="dialog" aria-modal="true" aria-labelledby="export-css-title">
     <div class="modal-wrapper" @click.self="$emit('close')">
       <div class="modal-container">
         <!-- header  -->
         <div class="modal-header">
-          <h3>
+          <h3 id="export-css-title">
             Export CSS
             <small>- choose color mode</small>
           </h3>
@@ -35,7 +35,7 @@
 
         <!-- footer  -->
         <div class="modal-footer export-modal-footer">
-          <button class="main-button" @click="$emit('close')">
+          <button class="main-button" @click="$emit('close')" ref="closeButton" autofocus>
             <i class="fas fa-times"></i>
             Close
           </button>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
@@ -54,11 +54,29 @@ import 'mosha-vue-toastify/dist/style.css'
 const store = useStore();
 const labels = computed(() => store.state.labels);
 const currentScheme = computed(() => store.getters.currentScheme);
+const closeButton = ref(null);
+
+const emit = defineEmits(['close']);
 
 const copied = ref(false);
 const mode = ref("hsl");
 const syntax = ref("--clr-");
 const syntaxLabel = ref("SCSS");
+
+onMounted(() => {
+  closeButton.value?.focus();
+  document.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown);
+});
+
+const handleKeydown = (e) => {
+  if (e.key === 'Escape') {
+    emit('close');
+  }
+};
 
 // SCSS / CSS syntax when exporting
 const changeSyntax = () => {
@@ -79,18 +97,9 @@ const changeMode = (newMode) => {
 
 // Copying the code to the clipboard
 
-const selectAll = () => {
-  // copy selected text to clipboard
+const selectAll = async () => {
   const text = document.querySelector(".code-wrapper").innerText;
-  const el = document.createElement("textarea");
-  el.value = text;
-  el.setAttribute("readonly", "");
-  el.style.position = "absolute";
-  el.style.left = "-9999px";
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
+  await navigator.clipboard.writeText(text);
   copied.value = true;
   createToast('CSS copied to clipboard', {
     type: "success",

@@ -2,7 +2,7 @@
   <!-- wrapper   -->
   <section class="mini-slots-pane panel">
     <!-- panel collapsed message  -->
-    <p v-if="isMiniPaneCollapsed">Click the plus sign to reopen panel.</p>
+    <p v-if="isMiniPaneCollapsed">Click the arrow to expand panel.</p>
     <div class="hide" v-if="!isMiniPaneCollapsed">
       <!-- header text  -->
       <div class="panel-header">
@@ -14,7 +14,7 @@
       </div>
 
       <!-- all the slots  -->
-      <div class="mini-slots-slots">
+      <div class="mini-slots-slots" role="listbox" aria-label="Color variations">
         <!-- one slot  -->
         <div
           v-for="(color, i) in colors"
@@ -25,6 +25,9 @@
           :key="i"
           :style="{ backgroundColor: color }"
           @click="copyColor(color, i)"
+          role="option"
+          :aria-selected="colorCopied && colorCopiedIndex === i"
+          :aria-label="`Color variation ${i + 1}: ${color}. Click to copy.`"
         ></div>
       </div>
     </div>

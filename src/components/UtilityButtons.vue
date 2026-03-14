@@ -74,8 +74,10 @@
 </template>
 
 <script setup>
+
     import { computed } from 'vue';
     import { useStore } from 'vuex';
+    import { DEFAULT_COLORS } from '../lib/colors';
 
     const emit = defineEmits(['copyPalette', 'savePalette', 'openSignInModal']);
 
@@ -86,15 +88,17 @@
 
     // Text color to light
 
+
     const setLightText = () => {
-        document.documentElement.style.setProperty('--text-color', '#faebd7');
+        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.LIGHT_TEXT);
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
     // Text color to dark
 
+
     const setDarkText = () => {
-        document.documentElement.style.setProperty('--text-color', '#0f131a');
+        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.DARK_TEXT);
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
 
@@ -118,52 +122,37 @@
 
     // Back to default colors
 
+
     const resetSiteColors = () => {
-        const siteColors = store.state.siteColors;
-        document.documentElement.style.setProperty(
-            '--clr-main',
-            siteColors.main
-        );
-        document.documentElement.style.setProperty(
-            '--clr-complementary',
-            siteColors.complementary
-        );
-        document.documentElement.style.setProperty(
-            '--clr-light',
-            siteColors.light
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent',
-            siteColors.accent
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            siteColors.dark
-        );
+        document.documentElement.style.setProperty('--clr-main', DEFAULT_COLORS.MAIN);
+        document.documentElement.style.setProperty('--clr-complementary', DEFAULT_COLORS.COMPLEMENTARY);
+        document.documentElement.style.setProperty('--clr-light', DEFAULT_COLORS.LIGHT);
+        document.documentElement.style.setProperty('--clr-accent', DEFAULT_COLORS.ACCENT);
+        document.documentElement.style.setProperty('--clr-accent-light', DEFAULT_COLORS.ACCENT_LIGHT);
     };
 
     // Test this palette on the site
 
     const setCssVars = () => {
-        const main = computed(() => store.state.mainSlotColor.hex);
-        const complementary = computed(() => store.state.slotColors.slot2.hex);
-        const light = computed(() => store.state.slotColors.slot3.hex);
-        const accent = computed(() => store.state.slotColors.slot4.hex);
-        const accentLight = computed(() => store.state.slotColors.slot5.hex);
+        const main = store.state.mainSlotColor.hex;
+        const complementary = store.state.slotColors.slot2.hex;
+        const light = store.state.slotColors.slot3.hex;
+        const accent = store.state.slotColors.slot4.hex;
+        const accentLight = store.state.slotColors.slot5.hex;
 
-        document.documentElement.style.setProperty('--clr-main', main.value);
+        document.documentElement.style.setProperty('--clr-main', main);
         document.documentElement.style.setProperty(
             '--clr-complementary',
-            complementary.value
+            complementary
         );
-        document.documentElement.style.setProperty('--clr-light', light.value);
+        document.documentElement.style.setProperty('--clr-light', light);
         document.documentElement.style.setProperty(
             '--clr-accent',
-            accent.value
+            accent
         );
         document.documentElement.style.setProperty(
             '--clr-accent-light',
-            accentLight.value
+            accentLight
         );
     };
 </script>

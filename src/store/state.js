@@ -33,9 +33,9 @@ export default function state() {
     },
     // default light text, changes when using the dark text button
     textColor: {
-      hsl: 'hsl(34, 78%, 91%)',
-      rgb: 'rgb(250, 235, 215)',
-      hex: '#faebd7'
+      hsl: 'hsl(38, 35%, 62%)',
+      rgb: 'rgb(184, 168, 134)',
+      hex: '#b8a886'
     },
     // holds all the generated variations, before filtering them to unique values in the getter
     allColors: {
@@ -51,14 +51,6 @@ export default function state() {
     labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
     // holds all local storage saved color schemes
     savedPalettes: [],
-    // holds the default site color scheme, changeable i the interface
-    siteColors: {
-      main: '#1d1702',
-      complementary: '#f2edd9',
-      light: '#d9def2',
-      accent: '#087d65',
-      dark: '#404f4c'
-    },
     isUserSignedIn: false,
     userEmail: ''
   }

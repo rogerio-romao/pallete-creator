@@ -1,18 +1,32 @@
 // Import the functions you need from the SDKs you need
-import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
+const requiredEnvVars = [
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_PROJECT_ID',
+];
+
+const missingVars = requiredEnvVars.filter(v => !import.meta.env[v]);
+
+if (missingVars.length > 0) {
+    console.error(`Missing required Firebase config: ${missingVars.join(', ')}`);
+    if (import.meta.env.DEV) {
+        throw new Error(`Missing required Firebase config: ${missingVars.join(', ')}`);
+    }
+}
+
 const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: 'palette-creator-f5cfb.firebaseapp.com',
-    projectId: 'palette-creator-f5cfb',
-    storageBucket: 'palette-creator-f5cfb.appspot.com',
-    messagingSenderId: '722337253321',
-    appId: '1:722337253321:web:942a445d7c0b57a5658a18',
-    measurementId: 'G-BNL4PBCK3H',
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore();
+// Initialize Firebase only if required config exists
+export const app = missingVars.length === 0 ? initializeApp(firebaseConfig) : null;
+export const db = app ? getFirestore() : null;

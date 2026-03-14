@@ -32,17 +32,13 @@
                     class="collapse"
                     title="Click to collapse"
                     @click="collapseColorPane"
-                    v-if="!isColorPaneCollapsed"
+                    role="button"
+                    :aria-expanded="!isColorPaneCollapsed"
+                    aria-label="Collapse color pane"
                 >
-                    <i class="far fa-minus-square"></i>
-                </span>
-                <span
-                    class="collapse"
-                    title="Click to expand"
-                    @click="collapseColorPane"
-                    v-if="isColorPaneCollapsed"
-                >
-                    <i class="far fa-plus-square"></i>
+                    <span class="chevron-wrapper" :class="{ expanded: !isColorPaneCollapsed }">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
                 </span>
             </h2>
             <ColorsPane :isColorPaneCollapsed="isColorPaneCollapsed" />
@@ -56,17 +52,13 @@
                     class="collapse"
                     title="Click to collapse"
                     @click="collapseMiniPane"
-                    v-if="!isMiniPaneCollapsed"
+                    role="button"
+                    :aria-expanded="!isMiniPaneCollapsed"
+                    aria-label="Collapse variations pane"
                 >
-                    <i class="far fa-minus-square"></i>
-                </span>
-                <span
-                    class="collapse"
-                    title="Click to expand"
-                    @click="collapseMiniPane"
-                    v-if="isMiniPaneCollapsed"
-                >
-                    <i class="far fa-plus-square"></i>
+                    <span class="chevron-wrapper" :class="{ expanded: !isMiniPaneCollapsed }">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
                 </span>
             </h2>
             <MiniSlots :isMiniPaneCollapsed="isMiniPaneCollapsed" />
@@ -80,17 +72,13 @@
                     class="collapse"
                     title="Click to collapse"
                     @click="collapseSavedPane"
-                    v-if="!isSavedPaneCollapsed"
+                    role="button"
+                    :aria-expanded="!isSavedPaneCollapsed"
+                    aria-label="Collapse saved palettes pane"
                 >
-                    <i class="far fa-minus-square"></i>
-                </span>
-                <span
-                    class="collapse"
-                    title="Click to expand"
-                    @click="collapseSavedPane"
-                    v-if="isSavedPaneCollapsed"
-                >
-                    <i class="far fa-plus-square"></i>
+                    <span class="chevron-wrapper" :class="{ expanded: !isSavedPaneCollapsed }">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
                 </span>
             </h2>
             <SavedPalettes :isSavedPaneCollapsed="isSavedPaneCollapsed" />

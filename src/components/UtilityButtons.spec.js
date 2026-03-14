@@ -37,12 +37,10 @@ const createVuexStore = (state = {}) => {
                     hex: '',
                 },
             },
-            siteColors: {
-                main: '#1d1702',
-                complementary: '#f2edd9',
-                light: '#d9def2',
-                accent: '#087d65',
-                dark: '#404f4c',
+            textColor: {
+                hsl: 'hsl(38, 35%, 62%)',
+                rgb: 'rgb(184, 168, 134)',
+                hex: '#b8a886'
             },
         },
         getters: {
@@ -97,9 +95,9 @@ const createVuexStore = (state = {}) => {
             SET_TEXT_COLOR({ commit }, type) {
                 if (type === 'light') {
                     commit('SET_TEXT_COLOR', {
-                        hsl: 'hsl(34, 78%, 91%)',
-                        rgb: 'rgb(250, 235, 215)',
-                        hex: '#faebd7',
+                        hsl: 'hsl(38, 35%, 62%)',
+                        rgb: 'rgb(184, 168, 134)',
+                        hex: '#b8a886',
                     });
                 } else if (type === 'dark') {
                     commit('SET_TEXT_COLOR', {
@@ -278,7 +276,7 @@ describe('UtilityButtons', () => {
         const mainColor = getComputedStyle(
             document.documentElement
         ).getPropertyValue('--clr-main');
-        expect(mainColor).not.toBe(store.state.siteColors.main);
+        expect(mainColor).not.toBe('#1d1702');
 
         await wrapper
             .find('[data-test="reset-site-colors-button"]')
@@ -300,15 +298,15 @@ describe('UtilityButtons', () => {
             document.documentElement
         ).getPropertyValue('--clr-accent-light');
 
-        expect(mainColorAfterReset).toBe(store.state.siteColors.main);
-        expect(complementaryColor).toBe(store.state.siteColors.complementary);
-        expect(lightColor).toBe(store.state.siteColors.light);
-        expect(accentColor).toBe(store.state.siteColors.accent);
-        expect(accentLightColor).toBe(store.state.siteColors.dark);
+        expect(mainColorAfterReset).toBe('#1d1702');
+        expect(complementaryColor).toBe('#f2edd9');
+        expect(lightColor).toBe('#d9def2');
+        expect(accentColor).toBe('#087d65');
+        expect(accentLightColor).toBe('#404f4c');
     });
 
     it('sets the text colors to light when the light button is clicked', async () => {
-        const LIGHT_TEXT_COLOR = '#faebd7';
+        const LIGHT_TEXT_COLOR = '#b8a886';
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
