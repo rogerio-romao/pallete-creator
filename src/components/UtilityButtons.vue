@@ -74,8 +74,10 @@
 </template>
 
 <script setup>
+
     import { computed } from 'vue';
     import { useStore } from 'vuex';
+    import { DEFAULT_COLORS } from '../lib/colors';
 
     const emit = defineEmits(['copyPalette', 'savePalette', 'openSignInModal']);
 
@@ -86,15 +88,17 @@
 
     // Text color to light
 
+
     const setLightText = () => {
-        document.documentElement.style.setProperty('--text-color', '#b8a886');
+        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.LIGHT_TEXT);
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
     // Text color to dark
 
+
     const setDarkText = () => {
-        document.documentElement.style.setProperty('--text-color', '#0f131a');
+        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.DARK_TEXT);
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
 
@@ -118,12 +122,13 @@
 
     // Back to default colors
 
+
     const resetSiteColors = () => {
-        document.documentElement.style.setProperty('--clr-main', '#1d1702');
-        document.documentElement.style.setProperty('--clr-complementary', '#f2edd9');
-        document.documentElement.style.setProperty('--clr-light', '#d9def2');
-        document.documentElement.style.setProperty('--clr-accent', '#087d65');
-        document.documentElement.style.setProperty('--clr-accent-light', '#404f4c');
+        document.documentElement.style.setProperty('--clr-main', DEFAULT_COLORS.MAIN);
+        document.documentElement.style.setProperty('--clr-complementary', DEFAULT_COLORS.COMPLEMENTARY);
+        document.documentElement.style.setProperty('--clr-light', DEFAULT_COLORS.LIGHT);
+        document.documentElement.style.setProperty('--clr-accent', DEFAULT_COLORS.ACCENT);
+        document.documentElement.style.setProperty('--clr-accent-light', DEFAULT_COLORS.ACCENT_LIGHT);
     };
 
     // Test this palette on the site

@@ -5,7 +5,114 @@
 
 /*  CSS CUSTOM PROPERTIES  */
 
+/* ---------------------------  */
+/* ---------- RESET ----------  */
+/* ---------------------------  */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+h1,
+h2 {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Remove list styles on ul, ol elements  */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+    max-width: 100%;
+    display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ---------------------------  */
+/* ---- CUSTOM PROPERTIES ----  */
+/* ---------------------------  */
+
 :root {
+    --clr-main: #1d1702;
+    --clr-complementary: #f2edd9;
+    --clr-light: #d9def2;
+    --clr-accent: #087d65;
+    --clr-accent-light: #404f4c;
+    --text-color: #b8a886;
+    --slot-size: 120px;
+    --mini-slot-size: 50px;
+    --base-radius: 0.5rem;
+    --sm-radius: 0.2rem;
+    --bd-lg: 1rem;
+    --mb-lg: 1.5rem;
+    --mb-md: 1rem;
+    --mb-sm: 0.5rem;
+
     --slider-thumb-dots:
         5px 0 0 -8px var(--clr-complementary),
         6px 0 0 -8px var(--clr-complementary),
@@ -243,115 +350,6 @@
         238px 0 0 -8px var(--clr-complementary),
         239px 0 0 -8px var(--clr-complementary),
         240px 0 0 -8px var(--clr-complementary);
-}
-
-/* ---------------------------  */
-/* ---------- RESET ----------  */
-/* ---------------------------  */
-
-/* Box sizing rules */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    text-rendering: optimizeLegibility;
-}
-
-/* Remove default margin */
-body,
-h1,
-h2,
-h3,
-h4,
-p,
-figure,
-blockquote,
-dl,
-dd {
-    margin: 0;
-}
-
-h1,
-h2 {
-    font-family: 'JetBrains Mono', monospace;
-}
-
-/* Remove list styles on ul, ol elements  */
-ul,
-ol {
-    list-style: none;
-}
-
-/* Set core root defaults */
-html:focus-within {
-    scroll-behavior: smooth;
-}
-
-/* Set core body defaults */
-body {
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    line-height: 1.5;
-    color: var(--text-color);
-}
-
-/* A elements that don't have a class get default styles */
-a:not([class]) {
-    text-decoration-skip-ink: auto;
-}
-
-/* Make images easier to work with */
-img,
-picture {
-    max-width: 100%;
-    display: block;
-}
-
-/* Inherit fonts for inputs and buttons */
-input,
-button,
-textarea,
-select {
-    font: inherit;
-}
-
-/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
-@media (prefers-reduced-motion: reduce) {
-    html:focus-within {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* ---------------------------  */
-/* ---- CUSTOM PROPERTIES ----  */
-/* ---------------------------  */
-
-:root {
-    --clr-main: #1d1702;
-    --clr-complementary: #f2edd9;
-    --clr-light: #d9def2;
-    --clr-accent: #087d65;
-    --clr-accent-light: #404f4c;
-    --text-color: #b8a886;
-    --slot-size: 120px;
-    --mini-slot-size: 50px;
-    --base-radius: 0.5rem;
-    --sm-radius: 0.2rem;
-    --bd-lg: 1rem;
-    --mb-lg: 1.5rem;
-    --mb-md: 1rem;
-    --mb-sm: 0.5rem;
 }
 
 /* ---------------------------  */
