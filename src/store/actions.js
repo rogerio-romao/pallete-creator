@@ -55,13 +55,16 @@ const actions = {
   // save to firebase
   async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
     try {
-      const docRef = await addDoc(collection(db, 'palettes'), {
+      await addDoc(collection(db, 'palettes'), {
         user: state.userEmail,
         name,
         scheme
       })
       dispatch('LOAD_PALETTES')
-    } catch (e) {}
+    } catch (e) {
+      console.error('Failed to save palette:', e)
+      throw e
+    }
   },
   // resets everything, sets the main color and generates variations
   SET_MAIN_COLOR({ commit, dispatch }, color) {

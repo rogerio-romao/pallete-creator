@@ -102,11 +102,12 @@ export const generateComplement = hsl => {
   const h2 = (h + 180) % 360
   const h3 = Math.abs((h - 150) % 360)
   const h4 = (h + 150) % 360
+  const l2 = (l - 30 + 100) % 100
   return [
     `hsl(${h2}, ${s}%, ${l}%)`,
-    `hsl(${h}, ${s}%, ${Math.abs((l - 30) % 100)}%)`,
+    `hsl(${h}, ${s}%, ${l2}%)`,
     `hsl(${h}, ${50}%, ${90}%)`,
-    `hsl(${h2}, ${s}%, ${Math.abs((l - 30) % 100)}%)`,
+    `hsl(${h2}, ${s}%, ${l2}%)`,
     `hsl(${h2}, ${50}%, ${90}%)`,
     `hsl(${h3}, ${s}%, ${l}%)`,
     `hsl(${h4}, ${s}%, ${l}%)`

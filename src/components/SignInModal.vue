@@ -96,7 +96,6 @@
     import 'mosha-vue-toastify/dist/style.css';
     import { ref, watch } from 'vue';
     import { useStore } from 'vuex';
-    import xss from 'xss';
 
     const store = useStore();
     const auth = getAuth();
@@ -131,8 +130,8 @@
 
     const signIn = () => {
         const userData = {
-            email: xss(email.value),
-            password: xss(password.value),
+            email: email.value,
+            password: password.value,
         };
 
         if (!userData.email.match(emailRegex)) {
@@ -167,9 +166,9 @@
 
     const signup = () => {
         const userData = {
-            email: xss(email.value),
-            password: xss(password.value),
-            passwordConfirm: xss(passwordConfirm.value),
+            email: email.value,
+            password: password.value,
+            passwordConfirm: passwordConfirm.value,
         };
 
         if (!userData.email.match(emailRegex)) {
