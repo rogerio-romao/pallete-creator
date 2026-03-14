@@ -2,6 +2,21 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
+const requiredEnvVars = [
+    'VITE_FIREBASE_API_KEY',
+    'VITE_FIREBASE_AUTH_DOMAIN',
+    'VITE_FIREBASE_PROJECT_ID',
+];
+
+const missingVars = requiredEnvVars.filter(v => !import.meta.env[v]);
+
+if (missingVars.length > 0) {
+    console.error(`Missing required Firebase config: ${missingVars.join(', ')}`);
+    if (import.meta.env.DEV) {
+        throw new Error(`Missing required Firebase config: ${missingVars.join(', ')}`);
+    }
+}
+
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -12,6 +27,6 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const db = getFirestore();
+// Initialize Firebase only if required config exists
+export const app = missingVars.length === 0 ? initializeApp(firebaseConfig) : null;
+export const db = app ? getFirestore() : null;

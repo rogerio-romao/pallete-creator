@@ -8,8 +8,7 @@ import {
   generateAnalogous,
   generateSaturations
 } from '../lib/utils'
-import { app, db } from '../lib/firebase'
-import { collection, addDoc, getDocs, doc, deleteDoc, where, query } from 'firebase/firestore'
+import { paletteService } from '../services/paletteService'
 
 const actions = {
   // trigerred when user clicks on a mini slot for copying
@@ -18,14 +17,9 @@ const actions = {
     commit('SET_COPIED_COLOR_INDEX', index)
   },
   // deletes a palette from cloud storage (only if owned by current user)
-  async DELETE_PALETTE({ commit, state, dispatch }, id) {
-    try {
-      await deleteDoc(doc(db, 'palettes', id))
-      dispatch('LOAD_PALETTES')
-    } catch (e) {
-      console.error('Failed to delete palette:', e)
-      throw e
-    }
+  async DELETE_PALETTE({ dispatch }, id) {
+    await paletteService.delete(id)
+    dispatch('LOAD_PALETTES')
   },
   // trigerred when user generates a main color
   GENERATE_VARIATIONS({ commit }, { color, fn }) {
@@ -42,13 +36,7 @@ const actions = {
       return
     }
     try {
-      const q = query(collection(db, 'palettes'), where('user', '==', state.userEmail))
-      const querySnapshot = await getDocs(q)
-      const palettes = querySnapshot.docs.map(doc => {
-        const data = doc.data()
-        data.id = doc.id
-        return data
-      })
+      const palettes = await paletteService.getByUser(state.userEmail)
       commit('SET_SAVED_PALETTES', palettes)
     } catch (e) {
       console.error('Failed to load palettes:', e)
@@ -67,19 +55,14 @@ const actions = {
       commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex })
     }
   },
-  // save to firebase
+  // save to cloud
   async SAVE_TO_CLOUD({ commit, state, dispatch }, { name, scheme }) {
-    try {
-      await addDoc(collection(db, 'palettes'), {
-        user: state.userEmail,
-        name,
-        scheme
-      })
-      dispatch('LOAD_PALETTES')
-    } catch (e) {
-      console.error('Failed to save palette:', e)
-      throw e
-    }
+    await paletteService.save({
+      userEmail: state.userEmail,
+      name,
+      scheme
+    })
+    dispatch('LOAD_PALETTES')
   },
   // resets everything, sets the main color and generates variations
   SET_MAIN_COLOR({ commit, dispatch }, color) {
