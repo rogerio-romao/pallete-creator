@@ -1,9 +1,11 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+
 import store from '../store/index';
+
 import MainColorBar from './MainColorBar.vue';
 
-describe('MainColorBar', () => {
+// oxlint-disable-next-line max-lines-per-function
+describe('component MainColorBar', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -13,7 +15,7 @@ describe('MainColorBar', () => {
     });
 
     it('renders', () => {
-        expect(wrapper.exists()).toBe(true);
+        expect(wrapper.exists()).toBeTruthy();
     });
 
     it('sets the main color when the random button is clicked', async () => {

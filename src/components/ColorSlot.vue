@@ -41,10 +41,10 @@
 
     import ColorControls from './ColorControls.vue';
 
-    const props = defineProps({
+    const { slotNumber } = defineProps({
         slotNumber: {
-            type: Number,
             default: 1,
+            type: Number,
         },
     });
 
@@ -54,55 +54,56 @@
 
     // Getting values to display in the slot
 
-    const hsl = computed(() => {
-        return props.slotNumber === 1
+    const hsl = computed(() =>
+        slotNumber === 1
             ? store.state.mainSlotColor.hsl
-            : store.state.slotColors[`slot${props.slotNumber}`].hsl;
-    });
+            : store.state.slotColors[`slot${slotNumber}`].hsl,
+    );
 
-    const rgb = computed(() => {
-        return props.slotNumber === 1
+    const rgb = computed(() =>
+        slotNumber === 1
             ? store.state.mainSlotColor.rgb
-            : store.state.slotColors[`slot${props.slotNumber}`].rgb;
-    });
+            : store.state.slotColors[`slot${slotNumber}`].rgb,
+    );
 
-    const hex = computed(() => {
-        return props.slotNumber === 1
+    const hex = computed(() =>
+        slotNumber === 1
             ? store.state.mainSlotColor.hex
-            : store.state.slotColors[`slot${props.slotNumber}`].hex;
-    });
+            : store.state.slotColors[`slot${slotNumber}`].hex,
+    );
 
     // Uility to get rid of spaces in the color codes before displaying them
 
-    const format = (str) => str.replace(/ /g, '');
+    const format = (str) => str.replaceAll(' ', '');
 
     // Getting the background color of the slot
 
     const slotBg = computed(() =>
-        props.slotNumber === 1
+        slotNumber === 1
             ? store.state.mainHSL
-            : store.state.slotColors[`slot${props.slotNumber}`].hsl,
+            : store.state.slotColors[`slot${slotNumber}`].hsl,
     );
 
     // Changes the text color of the slot to make it readable on light or dark backgrounds
 
     const lightOrDark = computed(() => {
-        const lum = parseInt(hsl.value.split(',')[2]);
+        const lum = Number.parseInt(hsl.value.split(',')[2], 10);
+        // oxlint-disable-next-line no-magic-numbers
         return lum < 50 ? 'white' : 'black';
     });
 
     // Paste a color from the mini palette to the slot
 
     const pasteColor = () => {
-        store.dispatch('PASTE_COLOR', props.slotNumber);
+        store.dispatch('PASTE_COLOR', slotNumber);
     };
 
     // Handles changing the text in the labels
 
     const updateLabel = (e) => {
         store.dispatch('UPDATE_LABEL', {
-            slotNumber: props.slotNumber,
             label: e.target.value.trim(),
+            slotNumber,
         });
     };
 </script>

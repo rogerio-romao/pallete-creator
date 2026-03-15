@@ -1,0 +1,95 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": [
+        "eslint",
+        "unicorn",
+        "oxc",
+        "import",
+        "jsdoc",
+        "promise",
+        "vue"
+    ],
+    "categories": {
+        "correctness": "error",
+        "nursery": "warn",
+        "pedantic": "warn",
+        "perf": "warn",
+        "restriction": "warn",
+        "style": "warn",
+        "suspicious": "warn"
+    },
+    "rules": {
+        "eslint/capitalized-comments": "off",
+        "eslint/init-declarations": "off",
+        "eslint/id-length": "off",
+        "eslint/max-statements": ["warn", 16],
+        "eslint/no-magic-numbers": [
+            "warn",
+            {
+                "ignore": [0, 1],
+                "ignoreArrayIndexes": true
+            }
+        ],
+        "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+        "eslint/no-ternary": "off",
+        "eslint/sort-imports": [
+            "warn",
+            {
+                "ignoreCase": true,
+                "allowSeparatedGroups": true,
+                "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+            }
+        ],
+        "import/group-exports": "off",
+        "import/max-dependencies": ["warn", { "max": 11 }],
+        "import/no-default-export": "off",
+        "import/no-named-export": "off",
+        "import/no-relative-parent-imports": "off",
+        "oxc/no-async-await": "off",
+        "oxc/no-optional-chaining": "off",
+        "unicorn/filename-case": [
+            "error",
+            {
+                "cases": {
+                    "camelCase": true,
+                    "pascalCase": true
+                }
+            }
+        ],
+        "unicorn/no-null": "off",
+        "vitest/no-hooks": "off"
+    },
+    "settings": {
+        "jsdoc": {
+            "ignorePrivate": false,
+            "ignoreInternal": false,
+            "ignoreReplacesDocs": true,
+            "overrideReplacesDocs": true,
+            "augmentsExtendsReplacesDocs": false,
+            "implementsReplacesDocs": false,
+            "exemptDestructuredRootsFromChecks": false,
+            "tagNamePreference": {}
+        },
+        "vitest": {
+            "typecheck": false
+        }
+    },
+    "env": {
+        "browser": true,
+        "builtin": true
+    },
+    "overrides": [
+        {
+            "files": ["**/*.test.*", "**/*.spec.*", "**/__tests__/**/*"],
+            "plugins": ["vitest"],
+            "env": {
+                "vitest": true
+            }
+        }
+    ],
+    "globals": {
+        "defineEmits": "readonly",
+        "defineProps": "readonly"
+    },
+    "ignorePatterns": []
+}

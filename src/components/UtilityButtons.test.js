@@ -1,74 +1,23 @@
-import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+// oxlint-disable jest/max-expects
+// oxlint-disable max-lines
+
 import { createStore } from 'vuex';
-// import store from '../store/index';
+import { mount } from '@vue/test-utils';
+
+import DEFAULT_HEX_COLORS from '../lib/colors';
 import UtilityButtons from './UtilityButtons.vue';
 
+const MIN_SCHEME_COLORS = 4;
+
 // Create a mock store
-const createVuexStore = (state = {}) => {
-    return createStore({
-        state: {
-            mainHSL: 'hsl(20, 20%, 20%)',
-            mainSlotColor: {
-                hsl: '',
-                rgb: '',
-                hex: '',
-            },
-            slotColors: {
-                slot2: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot3: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot4: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-                slot5: {
-                    hsl: '',
-                    rgb: '',
-                    hex: '',
-                },
-            },
-            textColor: {
-                hsl: 'hsl(38, 35%, 62%)',
-                rgb: 'rgb(184, 168, 134)',
-                hex: '#b8a886'
-            },
-        },
-        getters: {
-            // Mock the uniqueColors getter
-            uniqueColors: () => [
-                'hsl(180, 50%, 50%)',
-                'hsl(200, 50%, 50%)',
-                'hsl(220, 50%, 50%)',
-                'hsl(240, 50%, 50%)',
-                'hsl(260, 50%, 50%)',
-            ],
-            fullSchemeSet: (state) =>
-                Object.values(state.slotColors).every(
-                    (color) => color.hsl !== ''
-                ),
-        },
-        mutations: {
-            SET_SLOT_COLOR: (state, { slot, hsl, rgb, hex }) => {
-                state.slotColors[slot] = { hsl, rgb, hex };
-            },
-            SET_TEXT_COLOR(state, colors) {
-                state.textColor = colors;
-            },
-        },
+// oxlint-disable-next-line max-lines-per-function
+const createVuexStore = (_state = {}) =>
+    createStore({
         actions: {
             SET_RANDOM_SCHEME({ commit, state, getters }) {
                 const unique = [...getters.uniqueColors];
                 const randomScheme = new Set();
-                while (randomScheme.size < 4) {
+                while (randomScheme.size < MIN_SCHEME_COLORS) {
                     const hsl =
                         unique[Math.floor(Math.random() * unique.length)];
                     if (!randomScheme.has(hsl) && hsl !== state.mainHSL) {
@@ -76,38 +25,95 @@ const createVuexStore = (state = {}) => {
                     }
                 }
                 let slot = 2;
-                randomScheme.forEach((hsl) => {
-                    const rgb = `rgb(0, 0, 0)`; // Simplified for testing
-                    const hex = '#000000'; // Simplified for testing
+                for (const hsl of randomScheme) {
+                    const rgb = `rgb(0, 0, 0)`;
+                    const hex = '#000000';
                     commit('SET_SLOT_COLOR', {
-                        slot: `slot${slot}`,
+                        hex,
                         hsl,
                         rgb,
-                        hex,
+                        slot: `slot${slot}`,
                     });
-                    slot++;
-                });
+                    slot += 1;
+                }
             },
             SET_TEXT_COLOR({ commit }, type) {
                 if (type === 'light') {
                     commit('SET_TEXT_COLOR', {
+                        hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
                         hsl: 'hsl(38, 35%, 62%)',
                         rgb: 'rgb(184, 168, 134)',
-                        hex: '#b8a886',
                     });
                 } else if (type === 'dark') {
                     commit('SET_TEXT_COLOR', {
+                        hex: DEFAULT_HEX_COLORS.DARK_TEXT,
                         hsl: 'hsl(218, 27%, 8%)',
                         rgb: 'rgb(15, 19, 26)',
-                        hex: '#0f131a',
                     });
                 }
             },
         },
+        getters: {
+            // Mock the uniqueColors getter
+            fullSchemeSet: (state) =>
+                Object.values(state.slotColors).every(
+                    (color) => color.hsl !== '',
+                ),
+            uniqueColors: () => [
+                'hsl(180, 50%, 50%)',
+                'hsl(200, 50%, 50%)',
+                'hsl(220, 50%, 50%)',
+                'hsl(240, 50%, 50%)',
+                'hsl(260, 50%, 50%)',
+            ],
+        },
+        mutations: {
+            SET_SLOT_COLOR: (state, { slot, hsl, rgb, hex }) => {
+                state.slotColors[slot] = { hex, hsl, rgb };
+            },
+            SET_TEXT_COLOR(state, colors) {
+                state.textColor = colors;
+            },
+        },
+        state: {
+            mainHSL: 'hsl(20, 20%, 20%)',
+            mainSlotColor: {
+                hex: '',
+                hsl: '',
+                rgb: '',
+            },
+            slotColors: {
+                slot2: {
+                    hex: '',
+                    hsl: '',
+                    rgb: '',
+                },
+                slot3: {
+                    hex: '',
+                    hsl: '',
+                    rgb: '',
+                },
+                slot4: {
+                    hex: '',
+                    hsl: '',
+                    rgb: '',
+                },
+                slot5: {
+                    hex: '',
+                    hsl: '',
+                    rgb: '',
+                },
+            },
+            textColor: {
+                hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
+                hsl: 'hsl(38, 35%, 62%)',
+                rgb: 'rgb(184, 168, 134)',
+            },
+        },
     });
-};
 
-describe('UtilityButtons', () => {
+// oxlint-disable-next-line max-lines-per-function
+describe('component UtilityButtons', () => {
     let wrapper;
     let store;
 
@@ -119,12 +125,12 @@ describe('UtilityButtons', () => {
     });
 
     it('renders the component', () => {
-        expect(wrapper.find('[data-test="utility-buttons"]').exists()).toBe(
-            true
-        );
         expect(
-            wrapper.find('[data-test="random-scheme-button"]').exists()
-        ).toBe(true);
+            wrapper.find('[data-test="utility-buttons"]').exists(),
+        ).toBeTruthy();
+        expect(
+            wrapper.find('[data-test="random-scheme-button"]').exists(),
+        ).toBeTruthy();
     });
 
     it('calls SET_RANDOM_SCHEME when random button is clicked', async () => {
@@ -138,6 +144,7 @@ describe('UtilityButtons', () => {
         spy.mockRestore();
     });
 
+    // oxlint-disable-next-line max-statements
     it('fills the slots with random colors', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
@@ -148,7 +155,7 @@ describe('UtilityButtons', () => {
         await wrapper.vm.$nextTick();
         await wrapper.vm.$nextTick();
 
-        const slotColors = store.state.slotColors;
+        const { slotColors } = store.state;
         expect(slotColors.slot2.hsl).not.toBe('');
         expect(slotColors.slot2.hsl).not.toBe(store.state.mainHSL);
         expect(slotColors.slot2.hsl).not.toBe(slotColors.slot3.hsl);
@@ -198,11 +205,11 @@ describe('UtilityButtons', () => {
             'save-palette-button',
         ];
 
-        buttons.forEach((button) => {
-            expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(
-                false
-            );
-        });
+        for (const button of buttons) {
+            expect(
+                wrapper.find(`[data-test="${button}"]`).exists(),
+            ).toBeFalsy();
+        }
 
         await wrapper
             .find('[data-test="random-scheme-button"]')
@@ -211,11 +218,14 @@ describe('UtilityButtons', () => {
         // wait for the next tick
         await wrapper.vm.$nextTick();
 
-        buttons.forEach((button) => {
-            expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(true);
-        });
+        for (const button of buttons) {
+            expect(
+                wrapper.find(`[data-test="${button}"]`).exists(),
+            ).toBeTruthy();
+        }
     });
 
+    // oxlint-disable-next-line max-statements
     it('sets the theme colors when the test palette button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
@@ -234,19 +244,19 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
         const complementaryColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-complementary');
         const lightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-light');
         const accentColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent');
         const accentLightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent-light');
 
         expect(mainColor).toBe(mainSlotColor);
@@ -256,6 +266,7 @@ describe('UtilityButtons', () => {
         expect(accentLightColor).toBe(slot5Color);
     });
 
+    // oxlint-disable-next-line max-statements
     it('resets the site colors when the reset button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
@@ -270,39 +281,38 @@ describe('UtilityButtons', () => {
         await wrapper.vm.$nextTick();
 
         const mainColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
-        expect(mainColor).not.toBe('#1d1702');
+        expect(mainColor).not.toBe(DEFAULT_HEX_COLORS.MAIN);
 
         await wrapper
             .find('[data-test="reset-site-colors-button"]')
             .trigger('click');
 
         const mainColorAfterReset = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
         const complementaryColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-complementary');
         const lightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-light');
         const accentColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent');
         const accentLightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent-light');
 
-        expect(mainColorAfterReset).toBe('#1d1702');
-        expect(complementaryColor).toBe('#f2edd9');
-        expect(lightColor).toBe('#d9def2');
-        expect(accentColor).toBe('#087d65');
-        expect(accentLightColor).toBe('#404f4c');
+        expect(mainColorAfterReset).toBe(DEFAULT_HEX_COLORS.MAIN);
+        expect(complementaryColor).toBe(DEFAULT_HEX_COLORS.COMPLEMENTARY);
+        expect(lightColor).toBe(DEFAULT_HEX_COLORS.LIGHT);
+        expect(accentColor).toBe(DEFAULT_HEX_COLORS.ACCENT);
+        expect(accentLightColor).toBe(DEFAULT_HEX_COLORS.ACCENT_LIGHT);
     });
 
     it('sets the text colors to light when the light button is clicked', async () => {
-        const LIGHT_TEXT_COLOR = '#b8a886';
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -314,15 +324,14 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainTextColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--text-color');
 
         expect(mainTextColor).toBe(store.state.textColor.hex);
-        expect(mainTextColor).toBe(LIGHT_TEXT_COLOR);
+        expect(mainTextColor).toBe(DEFAULT_HEX_COLORS.LIGHT_TEXT);
     });
 
     it('sets the text colors to dark when the dark button is clicked', async () => {
-        const DARK_TEXT_COLOR = '#0f131a';
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -334,11 +343,11 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainTextColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--text-color');
 
         expect(mainTextColor).toBe(store.state.textColor.hex);
-        expect(mainTextColor).toBe(DARK_TEXT_COLOR);
+        expect(mainTextColor).toBe(DEFAULT_HEX_COLORS.DARK_TEXT);
     });
 
     it('sends copyPalette event when the export css button is clicked', async () => {

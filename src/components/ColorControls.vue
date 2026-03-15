@@ -51,15 +51,15 @@
 </template>
 
 <script setup>
-    import { ref, watchEffect, computed } from 'vue';
     import { useStore } from 'vuex';
+    import { computed, ref, watchEffect } from 'vue';
 
     const store = useStore();
 
-    const props = defineProps({
+    const { slotNumber } = defineProps({
         slotNumber: {
-            type: Number,
             default: 1,
+            type: Number,
         },
     });
 
@@ -67,19 +67,20 @@
     const s = ref(0);
     const l = ref(0);
 
-    const hsl = computed(() => {
-        return props.slotNumber === 1
+    const hsl = computed(() =>
+        slotNumber === 1
             ? store.state.mainSlotColor.hsl
-            : store.state.slotColors[`slot${props.slotNumber}`].hsl;
-    });
+            : store.state.slotColors[`slot${slotNumber}`].hsl,
+    );
 
     // Populating the sliders with the current color, if any
 
     watchEffect(() => {
         if (hsl.value) {
-            h.value = hsl.value.match(/\d+/g).map(Number)[0];
-            s.value = hsl.value.match(/\d+/g).map(Number)[1];
-            l.value = hsl.value.match(/\d+/g).map(Number)[2];
+            const [newH, newS, newL] = hsl.value.match(/\d+/g).map(Number);
+            h.value = newH;
+            s.value = newS;
+            l.value = newL;
         } else {
             h.value = 0;
             s.value = 0;
@@ -91,12 +92,12 @@
 
     const updateColor = () => {
         const newColor = `hsl(${h.value}, ${s.value}%, ${l.value}%)`;
-        if (props.slotNumber === 1) {
+        if (slotNumber === 1) {
             store.dispatch('SET_MAIN_COLOR', newColor);
         } else {
             store.dispatch('UPDATE_SLOT_COLOR', {
-                slot: props.slotNumber,
                 hsl: newColor,
+                slot: slotNumber,
             });
         }
     };

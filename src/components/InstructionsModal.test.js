@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
-import { describe, expect, it } from 'vitest';
+
 import InstructionsModal from './InstructionsModal.vue';
 
-describe('InstructionsModal', () => {
+describe('component InstructionsModal', () => {
     it('renders the modal', () => {
         const wrapper = mount(InstructionsModal);
         expect(wrapper.find('h3').text()).toBe('Instructions');

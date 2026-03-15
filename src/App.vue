@@ -1,8 +1,6 @@
 <template>
     <!-- NAV  -->
-    <MainNav
-        @openInstructionsModal="showInstructionsModal = true"
-    />
+    <MainNav @openInstructionsModal="showInstructionsModal = true" />
 
     <!-- MAIN  -->
     <main>
@@ -34,7 +32,10 @@
                     :aria-expanded="!isColorPaneCollapsed"
                     aria-label="Collapse color pane"
                 >
-                    <span class="chevron-wrapper" :class="{ expanded: !isColorPaneCollapsed }">
+                    <span
+                        class="chevron-wrapper"
+                        :class="{ expanded: !isColorPaneCollapsed }"
+                    >
                         <i class="fas fa-chevron-right"></i>
                     </span>
                 </span>
@@ -54,7 +55,10 @@
                     :aria-expanded="!isMiniPaneCollapsed"
                     aria-label="Collapse variations pane"
                 >
-                    <span class="chevron-wrapper" :class="{ expanded: !isMiniPaneCollapsed }">
+                    <span
+                        class="chevron-wrapper"
+                        :class="{ expanded: !isMiniPaneCollapsed }"
+                    >
                         <i class="fas fa-chevron-right"></i>
                     </span>
                 </span>
@@ -74,7 +78,10 @@
                     :aria-expanded="!isSavedPaneCollapsed"
                     aria-label="Collapse saved palettes pane"
                 >
-                    <span class="chevron-wrapper" :class="{ expanded: !isSavedPaneCollapsed }">
+                    <span
+                        class="chevron-wrapper"
+                        :class="{ expanded: !isSavedPaneCollapsed }"
+                    >
                         <i class="fas fa-chevron-right"></i>
                     </span>
                 </span>
@@ -106,8 +113,8 @@
 </template>
 
 <script setup>
-    import { computed, ref } from 'vue';
     import { useStore } from 'vuex';
+    import { computed, ref } from 'vue';
 
     import ColorsPane from './components/ColorsPane.vue';
     import CopyModal from './components/ExportCssModal.vue';

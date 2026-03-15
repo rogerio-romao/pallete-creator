@@ -1,9 +1,11 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import store from '../store/index';
+
 import MainNav from './MainNav.vue';
 
-describe('MainNav', () => {
+// oxlint-disable-next-line max-lines-per-function
+describe('componentMainNav', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -15,7 +17,7 @@ describe('MainNav', () => {
     });
 
     it('renders', () => {
-        expect(wrapper.exists()).toBe(true);
+        expect(wrapper.exists()).toBeTruthy();
     });
 
     it('renders the instructions button', () => {
@@ -27,7 +29,7 @@ describe('MainNav', () => {
     it('renders the fullscreen button with the correct icon when minimized', () => {
         expect(
             wrapper.find('[data-test="fullscreen-link-minimised"]').exists(),
-        ).toBe(true);
+        ).toBeTruthy();
         const fullscreenIcon = wrapper.find(
             '[data-test="fullscreen-link-minimised"] i',
         );
@@ -44,10 +46,10 @@ describe('MainNav', () => {
         await wrapper
             .find('[data-test="fullscreen-link-minimised"]')
             .trigger('click');
-        expect(mockRequestFullscreen).toHaveBeenCalled();
+        expect(mockRequestFullscreen).toHaveBeenCalledWith();
         expect(
             wrapper.find('[data-test="fullscreen-link-maximised"]').exists(),
-        ).toBe(true);
+        ).toBeTruthy();
         expect(
             wrapper.find('[data-test="fullscreen-link-maximised"] i').classes(),
         ).toContain('fa-window-minimize');
@@ -55,9 +57,9 @@ describe('MainNav', () => {
         await wrapper
             .find('[data-test="fullscreen-link-maximised"]')
             .trigger('click');
-        expect(mockExitFullscreen).toHaveBeenCalled();
+        expect(mockExitFullscreen).toHaveBeenCalledWith();
         expect(
             wrapper.find('[data-test="fullscreen-link-minimised"]').exists(),
-        ).toBe(true);
+        ).toBeTruthy();
     });
 });
