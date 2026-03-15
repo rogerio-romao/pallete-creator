@@ -1,11 +1,12 @@
+// oxlint-disable max-lines
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createStore } from 'vuex';
-// import store from '../store/index';
 import UtilityButtons from './UtilityButtons.vue';
 
 // Create a mock store
-const createVuexStore = (state = {}) => {
+// oxlint-disable-next-line max-lines-per-function
+const createVuexStore = (_state = {}) => {
     return createStore({
         state: {
             mainHSL: 'hsl(20, 20%, 20%)',
@@ -39,7 +40,7 @@ const createVuexStore = (state = {}) => {
             textColor: {
                 hsl: 'hsl(38, 35%, 62%)',
                 rgb: 'rgb(184, 168, 134)',
-                hex: '#b8a886'
+                hex: '#b8a886',
             },
         },
         getters: {
@@ -53,7 +54,7 @@ const createVuexStore = (state = {}) => {
             ],
             fullSchemeSet: (state) =>
                 Object.values(state.slotColors).every(
-                    (color) => color.hsl !== ''
+                    (color) => color.hsl !== '',
                 ),
         },
         mutations: {
@@ -77,8 +78,8 @@ const createVuexStore = (state = {}) => {
                 }
                 let slot = 2;
                 randomScheme.forEach((hsl) => {
-                    const rgb = `rgb(0, 0, 0)`; // Simplified for testing
-                    const hex = '#000000'; // Simplified for testing
+                    const rgb = `rgb(0, 0, 0)`;
+                    const hex = '#000000';
                     commit('SET_SLOT_COLOR', {
                         slot: `slot${slot}`,
                         hsl,
@@ -107,6 +108,7 @@ const createVuexStore = (state = {}) => {
     });
 };
 
+// oxlint-disable-next-line max-lines-per-function
 describe('UtilityButtons', () => {
     let wrapper;
     let store;
@@ -120,10 +122,10 @@ describe('UtilityButtons', () => {
 
     it('renders the component', () => {
         expect(wrapper.find('[data-test="utility-buttons"]').exists()).toBe(
-            true
+            true,
         );
         expect(
-            wrapper.find('[data-test="random-scheme-button"]').exists()
+            wrapper.find('[data-test="random-scheme-button"]').exists(),
         ).toBe(true);
     });
 
@@ -200,7 +202,7 @@ describe('UtilityButtons', () => {
 
         buttons.forEach((button) => {
             expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(
-                false
+                false,
             );
         });
 
@@ -234,19 +236,19 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
         const complementaryColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-complementary');
         const lightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-light');
         const accentColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent');
         const accentLightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent-light');
 
         expect(mainColor).toBe(mainSlotColor);
@@ -270,7 +272,7 @@ describe('UtilityButtons', () => {
         await wrapper.vm.$nextTick();
 
         const mainColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
         expect(mainColor).not.toBe('#1d1702');
 
@@ -279,19 +281,19 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainColorAfterReset = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-main');
         const complementaryColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-complementary');
         const lightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-light');
         const accentColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent');
         const accentLightColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--clr-accent-light');
 
         expect(mainColorAfterReset).toBe('#1d1702');
@@ -314,7 +316,7 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainTextColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--text-color');
 
         expect(mainTextColor).toBe(store.state.textColor.hex);
@@ -334,7 +336,7 @@ describe('UtilityButtons', () => {
             .trigger('click');
 
         const mainTextColor = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).getPropertyValue('--text-color');
 
         expect(mainTextColor).toBe(store.state.textColor.hex);

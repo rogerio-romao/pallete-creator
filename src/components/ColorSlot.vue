@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue';
+    import { computed, defineProps } from 'vue';
     import { useStore } from 'vuex';
 
     import ColorControls from './ColorControls.vue';
@@ -74,7 +74,7 @@
 
     // Uility to get rid of spaces in the color codes before displaying them
 
-    const format = (str) => str.replace(/ /g, '');
+    const format = (str) => str.replaceAll(' ', '');
 
     // Getting the background color of the slot
 
@@ -87,7 +87,7 @@
     // Changes the text color of the slot to make it readable on light or dark backgrounds
 
     const lightOrDark = computed(() => {
-        const lum = parseInt(hsl.value.split(',')[2]);
+        const lum = parseInt(hsl.value.split(',')[2], 10);
         return lum < 50 ? 'white' : 'black';
     });
 

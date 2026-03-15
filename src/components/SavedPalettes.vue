@@ -47,7 +47,7 @@
 <script setup>
     import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { computed } from 'vue';
+    import { computed, defineProps } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();

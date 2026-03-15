@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import store from '../store/index';
 import MainNav from './MainNav.vue';
 
+// oxlint-disable-next-line max-lines-per-function
 describe('MainNav', () => {
     let wrapper;
 

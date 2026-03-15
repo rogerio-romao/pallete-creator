@@ -53,6 +53,7 @@ const createVuexStore = (state = {}) => {
     });
 };
 
+// oxlint-disable-next-line max-lines-per-function
 describe('App.vue', () => {
     let wrapper;
     let store;
@@ -71,7 +72,7 @@ describe('App.vue', () => {
         expect(wrapper.findComponent({ name: 'MainNav' }).exists()).toBe(true);
     });
 
-    it('shows utility buttons when colors are present', async () => {
+    it('shows utility buttons when colors are present', () => {
         const store = createVuexStore({
             uniqueColors: ['#FF0000'],
         });
@@ -83,17 +84,17 @@ describe('App.vue', () => {
         });
 
         expect(wrapper.findComponent({ name: 'UtilityButtons' }).exists()).toBe(
-            true
+            true,
         );
     });
 
     it('hides utility buttons when no colors are present', () => {
         expect(wrapper.findComponent({ name: 'UtilityButtons' }).exists()).toBe(
-            false
+            false,
         );
     });
 
-    it('shows saved palettes section when there are saved palettes', async () => {
+    it('shows saved palettes section when there are saved palettes', () => {
         const store = createVuexStore({
             savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
         });
@@ -105,7 +106,7 @@ describe('App.vue', () => {
         });
 
         expect(wrapper.findComponent({ name: 'SavedPalettes' }).exists()).toBe(
-            true
+            true,
         );
     });
 

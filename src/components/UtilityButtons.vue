@@ -74,8 +74,7 @@
 </template>
 
 <script setup>
-
-    import { computed } from 'vue';
+    import { computed, defineEmits } from 'vue';
     import { useStore } from 'vuex';
     import { DEFAULT_COLORS } from '../lib/colors';
 
@@ -87,17 +86,21 @@
 
     // Text color to light
 
-
     const setLightText = () => {
-        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.LIGHT_TEXT);
+        document.documentElement.style.setProperty(
+            '--text-color',
+            DEFAULT_COLORS.LIGHT_TEXT,
+        );
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
     // Text color to dark
 
-
     const setDarkText = () => {
-        document.documentElement.style.setProperty('--text-color', DEFAULT_COLORS.DARK_TEXT);
+        document.documentElement.style.setProperty(
+            '--text-color',
+            DEFAULT_COLORS.DARK_TEXT,
+        );
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
 
@@ -117,13 +120,27 @@
 
     // Back to default colors
 
-
     const resetSiteColors = () => {
-        document.documentElement.style.setProperty('--clr-main', DEFAULT_COLORS.MAIN);
-        document.documentElement.style.setProperty('--clr-complementary', DEFAULT_COLORS.COMPLEMENTARY);
-        document.documentElement.style.setProperty('--clr-light', DEFAULT_COLORS.LIGHT);
-        document.documentElement.style.setProperty('--clr-accent', DEFAULT_COLORS.ACCENT);
-        document.documentElement.style.setProperty('--clr-accent-light', DEFAULT_COLORS.ACCENT_LIGHT);
+        document.documentElement.style.setProperty(
+            '--clr-main',
+            DEFAULT_COLORS.MAIN,
+        );
+        document.documentElement.style.setProperty(
+            '--clr-complementary',
+            DEFAULT_COLORS.COMPLEMENTARY,
+        );
+        document.documentElement.style.setProperty(
+            '--clr-light',
+            DEFAULT_COLORS.LIGHT,
+        );
+        document.documentElement.style.setProperty(
+            '--clr-accent',
+            DEFAULT_COLORS.ACCENT,
+        );
+        document.documentElement.style.setProperty(
+            '--clr-accent-light',
+            DEFAULT_COLORS.ACCENT_LIGHT,
+        );
     };
 
     // Test this palette on the site
@@ -138,16 +155,13 @@
         document.documentElement.style.setProperty('--clr-main', main);
         document.documentElement.style.setProperty(
             '--clr-complementary',
-            complementary
+            complementary,
         );
         document.documentElement.style.setProperty('--clr-light', light);
-        document.documentElement.style.setProperty(
-            '--clr-accent',
-            accent
-        );
+        document.documentElement.style.setProperty('--clr-accent', accent);
         document.documentElement.style.setProperty(
             '--clr-accent-light',
-            accentLight
+            accentLight,
         );
     };
 </script>

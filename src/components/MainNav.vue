@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { defineEmits, ref } from 'vue';
 
     const emit = defineEmits(['openInstructionsModal']);
 
@@ -53,12 +53,12 @@
             elem.requestFullscreen ||
             elem.mozRequestFullScreen ||
             elem.webkitRequestFullscreen;
-        if (!isFullscreen.value) {
-            elem.requestFullscreen();
-            isFullscreen.value = true;
-        } else {
+        if (isFullscreen.value) {
             document.exitFullscreen();
             isFullscreen.value = false;
+        } else {
+            elem.requestFullscreen();
+            isFullscreen.value = true;
         }
     };
 </script>

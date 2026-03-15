@@ -16,7 +16,9 @@ export const hslToRgb = (hsl) => {
     h /= 360;
     s /= 100;
     l /= 100;
-    let r, g, b;
+    let r;
+    let g;
+    let b;
     if (s === 0) {
         r = g = b = l;
     } else {
@@ -48,9 +50,9 @@ export const rgbToHsl = (rgb) => {
     b /= 255;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h,
-        s,
-        l = (max + min) / 2;
+    let h;
+    let s;
+    let l = (max + min) / 2;
     if (max === min) {
         h = s = 0;
     } else {
@@ -90,9 +92,9 @@ export const rgbToHex = (rgb) => {
 // Convert HEX to HSL
 
 export const hexToHsl = (hex) => {
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
     const hsl = rgbToHsl(`rgb(${r},${g},${b})`);
     return hsl;
 };
@@ -119,7 +121,7 @@ export const generateComplement = (hsl) => {
 // Create monochromatic colors
 
 export const generateMono = (hsl) => {
-    const [h, s, l] = hsl.match(/\d+/g).map(Number);
+    const [h, s] = hsl.match(/\d+/g).map(Number);
     return [
         toHslString(h, s, 8),
         toHslString(h, s, 20),

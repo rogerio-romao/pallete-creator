@@ -1,59 +1,63 @@
 <template>
-  <!-- wrapper   -->
-  <section class="mini-slots-pane panel">
-    <!-- panel collapsed message  -->
-    <p v-if="isMiniPaneCollapsed">Click the arrow to expand panel.</p>
-    <div class="hide" v-if="!isMiniPaneCollapsed">
-      <!-- header text  -->
-      <div class="panel-header">
-        <p>
-          Click any variation to copy it, then click on one of the main color
-          slots above to paste it. Or click the randomize button above to generate a
-          full palette.
-        </p>
-      </div>
+    <!-- wrapper   -->
+    <section class="mini-slots-pane panel">
+        <!-- panel collapsed message  -->
+        <p v-if="isMiniPaneCollapsed">Click the arrow to expand panel.</p>
+        <div class="hide" v-if="!isMiniPaneCollapsed">
+            <!-- header text  -->
+            <div class="panel-header">
+                <p>
+                    Click any variation to copy it, then click on one of the
+                    main color slots above to paste it. Or click the randomize
+                    button above to generate a full palette.
+                </p>
+            </div>
 
-      <!-- all the slots  -->
-      <div class="mini-slots-slots" role="listbox" aria-label="Color variations">
-        <!-- one slot  -->
-        <div
-          v-for="(color, i) in colors"
-          :class="[
-            'mini-slot',
-            { copied: colorCopied && colorCopiedIndex === i },
-          ]"
-          :key="i"
-          :style="{ backgroundColor: color }"
-          @click="copyColor(color, i)"
-          role="option"
-          :aria-selected="colorCopied && colorCopiedIndex === i"
-          :aria-label="`Color variation ${i + 1}: ${color}. Click to copy.`"
-        ></div>
-      </div>
-    </div>
-  </section>
+            <!-- all the slots  -->
+            <div
+                class="mini-slots-slots"
+                role="listbox"
+                aria-label="Color variations"
+            >
+                <!-- one slot  -->
+                <div
+                    v-for="(color, i) in colors"
+                    :class="[
+                        'mini-slot',
+                        { copied: colorCopied && colorCopiedIndex === i },
+                    ]"
+                    :key="i"
+                    :style="{ backgroundColor: color }"
+                    @click="copyColor(color, i)"
+                    role="option"
+                    :aria-selected="colorCopied && colorCopiedIndex === i"
+                    :aria-label="`Color variation ${i + 1}: ${color}. Click to copy.`"
+                ></div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useStore } from "vuex";
+    import { computed, defineProps } from 'vue';
+    import { useStore } from 'vuex';
 
-const props = defineProps({
-  isMiniPaneCollapsed: {
-    type: Boolean,
-    default: false,
-  },
-});
+    const props = defineProps({
+        isMiniPaneCollapsed: {
+            type: Boolean,
+            default: false,
+        },
+    });
 
-const store = useStore();
+    const store = useStore();
 
-const colorCopied = computed(() => store.state.copiedColor);
-const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
-const colors = computed(() => store.getters.uniqueColors);
+    const colorCopied = computed(() => store.state.copiedColor);
+    const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
+    const colors = computed(() => store.getters.uniqueColors);
 
-// Puts the clicked on variation in memory for pasting.
+    // Puts the clicked on variation in memory for pasting.
 
-const copyColor = (color, index) => {
-  store.dispatch("COPY_COLOR", { color, index });
-};
+    const copyColor = (color, index) => {
+        store.dispatch('COPY_COLOR', { color, index });
+    };
 </script>

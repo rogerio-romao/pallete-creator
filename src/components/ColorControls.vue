@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-    import { ref, watchEffect, computed } from 'vue';
+    import { computed, defineProps, ref, watchEffect } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();

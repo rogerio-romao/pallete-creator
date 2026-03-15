@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import store from '../store/index';
 import MainColorBar from './MainColorBar.vue';
 
+// oxlint-disable-next-line max-lines-per-function
 describe('MainColorBar', () => {
     let wrapper;
 

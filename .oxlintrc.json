@@ -1,0 +1,43 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": [
+        "eslint",
+        "unicorn",
+        "oxc",
+        "import",
+        "jsdoc",
+        "promise",
+        "vitest",
+        "vue"
+    ],
+    "categories": {
+        "correctness": "error",
+        "nursery": "warn",
+        "pedantic": "warn"
+    },
+    "rules": {
+        "import/max-dependencies": ["warn", { "max": 11 }]
+    },
+    "settings": {
+        "jsdoc": {
+            "ignorePrivate": false,
+            "ignoreInternal": false,
+            "ignoreReplacesDocs": true,
+            "overrideReplacesDocs": true,
+            "augmentsExtendsReplacesDocs": false,
+            "implementsReplacesDocs": false,
+            "exemptDestructuredRootsFromChecks": false,
+            "tagNamePreference": {}
+        },
+        "vitest": {
+            "typecheck": false
+        }
+    },
+    "env": {
+        "browser": true,
+        "builtin": true,
+        "vitest": true
+    },
+    "globals": {},
+    "ignorePatterns": []
+}

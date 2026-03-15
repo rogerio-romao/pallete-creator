@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import store from '../store';
 import ColorControls from './ColorControls.vue';
 
+// oxlint-disable-next-line max-lines-per-function
 describe('ColorControls', () => {
     let wrapper;
 
@@ -22,7 +23,7 @@ describe('ColorControls', () => {
         await hueButton.setValue('100');
         expect(store.state.mainHSL).toMatch(/hsl\(100,\s*\d+%,\s*\d+%\)/);
         expect(store.state.mainSlotColor.hsl).toMatch(
-            /hsl\(100,\s*\d+%,\s*\d+%\)/
+            /hsl\(100,\s*\d+%,\s*\d+%\)/,
         );
     });
 
@@ -32,7 +33,7 @@ describe('ColorControls', () => {
         await saturationButton.setValue('50');
         expect(store.state.mainHSL).toMatch(/hsl\(\d+,\s*50%,\s*\d+%\)/);
         expect(store.state.mainSlotColor.hsl).toMatch(
-            /hsl\(\d+,\s*50%,\s*\d+%\)/
+            /hsl\(\d+,\s*50%,\s*\d+%\)/,
         );
     });
 
@@ -42,7 +43,7 @@ describe('ColorControls', () => {
         await lightnessButton.setValue('25');
         expect(store.state.mainHSL).toMatch(/hsl\(\d+,\s*\d+%,\s*25%\)/);
         expect(store.state.mainSlotColor.hsl).toMatch(
-            /hsl\(\d+,\s*\d+%,\s*25%\)/
+            /hsl\(\d+,\s*\d+%,\s*25%\)/,
         );
     });
 
@@ -57,7 +58,7 @@ describe('ColorControls', () => {
 
         expect(store.state.mainHSL).toMatch(/hsl\(100,\s*50%,\s*25%\)/);
         expect(store.state.mainSlotColor.hsl).toMatch(
-            /hsl\(100,\s*50%,\s*25%\)/
+            /hsl\(100,\s*50%,\s*25%\)/,
         );
     });
 
@@ -76,10 +77,10 @@ describe('ColorControls', () => {
                 hsl: `hsl(100, 50%, 25%)`,
             });
             expect(store.state.slotColors[`slot${i}`].hsl).toMatch(
-                /hsl\(100,\s*50%,\s*25%\)/
+                /hsl\(100,\s*50%,\s*25%\)/,
             );
             expect(store.state.slotColors[`slot${i}`].rgb).toMatch(
-                /rgb\(53,\s*96,\s*32\)/
+                /rgb\(53,\s*96,\s*32\)/,
             );
             expect(store.state.slotColors[`slot${i}`].hex).toMatch(/#356020/);
         }

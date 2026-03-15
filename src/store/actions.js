@@ -17,7 +17,7 @@ const actions = {
         commit('SET_COPIED_COLOR_INDEX', index);
     },
     // deletes a palette from local storage
-    async DELETE_PALETTE({ dispatch }, id) {
+    DELETE_PALETTE({ dispatch }, id) {
         try {
             paletteService.delete(id);
             dispatch('LOAD_PALETTES');
@@ -35,7 +35,7 @@ const actions = {
             commit('ADD_COLOR', { hsl, rgb, hex });
         });
     },
-    async LOAD_PALETTES({ commit }) {
+    LOAD_PALETTES({ commit }) {
         try {
             const palettes = paletteService.getAll();
             commit('SET_SAVED_PALETTES', palettes);
@@ -57,7 +57,7 @@ const actions = {
         }
     },
     // save to local storage
-    async SAVE_TO_CLOUD({ dispatch }, { name, scheme }) {
+    SAVE_TO_CLOUD({ dispatch }, { name, scheme }) {
         paletteService.save({
             name,
             scheme,
@@ -81,7 +81,7 @@ const actions = {
         });
     },
     // makes the site colors be this scheme
-    SET_PALETTE_FROM_SAVED({ commit, dispatch }, palette) {
+    SET_PALETTE_FROM_SAVED({ dispatch }, palette) {
         const [main, ...others] = palette;
         dispatch('SET_MAIN_COLOR', main.hsl);
         others.forEach((slot, index) => {
