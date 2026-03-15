@@ -114,7 +114,7 @@
 
 <script setup>
     import { useStore } from 'vuex';
-    import { computed, ref } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
 
     import ColorsPane from './components/ColorsPane.vue';
     import CopyModal from './components/ExportCssModal.vue';
@@ -127,6 +127,8 @@
     import UtilityButtons from './components/UtilityButtons.vue';
 
     const store = useStore();
+
+    onMounted(() => store.dispatch('LOAD_PALETTES'));
 
     const showCopyModal = ref(false);
     const showSaveModal = ref(false);
@@ -155,5 +157,5 @@
 </script>
 
 <style>
-    @import './style/app.css';
+    @import url('./style/app.css');
 </style>

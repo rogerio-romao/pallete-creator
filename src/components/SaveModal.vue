@@ -89,7 +89,7 @@
     const savePalette = async () => {
         if (paletteName.value) {
             try {
-                await store.dispatch('SAVE_TO_CLOUD', {
+                await store.dispatch('SAVE_PALETTE', {
                     name: paletteName.value,
                     scheme: store.getters.currentScheme,
                 });
@@ -119,5 +119,3 @@
         }
     };
 </script>
-
-<style></style>
