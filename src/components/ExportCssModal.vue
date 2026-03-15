@@ -78,7 +78,7 @@
 <script setup>
     import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { computed, defineEmits, onMounted, onUnmounted, ref } from 'vue';
+    import { computed, onMounted, onUnmounted, ref } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();

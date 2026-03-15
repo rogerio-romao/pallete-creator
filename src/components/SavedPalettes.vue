@@ -47,7 +47,7 @@
 <script setup>
     import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { computed, defineProps } from 'vue';
+    import { computed } from 'vue';
     import { useStore } from 'vuex';
 
     const store = useStore();
@@ -70,6 +70,7 @@
     // Deletes the clicked on palette from the saved palletes.
 
     const deletePalette = async (id) => {
+        // oxlint-disable-next-line no-alert
         const confirm = window.confirm(
             'Are you sure you want to delete this palette? This action cannot be undone.',
         );
@@ -82,7 +83,6 @@
                     hideProgressBar: true,
                 });
             } catch (e) {
-                console.error('Failed to delete palette:', e);
                 createToast('Failed to delete palette. Please try again.', {
                     type: 'danger',
                     position: 'bottom-right',

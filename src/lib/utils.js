@@ -23,7 +23,9 @@ export const hslToRgb = (hsl) => {
         r = g = b = l;
     } else {
         const hue2rgb = (p, q, t) => {
+            // oxlint-disable-next-line no-param-reassign
             if (t < 0) t += 1;
+            // oxlint-disable-next-line no-param-reassign
             if (t > 1) t -= 1;
             if (t < 1 / 6) return p + (q - p) * 6 * t;
             if (t < 1 / 2) return q;
@@ -68,6 +70,8 @@ export const rgbToHsl = (rgb) => {
             case b:
                 h = (r - g) / d + 4;
                 break;
+            default:
+                break;
         }
         h /= 6;
     }
@@ -81,20 +85,20 @@ export const rgbToHsl = (rgb) => {
 export const rgbToHex = (rgb) => {
     const [r, g, b] = rgb.match(/\d+/g).map(Number);
     let hex = [r.toString(16), g.toString(16), b.toString(16)];
-    hex.forEach((color, index) => {
+    for (const [index, color] of hex.entries()) {
         if (color.length === 1) {
             hex[index] = `0${color}`;
         }
-    });
+    }
     return `#${hex.join('')}`;
 };
 
 // Convert HEX to HSL
 
 export const hexToHsl = (hex) => {
-    const r = parseInt(hex.slice(0, 2), 16);
-    const g = parseInt(hex.slice(2, 4), 16);
-    const b = parseInt(hex.slice(4, 6), 16);
+    const r = Number.parseInt(hex.slice(0, 2), 16);
+    const g = Number.parseInt(hex.slice(2, 4), 16);
+    const b = Number.parseInt(hex.slice(4, 6), 16);
     const hsl = rgbToHsl(`rgb(${r},${g},${b})`);
     return hsl;
 };

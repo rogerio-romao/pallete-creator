@@ -77,7 +77,7 @@ const createVuexStore = (_state = {}) => {
                     }
                 }
                 let slot = 2;
-                randomScheme.forEach((hsl) => {
+                for (const hsl of randomScheme) {
                     const rgb = `rgb(0, 0, 0)`;
                     const hex = '#000000';
                     commit('SET_SLOT_COLOR', {
@@ -86,8 +86,8 @@ const createVuexStore = (_state = {}) => {
                         rgb,
                         hex,
                     });
-                    slot++;
-                });
+                    slot += 1;
+                }
             },
             SET_TEXT_COLOR({ commit }, type) {
                 if (type === 'light') {
@@ -200,11 +200,11 @@ describe('UtilityButtons', () => {
             'save-palette-button',
         ];
 
-        buttons.forEach((button) => {
+        for (const button of buttons) {
             expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(
                 false,
             );
-        });
+        }
 
         await wrapper
             .find('[data-test="random-scheme-button"]')
@@ -213,9 +213,9 @@ describe('UtilityButtons', () => {
         // wait for the next tick
         await wrapper.vm.$nextTick();
 
-        buttons.forEach((button) => {
+        for (const button of buttons) {
             expect(wrapper.find(`[data-test="${button}"]`).exists()).toBe(true);
-        });
+        }
     });
 
     it('sets the theme colors when the test palette button is clicked', async () => {

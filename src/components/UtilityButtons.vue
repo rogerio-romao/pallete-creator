@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-    import { computed, defineEmits } from 'vue';
+    import { computed } from 'vue';
     import { useStore } from 'vuex';
     import { DEFAULT_COLORS } from '../lib/colors';
 

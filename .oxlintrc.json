@@ -13,10 +13,17 @@
     "categories": {
         "correctness": "error",
         "nursery": "warn",
-        "pedantic": "warn"
+        "pedantic": "warn",
+        "perf": "warn",
+        "restriction": "warn"
     },
     "rules": {
-        "import/max-dependencies": ["warn", { "max": 11 }]
+        "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+        "import/max-dependencies": ["warn", { "max": 11 }],
+        "import/no-default-export": "off",
+        "import/no-relative-parent-imports": "off",
+        "oxc/no-async-await": "off",
+        "oxc/no-optional-chaining": "off"
     },
     "settings": {
         "jsdoc": {
@@ -38,6 +45,9 @@
         "builtin": true,
         "vitest": true
     },
-    "globals": {},
+    "globals": {
+        "defineEmits": "readonly",
+        "defineProps": "readonly"
+    },
     "ignorePatterns": []
 }

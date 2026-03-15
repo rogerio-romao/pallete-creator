@@ -157,7 +157,7 @@ describe('App.vue', () => {
         // Find the collapse icon for the mini pane (second h2 with collapse class)
         const miniPaneHeading = wrapper
             .findAll('h2')
-            .filter((h2) => h2.text().includes('Pick your variations'))[0];
+            .find((h2) => h2.text().includes('Pick your variations'));
 
         const collapseIcon = miniPaneHeading.find('.collapse');
         expect(collapseIcon.exists()).toBe(true);
@@ -193,7 +193,7 @@ describe('App.vue', () => {
         // Find the collapse icon for the saved palettes section
         const savedPaletteHeading = wrapper
             .findAll('h2')
-            .filter((h2) => h2.text().includes('Saved Palettes'))[0];
+            .find((h2) => h2.text().includes('Saved Palettes'));
 
         const collapseIcon = savedPaletteHeading.find('.collapse');
         expect(collapseIcon.exists()).toBe(true);

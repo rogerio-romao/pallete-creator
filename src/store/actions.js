@@ -1,3 +1,5 @@
+// oxlint-disable no-console
+
 import {
     generateAnalogous,
     generateComplement,
@@ -29,11 +31,11 @@ const actions = {
     // trigerred when user generates a main color
     GENERATE_VARIATIONS({ commit }, { color, fn }) {
         const variations = fn(color);
-        variations.forEach((hsl) => {
+        for (const hsl of variations) {
             const rgb = hslToRgb(hsl);
             const hex = rgbToHex(rgb);
             commit('ADD_COLOR', { hsl, rgb, hex });
-        });
+        }
     },
     LOAD_PALETTES({ commit }) {
         try {
@@ -57,12 +59,17 @@ const actions = {
         }
     },
     // save to local storage
-    SAVE_TO_CLOUD({ dispatch }, { name, scheme }) {
-        paletteService.save({
-            name,
-            scheme,
-        });
-        dispatch('LOAD_PALETTES');
+    SAVE_PALETTE({ dispatch }, { name, scheme }) {
+        try {
+            paletteService.save({
+                name,
+                scheme,
+            });
+            dispatch('LOAD_PALETTES');
+        } catch (error) {
+            console.error('Failed to save palette:', error);
+            throw error;
+        }
     },
     // resets everything, sets the main color and generates variations
     SET_MAIN_COLOR({ commit, dispatch }, color) {
@@ -84,9 +91,9 @@ const actions = {
     SET_PALETTE_FROM_SAVED({ dispatch }, palette) {
         const [main, ...others] = palette;
         dispatch('SET_MAIN_COLOR', main.hsl);
-        others.forEach((slot, index) => {
+        for (const [index, slot] of others.entries()) {
             dispatch('UPDATE_SLOT_COLOR', { slot: index + 2, hsl: slot.hsl });
-        });
+        }
     },
     // fills the slots with random unique colors from the variations
     SET_RANDOM_SCHEME({ commit, state, getters }) {
@@ -104,16 +111,16 @@ const actions = {
             if (!randomScheme.has(hsl)) {
                 randomScheme.add(hsl);
             }
-            attempts++;
+            attempts += 1;
         }
 
         let slot = 2;
-        randomScheme.forEach((hsl) => {
+        for (const hsl of randomScheme) {
             const rgb = hslToRgb(hsl);
             const hex = rgbToHex(rgb);
             commit('SET_SLOT_COLOR', { slot: `slot${slot}`, hsl, rgb, hex });
-            slot++;
-        });
+            slot += 1;
+        }
     },
     // changes the text colors from light to dark
     SET_TEXT_COLOR({ commit }, type) {
@@ -133,8 +140,8 @@ const actions = {
     },
     // updates the label of a specific slot
     UPDATE_LABEL({ commit }, { label, slotNumber }) {
-        label = label[0].toUpperCase() + label.slice(1);
-        commit('SET_LABEL', { label, slotNumber });
+        const formattedLabel = label[0].toUpperCase() + label.slice(1);
+        commit('SET_LABEL', { label: formattedLabel, slotNumber });
     },
     // updates the color of a specific slot
     UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {

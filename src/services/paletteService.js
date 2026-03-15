@@ -1,3 +1,5 @@
+// oxlint-disable no-console
+
 const STORAGE_KEY = 'palettes';
 
 const getPalettes = () => {
