@@ -76,6 +76,7 @@
 </template>
 
 <script setup>
+    // oxlint-disable-next-line import/no-unassigned-import
     import 'mosha-vue-toastify/dist/style.css';
 
     import { createToast } from 'mosha-vue-toastify';

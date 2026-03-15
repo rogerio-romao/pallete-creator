@@ -74,7 +74,7 @@ describe('component App.vue', () => {
     });
 
     it('shows utility buttons when colors are present', () => {
-        const store = createVuexStore({
+        store = createVuexStore({
             uniqueColors: ['#FF0000'],
         });
 
@@ -96,7 +96,7 @@ describe('component App.vue', () => {
     });
 
     it('shows saved palettes section when there are saved palettes', () => {
-        const store = createVuexStore({
+        store = createVuexStore({
             savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
         });
 
@@ -113,7 +113,7 @@ describe('component App.vue', () => {
 
     it('toggles isColorPaneCollapsed when collapse icon is clicked', async () => {
         // Setup with mainHSL to make the color pane visible
-        const store = createVuexStore({
+        store = createVuexStore({
             mainHSL: 'hsl(180, 50%, 50%)',
         });
 
@@ -145,7 +145,7 @@ describe('component App.vue', () => {
 
     it('toggles isMiniPaneCollapsed when the mini pane collapse icon is clicked', async () => {
         // Setup with uniqueColors to make the mini pane visible
-        const store = createVuexStore({
+        store = createVuexStore({
             uniqueColors: ['#FF0000'],
         });
 
@@ -181,7 +181,7 @@ describe('component App.vue', () => {
 
     it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
         // Setup with savedPalettes to make the saved palettes visible
-        const store = createVuexStore({
+        store = createVuexStore({
             savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
         });
 

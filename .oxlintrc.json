@@ -15,7 +15,8 @@
         "pedantic": "warn",
         "perf": "warn",
         "restriction": "warn",
-        "style": "warn"
+        "style": "warn",
+        "suspicious": "warn"
     },
     "rules": {
         "eslint/capitalized-comments": "off",
