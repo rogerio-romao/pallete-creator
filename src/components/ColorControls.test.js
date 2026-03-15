@@ -1,10 +1,13 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import store from '../store';
+
 import ColorControls from './ColorControls.vue';
 
+const NUMBER_OF_SLOTS = 5;
+
 // oxlint-disable-next-line max-lines-per-function
-describe('ColorControls', () => {
+describe('component ColorControls', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -14,7 +17,7 @@ describe('ColorControls', () => {
     });
 
     it('renders', () => {
-        expect(wrapper.exists()).toBe(true);
+        expect(wrapper.exists()).toBeTruthy();
     });
 
     it('sets the main color hue when the hue input is adjusted', async () => {
@@ -70,11 +73,11 @@ describe('ColorControls', () => {
         await saturationButton.setValue('50');
         await lightnessButton.setValue('25');
 
-        for (let i = 2; i <= 5; i++) {
+        for (let i = 2; i <= NUMBER_OF_SLOTS; i++) {
             wrapper.vm.$props = { slotNumber: i };
             store.dispatch('UPDATE_SLOT_COLOR', {
-                slot: wrapper.vm.$props.slotNumber,
                 hsl: `hsl(100, 50%, 25%)`,
+                slot: wrapper.vm.$props.slotNumber,
             });
             expect(store.state.slotColors[`slot${i}`].hsl).toMatch(
                 /hsl\(100,\s*50%,\s*25%\)/,
@@ -92,10 +95,10 @@ describe('ColorControls', () => {
 
         // Set the component to use a non-main slot
         wrapper = mount(ColorControls, {
+            global: { plugins: [store] },
             props: {
                 slotNumber: 3,
             },
-            global: { plugins: [store] },
         });
 
         // Set the HSL values
@@ -109,8 +112,8 @@ describe('ColorControls', () => {
 
         // Check if the UPDATE_SLOT_COLOR action was dispatched with correct parameters
         expect(dispatchSpy).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
-            slot: 3,
             hsl: 'hsl(180, 60%, 45%)',
+            slot: 3,
         });
 
         // Restore the spy

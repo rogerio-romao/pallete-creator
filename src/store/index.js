@@ -6,10 +6,10 @@ import mutations from './mutations';
 import state from './state';
 
 const store = createStore({
-    state,
-    mutations,
     actions,
     getters,
+    mutations,
+    state,
 });
 
 export default store;

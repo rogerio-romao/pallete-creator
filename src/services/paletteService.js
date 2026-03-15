@@ -20,7 +20,17 @@ const savePalettes = (palettes) => {
     }
 };
 
-export const paletteService = {
+const paletteService = {
+    delete(id) {
+        try {
+            const palettes = getPalettes();
+            const filtered = palettes.filter((p) => p.id !== id);
+            savePalettes(filtered);
+        } catch (error) {
+            console.error('Failed to delete palette from localStorage:', error);
+        }
+    },
+
     getAll() {
         return getPalettes();
     },
@@ -37,23 +47,15 @@ export const paletteService = {
         const palettes = getPalettes();
         const id = Date.now().toString();
         const newPalette = {
+            createdAt: new Date().toISOString(),
             id,
             name,
             scheme,
-            createdAt: new Date().toISOString(),
         };
         palettes.push(newPalette);
         savePalettes(palettes);
         return id;
     },
-
-    delete(id) {
-        try {
-            const palettes = getPalettes();
-            const filtered = palettes.filter((p) => p.id !== id);
-            savePalettes(filtered);
-        } catch (error) {
-            console.error('Failed to delete palette from localStorage:', error);
-        }
-    },
 };
+
+export default paletteService;

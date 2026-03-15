@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+// oxlint-disable no-magic-numbers
+
 import {
     generateAnalogous,
     generateComplement,
@@ -13,7 +14,7 @@ import {
     toHslString,
 } from './utils';
 
-describe('toHslString', () => {
+describe('toHslString utility', () => {
     it('formats h,s,l into hsl string', () => {
         expect(toHslString(180, 50, 50)).toBe('hsl(180, 50%, 50%)');
         expect(toHslString(0, 0, 100)).toBe('hsl(0, 0%, 100%)');
@@ -21,14 +22,14 @@ describe('toHslString', () => {
     });
 });
 
-describe('generateHsl', () => {
+describe('generateHsl utility', () => {
     it('returns a valid hsl string', () => {
         const result = generateHsl();
         expect(result).toMatch(/^hsl\(\d+, \d+%, \d+%\)$/);
     });
 });
 
-describe('hslToRgb', () => {
+describe('hslToRgb utility', () => {
     it('converts hsl to rgb', () => {
         expect(hslToRgb('hsl(0, 0%, 0%)')).toBe('rgb(0, 0, 0)');
         expect(hslToRgb('hsl(0, 0%, 100%)')).toBe('rgb(255, 255, 255)');
@@ -38,7 +39,7 @@ describe('hslToRgb', () => {
     });
 });
 
-describe('rgbToHsl', () => {
+describe('rgbToHsl utility', () => {
     it('converts rgb to hsl', () => {
         expect(rgbToHsl('rgb(0, 0, 0)')).toBe('hsl(0, 0%, 0%)');
         expect(rgbToHsl('rgb(255, 255, 255)')).toBe('hsl(0, 0%, 100%)');
@@ -48,7 +49,7 @@ describe('rgbToHsl', () => {
     });
 });
 
-describe('rgbToHex', () => {
+describe('rgbToHex utility', () => {
     it('converts rgb to hex', () => {
         expect(rgbToHex('rgb(0, 0, 0)')).toBe('#000000');
         expect(rgbToHex('rgb(255, 255, 255)')).toBe('#ffffff');
@@ -58,7 +59,7 @@ describe('rgbToHex', () => {
     });
 });
 
-describe('hexToHsl', () => {
+describe('hexToHsl utility', () => {
     it('converts hex to hsl', () => {
         expect(hexToHsl('000000')).toBe('hsl(0, 0%, 0%)');
         expect(hexToHsl('ffffff')).toBe('hsl(0, 0%, 100%)');
@@ -68,7 +69,7 @@ describe('hexToHsl', () => {
     });
 });
 
-describe('generateComplement', () => {
+describe('generateComplement utility', () => {
     it('returns array of 7 colors', () => {
         const result = generateComplement('hsl(180, 50%, 50%)');
         expect(result).toHaveLength(7);
@@ -80,7 +81,7 @@ describe('generateComplement', () => {
     });
 });
 
-describe('generateMono', () => {
+describe('generateMono utility', () => {
     it('returns array of 8 colors', () => {
         const result = generateMono('hsl(180, 50%, 50%)');
         expect(result).toHaveLength(8);
@@ -93,7 +94,7 @@ describe('generateMono', () => {
     });
 });
 
-describe('generateTriad', () => {
+describe('generateTriad utility', () => {
     it('returns array of 6 colors', () => {
         const result = generateTriad('hsl(180, 50%, 50%)');
         expect(result).toHaveLength(6);
@@ -106,7 +107,7 @@ describe('generateTriad', () => {
     });
 });
 
-describe('generateAnalogous', () => {
+describe('generateAnalogous utility', () => {
     it('returns array of 6 colors', () => {
         const result = generateAnalogous('hsl(180, 50%, 50%)');
         expect(result).toHaveLength(6);
@@ -119,7 +120,7 @@ describe('generateAnalogous', () => {
     });
 });
 
-describe('generateSaturations', () => {
+describe('generateSaturations utility', () => {
     it('returns array of 8 colors', () => {
         const result = generateSaturations('hsl(180, 50%, 50%)');
         expect(result).toHaveLength(8);

@@ -102,10 +102,8 @@
     // Regex patterns for inputs validation
 
     const hexPattern = '^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$';
-    const rgbPattern =
-        '\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b,\\s*\\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\\b';
-    const hslPattern =
-        '\\b(([0-9]|[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|360))\\b,\\s*\\b([0-9]|[1-9][0-9]|100)\\b,\\s*\\b([0-9]|[1-9][0-9]|100)\\b';
+    const rgbPattern = String.raw`\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b`;
+    const hslPattern = String.raw`\b(([0-9]|[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|360))\b,\s*\b([0-9]|[1-9][0-9]|100)\b,\s*\b([0-9]|[1-9][0-9]|100)\b`;
 
     /* --- maybe refactor these handlers --- */
     /* ---  vvvvvvvvvv     vvvvvvvvvvv   --- */
@@ -118,7 +116,9 @@
     const submitRgb = (e) => {
         const rgbInput = e.target.querySelector('[data-test="rgb-input"]');
         const rgb = rgbInput.value;
-        if (!rgb) return;
+        if (!rgb) {
+            return;
+        }
         const hsl = rgbToHsl(rgb);
         store.dispatch('SET_MAIN_COLOR', hsl);
         rgbInput.value = '';
@@ -127,7 +127,9 @@
     const submitHex = (e) => {
         const hexInput = e.target.querySelector('[data-test="hex-input"]');
         const hex = hexInput.value;
-        if (!hex) return;
+        if (!hex) {
+            return;
+        }
         const hsl = hexToHsl(hex);
         store.dispatch('SET_MAIN_COLOR', hsl);
         hexInput.value = '';
@@ -136,7 +138,9 @@
     const submitHsl = (e) => {
         const hslInput = e.target.querySelector('[data-test="hsl-input"]');
         const val = hslInput.value;
-        if (!val) return;
+        if (!val) {
+            return;
+        }
         const [h, s, l] = val.split(',').map(Number);
         const hsl = toHslString(h, s, l);
         store.dispatch('SET_MAIN_COLOR', hsl);
@@ -147,7 +151,9 @@
         const colorInput = e.target.querySelector('[data-test="color-input"]');
         // remove the # from the color value
         const color = colorInput.value.slice(1);
-        if (!color) return;
+        if (!color) {
+            return;
+        }
         const hsl = hexToHsl(color);
         store.dispatch('SET_MAIN_COLOR', hsl);
     };

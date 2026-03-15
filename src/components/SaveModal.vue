@@ -55,10 +55,11 @@
 </template>
 
 <script setup>
-    import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { onMounted, onUnmounted, ref } from 'vue';
+
+    import { createToast } from 'mosha-vue-toastify';
     import { useStore } from 'vuex';
+    import { onMounted, onUnmounted, ref } from 'vue';
 
     const store = useStore();
 
@@ -94,25 +95,25 @@
                 paletteName.value = '';
                 invalid.value = false;
                 createToast('Palette saved!', {
-                    type: 'success',
-                    position: 'bottom-right',
                     hideProgressBar: true,
+                    position: 'bottom-right',
+                    type: 'success',
                 });
                 emit('close');
-            } catch (e) {
+            } catch {
                 createToast('Failed to save palette. Please try again.', {
-                    type: 'danger',
-                    position: 'bottom-right',
                     hideProgressBar: true,
+                    position: 'bottom-right',
+                    type: 'danger',
                 });
             }
         } else {
             placeholder.value = 'Please enter name';
             invalid.value = true;
             createToast('Please name the palette first', {
-                type: 'warning',
-                position: 'bottom-right',
                 hideProgressBar: true,
+                position: 'bottom-right',
+                type: 'warning',
             });
         }
     };

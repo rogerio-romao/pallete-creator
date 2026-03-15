@@ -42,10 +42,10 @@
     import { computed } from 'vue';
     import { useStore } from 'vuex';
 
-    const props = defineProps({
+    const { isMiniPaneCollapsed } = defineProps({
         isMiniPaneCollapsed: {
-            type: Boolean,
             default: false,
+            type: Boolean,
         },
     });
 

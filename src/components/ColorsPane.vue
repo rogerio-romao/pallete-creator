@@ -26,10 +26,10 @@
 <script setup>
     import ColorSlot from './ColorSlot.vue';
 
-    const props = defineProps({
+    const { isColorPaneCollapsed } = defineProps({
         isColorPaneCollapsed: {
-            type: Boolean,
             default: false,
+            type: Boolean,
         },
     });
 </script>

@@ -76,7 +76,8 @@
 <script setup>
     import { computed } from 'vue';
     import { useStore } from 'vuex';
-    import { DEFAULT_COLORS } from '../lib/colors';
+
+    import DEFAULT_HEX_COLORS from '../lib/colors';
 
     const emit = defineEmits(['copyPalette', 'savePalette']);
 
@@ -89,7 +90,7 @@
     const setLightText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
-            DEFAULT_COLORS.LIGHT_TEXT,
+            DEFAULT_HEX_COLORS.LIGHT_TEXT,
         );
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
@@ -99,7 +100,7 @@
     const setDarkText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
-            DEFAULT_COLORS.DARK_TEXT,
+            DEFAULT_HEX_COLORS.DARK_TEXT,
         );
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
@@ -123,23 +124,23 @@
     const resetSiteColors = () => {
         document.documentElement.style.setProperty(
             '--clr-main',
-            DEFAULT_COLORS.MAIN,
+            DEFAULT_HEX_COLORS.MAIN,
         );
         document.documentElement.style.setProperty(
             '--clr-complementary',
-            DEFAULT_COLORS.COMPLEMENTARY,
+            DEFAULT_HEX_COLORS.COMPLEMENTARY,
         );
         document.documentElement.style.setProperty(
             '--clr-light',
-            DEFAULT_COLORS.LIGHT,
+            DEFAULT_HEX_COLORS.LIGHT,
         );
         document.documentElement.style.setProperty(
             '--clr-accent',
-            DEFAULT_COLORS.ACCENT,
+            DEFAULT_HEX_COLORS.ACCENT,
         );
         document.documentElement.style.setProperty(
             '--clr-accent-light',
-            DEFAULT_COLORS.ACCENT_LIGHT,
+            DEFAULT_HEX_COLORS.ACCENT_LIGHT,
         );
     };
 

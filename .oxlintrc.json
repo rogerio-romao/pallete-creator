@@ -7,7 +7,6 @@
         "import",
         "jsdoc",
         "promise",
-        "vitest",
         "vue"
     ],
     "categories": {
@@ -15,15 +14,49 @@
         "nursery": "warn",
         "pedantic": "warn",
         "perf": "warn",
-        "restriction": "warn"
+        "restriction": "warn",
+        "style": "warn"
     },
     "rules": {
+        "eslint/capitalized-comments": "off",
+        "eslint/init-declarations": "off",
+        "eslint/id-length": "off",
+        "eslint/max-statements": ["warn", 16],
+        "eslint/no-magic-numbers": [
+            "warn",
+            {
+                "ignore": [0, 1],
+                "ignoreArrayIndexes": true
+            }
+        ],
         "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+        "eslint/no-ternary": "off",
+        "eslint/sort-imports": [
+            "warn",
+            {
+                "ignoreCase": true,
+                "allowSeparatedGroups": true,
+                "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+            }
+        ],
+        "import/group-exports": "off",
         "import/max-dependencies": ["warn", { "max": 11 }],
         "import/no-default-export": "off",
+        "import/no-named-export": "off",
         "import/no-relative-parent-imports": "off",
         "oxc/no-async-await": "off",
-        "oxc/no-optional-chaining": "off"
+        "oxc/no-optional-chaining": "off",
+        "unicorn/filename-case": [
+            "error",
+            {
+                "cases": {
+                    "camelCase": true,
+                    "pascalCase": true
+                }
+            }
+        ],
+        "unicorn/no-null": "off",
+        "vitest/no-hooks": "off"
     },
     "settings": {
         "jsdoc": {
@@ -42,9 +75,17 @@
     },
     "env": {
         "browser": true,
-        "builtin": true,
-        "vitest": true
+        "builtin": true
     },
+    "overrides": [
+        {
+            "files": ["**/*.test.*", "**/*.spec.*", "**/__tests__/**/*"],
+            "plugins": ["vitest"],
+            "env": {
+                "vitest": true
+            }
+        }
+    ],
     "globals": {
         "defineEmits": "readonly",
         "defineProps": "readonly"

@@ -76,10 +76,11 @@
 </template>
 
 <script setup>
-    import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
-    import { computed, onMounted, onUnmounted, ref } from 'vue';
+
+    import { createToast } from 'mosha-vue-toastify';
     import { useStore } from 'vuex';
+    import { computed, onMounted, onUnmounted, ref } from 'vue';
 
     const store = useStore();
     const labels = computed(() => store.state.labels);
@@ -128,13 +129,13 @@
     // Copying the code to the clipboard
 
     const selectAll = async () => {
-        const text = document.querySelector('.code-wrapper').innerText;
+        const text = document.querySelector('.code-wrapper').textContent;
         await navigator.clipboard.writeText(text);
         copied.value = true;
         createToast('CSS copied to clipboard', {
-            type: 'success',
-            position: 'bottom-right',
             hideProgressBar: true,
+            position: 'bottom-right',
+            type: 'success',
         });
     };
 </script>

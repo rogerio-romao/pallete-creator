@@ -45,17 +45,18 @@
 </template>
 
 <script setup>
-    import { createToast } from 'mosha-vue-toastify';
     import 'mosha-vue-toastify/dist/style.css';
+
     import { computed } from 'vue';
+    import { createToast } from 'mosha-vue-toastify';
     import { useStore } from 'vuex';
 
     const store = useStore();
 
-    const props = defineProps({
+    const { isSavedPaneCollapsed } = defineProps({
         isSavedPaneCollapsed: {
-            type: Boolean,
             default: false,
+            type: Boolean,
         },
     });
 
@@ -71,22 +72,22 @@
 
     const deletePalette = async (id) => {
         // oxlint-disable-next-line no-alert
-        const confirm = window.confirm(
+        const confirm = globalThis.confirm(
             'Are you sure you want to delete this palette? This action cannot be undone.',
         );
         if (confirm) {
             try {
                 await store.dispatch('DELETE_PALETTE', id);
                 createToast('Palette deleted!', {
+                    hideProgressBar: true,
+                    position: 'bottom-right',
                     type: 'info',
-                    position: 'bottom-right',
-                    hideProgressBar: true,
                 });
-            } catch (e) {
+            } catch {
                 createToast('Failed to delete palette. Please try again.', {
-                    type: 'danger',
-                    position: 'bottom-right',
                     hideProgressBar: true,
+                    position: 'bottom-right',
+                    type: 'danger',
                 });
             }
         }

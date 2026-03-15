@@ -1,14 +1,15 @@
-import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
 import { createStore } from 'vuex';
+import { mount } from '@vue/test-utils';
+
 import App from './App.vue';
 
 // Create a mock store
-const createVuexStore = (state = {}) => {
-    return createStore({
+const createVuexStore = (state = {}) =>
+    createStore({
+        getters: {
+            uniqueColors: () => new Set(state.uniqueColors || []),
+        },
         state: {
-            mainHSL: state.mainHSL || null,
-            savedPalettes: state.savedPalettes || [],
             // Add labels to prevent errors in ColorSlot component
             labels: state.labels || [
                 'Main',
@@ -17,44 +18,42 @@ const createVuexStore = (state = {}) => {
                 'Accent',
                 'Accent Light',
             ],
+            mainHSL: state.mainHSL || null,
             // Add mainSlotColor to prevent errors
             mainSlotColor: state.mainSlotColor || {
+                hex: '',
                 hsl: '',
                 rgb: '',
-                hex: '',
             },
+            savedPalettes: state.savedPalettes || [],
             // Add slotColors to prevent errors
             slotColors: state.slotColors || {
                 slot2: {
+                    hex: '',
                     hsl: '',
                     rgb: '',
-                    hex: '',
                 },
                 slot3: {
+                    hex: '',
                     hsl: '',
                     rgb: '',
-                    hex: '',
                 },
                 slot4: {
+                    hex: '',
                     hsl: '',
                     rgb: '',
-                    hex: '',
                 },
                 slot5: {
+                    hex: '',
                     hsl: '',
                     rgb: '',
-                    hex: '',
                 },
             },
         },
-        getters: {
-            uniqueColors: () => new Set(state.uniqueColors || []),
-        },
     });
-};
 
 // oxlint-disable-next-line max-lines-per-function
-describe('App.vue', () => {
+describe('component App.vue', () => {
     let wrapper;
     let store;
 
@@ -69,7 +68,9 @@ describe('App.vue', () => {
     });
 
     it('renders the main navigation', () => {
-        expect(wrapper.findComponent({ name: 'MainNav' }).exists()).toBe(true);
+        expect(
+            wrapper.findComponent({ name: 'MainNav' }).exists(),
+        ).toBeTruthy();
     });
 
     it('shows utility buttons when colors are present', () => {
@@ -83,15 +84,15 @@ describe('App.vue', () => {
             },
         });
 
-        expect(wrapper.findComponent({ name: 'UtilityButtons' }).exists()).toBe(
-            true,
-        );
+        expect(
+            wrapper.findComponent({ name: 'UtilityButtons' }).exists(),
+        ).toBeTruthy();
     });
 
     it('hides utility buttons when no colors are present', () => {
-        expect(wrapper.findComponent({ name: 'UtilityButtons' }).exists()).toBe(
-            false,
-        );
+        expect(
+            wrapper.findComponent({ name: 'UtilityButtons' }).exists(),
+        ).toBeFalsy();
     });
 
     it('shows saved palettes section when there are saved palettes', () => {
@@ -105,9 +106,9 @@ describe('App.vue', () => {
             },
         });
 
-        expect(wrapper.findComponent({ name: 'SavedPalettes' }).exists()).toBe(
-            true,
-        );
+        expect(
+            wrapper.findComponent({ name: 'SavedPalettes' }).exists(),
+        ).toBeTruthy();
     });
 
     it('toggles isColorPaneCollapsed when collapse icon is clicked', async () => {
@@ -124,22 +125,22 @@ describe('App.vue', () => {
 
         // Find the collapse icon for the color pane
         const collapseIcon = wrapper.find('h2 .collapse');
-        expect(collapseIcon.exists()).toBe(true);
+        expect(collapseIcon.exists()).toBeTruthy();
 
         // Verify default state is not collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isColorPaneCollapsed).toBeFalsy();
 
         // Click the collapse icon
         await collapseIcon.trigger('click');
 
         // Verify it's now collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBe(true);
+        expect(wrapper.vm.isColorPaneCollapsed).toBeTruthy();
 
         // Click again to toggle back
         await wrapper.find('h2 .collapse').trigger('click');
 
         // Verify it's back to not collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isColorPaneCollapsed).toBeFalsy();
     });
 
     it('toggles isMiniPaneCollapsed when the mini pane collapse icon is clicked', async () => {
@@ -160,22 +161,22 @@ describe('App.vue', () => {
             .find((h2) => h2.text().includes('Pick your variations'));
 
         const collapseIcon = miniPaneHeading.find('.collapse');
-        expect(collapseIcon.exists()).toBe(true);
+        expect(collapseIcon.exists()).toBeTruthy();
 
         // Verify default state is not collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
 
         // Click the collapse icon
         await collapseIcon.trigger('click');
 
         // Verify it's now collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBe(true);
+        expect(wrapper.vm.isMiniPaneCollapsed).toBeTruthy();
 
         // Click again to toggle back
         await miniPaneHeading.find('.collapse').trigger('click');
 
         // Verify it's back to not collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
     });
 
     it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
@@ -196,21 +197,21 @@ describe('App.vue', () => {
             .find((h2) => h2.text().includes('Saved Palettes'));
 
         const collapseIcon = savedPaletteHeading.find('.collapse');
-        expect(collapseIcon.exists()).toBe(true);
+        expect(collapseIcon.exists()).toBeTruthy();
 
         // Verify default state is not collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();
 
         // Click the collapse icon
         await collapseIcon.trigger('click');
 
         // Verify it's now collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBe(true);
+        expect(wrapper.vm.isSavedPaneCollapsed).toBeTruthy();
 
         // Click again to toggle back
         await savedPaletteHeading.find('.collapse').trigger('click');
 
         // Verify it's back to not collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBe(false);
+        expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();
     });
 });

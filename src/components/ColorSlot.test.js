@@ -1,9 +1,10 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import store from '../store';
+
 import ColorSlot from './ColorSlot.vue';
 
-describe('ColorSlot', () => {
+describe('componentColorSlot', () => {
     let wrapper;
 
     beforeEach(() => {
@@ -26,6 +27,7 @@ describe('ColorSlot', () => {
         await colorSlot.trigger('click');
 
         // Assert that store dispatch was called with correct action and parameter
+        // oxlint-disable-next-line no-magic-numbers -- its the slot number from the wrapper props for this test
         expect(store.dispatch).toHaveBeenCalledWith('PASTE_COLOR', 2);
     });
 
@@ -39,8 +41,8 @@ describe('ColorSlot', () => {
 
         // Assert that store dispatch was called with correct action and parameters
         expect(store.dispatch).toHaveBeenCalledWith('UPDATE_LABEL', {
-            slotNumber: 2,
             label: 'New Label',
+            slotNumber: 2,
         });
     });
 });
