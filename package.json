@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "check": "pnpm lint && pnpm lint:css && pnpm test:ci && pnpm build",
+        "check": "pnpm lint && pnpm lint:css && pnpm typecheck && pnpm test:ci && pnpm build",
         "dev": "vite",
         "build": "vite build",
         "lint": "oxlint",
@@ -15,7 +15,8 @@
         "test": "vitest",
         "test:ci": "vitest run",
         "test:coverage": "vitest run --coverage",
-        "test:ui": "vitest --ui --coverage.enabled=true"
+        "test:ui": "vitest --ui --coverage.enabled=true",
+        "typecheck": "vue-tsc --noEmit"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.0.0",
@@ -41,7 +42,9 @@
         "stylelint-plugin-defensive-css": "^2.6.0",
         "stylelint-plugin-logical-css": "^2.0.2",
         "stylelint-use-nesting": "^6.0.2",
+        "typescript": "^5.9.3",
         "vite": "^5.4.18",
-        "vitest": "^3.0.9"
+        "vitest": "^3.0.9",
+        "vue-tsc": "^3.2.5"
     }
 }

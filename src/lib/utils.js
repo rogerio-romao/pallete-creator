@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 // oxlint-disable no-magic-numbers
 
 // Generate random HSL color
@@ -8,6 +9,13 @@ const MAX_LIGHTNESS = 100;
 const MAX_RGB_VALUE = 255;
 const HEX_RADIX = 16;
 
+/**
+ * Helper function for converting hue to RGB values, used in the HSL to RGB conversion process.
+ * @param {number} p - The first parameter for the hue to RGB conversion, representing a temporary value based on lightness and saturation.
+ * @param {number} q - The second parameter for the hue to RGB conversion, representing a temporary value based on lightness and saturation.
+ * @param {number} t - The hue value adjusted for the specific RGB channel being calculated (red, green, or blue).
+ * @returns {number} The calculated RGB value for the specific channel, normalized to the range [0, 1].
+ */
 const hue2rgb = (p, q, t) => {
     if (t < 0) {
         // oxlint-disable-next-line no-param-reassign
@@ -29,6 +37,13 @@ const hue2rgb = (p, q, t) => {
     return p;
 };
 
+/**
+ * Generates an HSL color string from the provided hue, saturation, and luminosity values.
+ * @param {number} h - the hue value
+ * @param {number} s - the saturation value
+ * @param {number} l - the luminosity value
+ * @returns {string} the HSL color string in the format "hsl(h, s%, l%)"
+ */
 export const toHslString = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`;
 
 export const generateHsl = () => {
@@ -38,10 +53,17 @@ export const generateHsl = () => {
     return toHslString(h, s, l);
 };
 
-// Convert HSL color to RGB
-
+/**
+ * Converts an HSL color string to an RGB color string.
+ * @param {string} hsl - The HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string} The RGB color string (e.g., "rgb(64, 191, 64)").
+ */
+// oxlint-disable-next-line max-statements
 export const hslToRgb = (hsl) => {
-    let [h, s, l] = hsl.match(/\d+/g).map(Number);
+    let [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined || l === undefined) {
+        return 'rgb(0, 0, 0)';
+    }
     h /= MAX_HUE;
     s /= MAX_SATURATION;
     l /= MAX_LIGHTNESS;
@@ -63,11 +85,17 @@ export const hslToRgb = (hsl) => {
     )})`;
 };
 
-// Convert RGB to HSL
-
+/**
+ * Converts an RGB color string to an HSL color string.
+ * @param {string} rgb - The RGB color string (e.g., "rgb(64, 191, 64)").
+ * @returns {string} The HSL color string (e.g., "hsl(120, 50%, 50%)").
+ */
 // oxlint-disable-next-line max-statements
 export const rgbToHsl = (rgb) => {
-    let [r, g, b] = rgb.match(/\d+/g).map(Number);
+    let [r, g, b] = rgb.match(/\d+/g)?.map(Number) ?? [];
+    if (r === undefined || g === undefined || b === undefined) {
+        return 'hsl(0, 0%, 0%)';
+    }
     r /= MAX_RGB_VALUE;
     g /= MAX_RGB_VALUE;
     b /= MAX_RGB_VALUE;
@@ -99,6 +127,7 @@ export const rgbToHsl = (rgb) => {
                 break;
             }
         }
+        h ??= 0;
         h /= 6;
     }
     return `hsl(${Math.round(h * MAX_HUE)}, ${Math.round(s * MAX_SATURATION)}%, ${Math.round(
@@ -106,10 +135,16 @@ export const rgbToHsl = (rgb) => {
     )}%)`;
 };
 
-// Convert RGB to HEX
-
+/**
+ * Converts an RGB color string to a HEX color string.
+ * @param {string} rgb - The RGB color string (e.g., "rgb(64, 191, 64)").
+ * @returns {string} The HEX color string (e.g., "#40bf40").
+ */
 export const rgbToHex = (rgb) => {
-    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    const [r, g, b] = rgb.match(/\d+/g)?.map(Number) ?? [];
+    if (r === undefined || g === undefined || b === undefined) {
+        return '#000000';
+    }
     const hex = [
         r.toString(HEX_RADIX),
         g.toString(HEX_RADIX),
@@ -123,8 +158,11 @@ export const rgbToHex = (rgb) => {
     return `#${hex.join('')}`;
 };
 
-// Convert HEX to HSL
-
+/**
+ * Converts a HEX color string to an HSL color string.
+ * @param {string} hex - The HEX color string (e.g., "40bf40" or "#40bf40").
+ * @returns {string} The HSL color string (e.g., "hsl(120, 50%, 50%)").
+ */
 export const hexToHsl = (hex) => {
     const r = Number.parseInt(hex.slice(0, 2), 16);
     const g = Number.parseInt(hex.slice(2, 4), 16);
@@ -133,10 +171,16 @@ export const hexToHsl = (hex) => {
     return hsl;
 };
 
-// Create complementary colors
-
+/**
+ * Generates an array of complementary HSL color strings based on the input HSL color.
+ * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string[]} An array of complementary HSL color strings.
+ */
 export const generateComplement = (hsl) => {
-    const [h, s, l] = hsl.match(/\d+/g).map(Number);
+    const [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined || l === undefined) {
+        return [];
+    }
     const h2 = (h + 180) % MAX_HUE;
     const h3 = Math.abs((h - 150) % MAX_HUE);
     const h4 = (h + 150) % MAX_HUE;
@@ -152,10 +196,16 @@ export const generateComplement = (hsl) => {
     ];
 };
 
-// Create monochromatic colors
-
+/**
+ * Generates an array of monochromatic HSL color strings based on the input HSL color.
+ * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string[]} An array of monochromatic HSL color strings.
+ */
 export const generateMono = (hsl) => {
-    const [h, s] = hsl.match(/\d+/g).map(Number);
+    const [h, s] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined) {
+        return [];
+    }
     return [
         toHslString(h, s, 8),
         toHslString(h, s, 20),
@@ -168,12 +218,23 @@ export const generateMono = (hsl) => {
     ];
 };
 
-// Create triad colors
-
+/**
+ * Generates an array of triad HSL color strings based on the input HSL color.
+ * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string[]} An array of triad HSL color strings.
+ */
 export const generateTriad = (hsl) => {
-    const [h, s, l] = hsl.match(/\d+/g).map(Number);
+    const [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined || l === undefined) {
+        return [];
+    }
     const h2 = (h + 120) % MAX_HUE;
     const h3 = (h + 240) % MAX_HUE;
+    /**
+     * Clamps a value between 0 and MAX_LIGHTNESS.
+     * @param {number} v - The value to clamp
+     * @returns {number} The clamped value
+     */
     const clamp = (v) => Math.max(0, Math.min(MAX_LIGHTNESS, v));
     return [
         toHslString(h2, s, l),
@@ -185,10 +246,16 @@ export const generateTriad = (hsl) => {
     ];
 };
 
-// Create analogous colors
-
+/**
+ * Generates an array of analogous HSL color strings based on the input HSL color.
+ * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string[]} An array of analogous HSL color strings.
+ */
 export const generateAnalogous = (hsl) => {
-    const [h, s, l] = hsl.match(/\d+/g).map(Number);
+    const [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined || l === undefined) {
+        return [];
+    }
     const h2 = Math.abs((h - 60) % MAX_HUE);
     const h3 = Math.abs((h - 30) % MAX_HUE);
     const h4 = (h + 30) % MAX_HUE;
@@ -206,10 +273,16 @@ export const generateAnalogous = (hsl) => {
     ];
 };
 
-// Create saturation variations
-
+/**
+ * Generates an array of HSL color strings with varying saturation based on the input HSL color.
+ * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {string[]} An array of HSL color strings with different saturations.
+ */
 export const generateSaturations = (hsl) => {
-    const [h, s, l] = hsl.match(/\d+/g).map(Number);
+    const [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
+    if (h === undefined || s === undefined || l === undefined) {
+        return [];
+    }
     const s2 = Math.abs((s - 10) % MAX_SATURATION);
     const s3 = (s + 10) % MAX_SATURATION;
     const s4 = Math.abs((s - 20) % MAX_SATURATION);

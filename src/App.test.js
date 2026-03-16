@@ -3,7 +3,14 @@ import { mount } from '@vue/test-utils';
 
 import App from './App.vue';
 
-// Create a mock store
+/** @typedef {import('./store/state.js').ColorSlot} ColorSlot */
+/** @typedef {import('./store/state.js').SavedPalette} SavedPalette */
+
+/**
+ * Creates a Vuex store with the specified state for testing purposes.
+ * @param {{ uniqueColors?: string[], labels?: string[], mainHSL?: string | null, mainSlotColor?: ColorSlot, savedPalettes?: SavedPalette[], slotColors?: { slot2: ColorSlot, slot3: ColorSlot, slot4: ColorSlot, slot5: ColorSlot } }} [state] - Optional state overrides for the store
+ * @returns {ReturnType<typeof createStore>} A Vuex store instance with the specified state
+ */
 const createVuexStore = (state = {}) =>
     createStore({
         getters: {
@@ -54,6 +61,7 @@ const createVuexStore = (state = {}) =>
 
 // oxlint-disable-next-line max-lines-per-function
 describe('component App.vue', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
     let store;
 
@@ -160,20 +168,20 @@ describe('component App.vue', () => {
             .findAll('h2')
             .find((h2) => h2.text().includes('Pick your variations'));
 
-        const collapseIcon = miniPaneHeading.find('.collapse');
-        expect(collapseIcon.exists()).toBeTruthy();
+        const collapseIcon = miniPaneHeading?.find('.collapse');
+        expect(collapseIcon?.exists()).toBeTruthy();
 
         // Verify default state is not collapsed
         expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
 
         // Click the collapse icon
-        await collapseIcon.trigger('click');
+        await collapseIcon?.trigger('click');
 
         // Verify it's now collapsed
         expect(wrapper.vm.isMiniPaneCollapsed).toBeTruthy();
 
         // Click again to toggle back
-        await miniPaneHeading.find('.collapse').trigger('click');
+        await miniPaneHeading?.find('.collapse').trigger('click');
 
         // Verify it's back to not collapsed
         expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
@@ -196,20 +204,20 @@ describe('component App.vue', () => {
             .findAll('h2')
             .find((h2) => h2.text().includes('Saved Palettes'));
 
-        const collapseIcon = savedPaletteHeading.find('.collapse');
-        expect(collapseIcon.exists()).toBeTruthy();
+        const collapseIcon = savedPaletteHeading?.find('.collapse');
+        expect(collapseIcon?.exists()).toBeTruthy();
 
         // Verify default state is not collapsed
         expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();
 
         // Click the collapse icon
-        await collapseIcon.trigger('click');
+        await collapseIcon?.trigger('click');
 
         // Verify it's now collapsed
         expect(wrapper.vm.isSavedPaneCollapsed).toBeTruthy();
 
         // Click again to toggle back
-        await savedPaletteHeading.find('.collapse').trigger('click');
+        await savedPaletteHeading?.find('.collapse').trigger('click');
 
         // Verify it's back to not collapsed
         expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();

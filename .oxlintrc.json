@@ -23,6 +23,7 @@
         "eslint/init-declarations": "off",
         "eslint/id-length": "off",
         "eslint/max-statements": ["warn", 16],
+        "eslint/no-inline-comments": "off",
         "eslint/no-magic-numbers": [
             "warn",
             {
@@ -32,6 +33,7 @@
         ],
         "eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
         "eslint/no-ternary": "off",
+        "eslint/no-undefined": "off",
         "eslint/sort-imports": [
             "warn",
             {

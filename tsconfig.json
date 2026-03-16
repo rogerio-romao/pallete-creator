@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "lib": ["dom", "es2023", "DOM.Iterable"],
+        "noEmit": true,
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "target": "es2023",
+        "types": ["vitest/globals"]
+    },
+    "include": ["src/**/*"]
+}

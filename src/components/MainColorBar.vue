@@ -113,8 +113,15 @@
         store.dispatch('SET_MAIN_COLOR', hsl);
     };
 
+    /**
+     * Handles the submission of the RGB color input, converting it to HSL and setting it as the main color.
+     * @param {SubmitEvent} e - The form submission event.
+     */
     const submitRgb = (e) => {
-        const rgbInput = e.target.querySelector('[data-test="rgb-input"]');
+        const form = /** @type {HTMLFormElement} */ (e.target);
+        const rgbInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('[data-test="rgb-input"]')
+        );
         const rgb = rgbInput.value;
         if (!rgb) {
             return;
@@ -124,8 +131,15 @@
         rgbInput.value = '';
     };
 
+    /**
+     * Handles the submission of the hex color input, converting it to HSL and setting it as the main color.
+     * @param {SubmitEvent} e - The form submission event.
+     */
     const submitHex = (e) => {
-        const hexInput = e.target.querySelector('[data-test="hex-input"]');
+        const form = /** @type {HTMLFormElement} */ (e.target);
+        const hexInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('[data-test="hex-input"]')
+        );
         const hex = hexInput.value;
         if (!hex) {
             return;
@@ -135,20 +149,34 @@
         hexInput.value = '';
     };
 
+    /**
+     * Handles the submission of the HSL color input, converting it to HSL string and setting it as the main color.
+     * @param {SubmitEvent} e - The form submission event.
+     */
     const submitHsl = (e) => {
-        const hslInput = e.target.querySelector('[data-test="hsl-input"]');
+        const form = /** @type {HTMLFormElement} */ (e.target);
+        const hslInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('[data-test="hsl-input"]')
+        );
         const val = hslInput.value;
         if (!val) {
             return;
         }
         const [h, s, l] = val.split(',').map(Number);
-        const hsl = toHslString(h, s, l);
+        const hsl = toHslString(h ?? 0, s ?? 0, l ?? 0);
         store.dispatch('SET_MAIN_COLOR', hsl);
         hslInput.value = '';
     };
 
+    /**
+     * Handles the submission of the color input form, setting the main color to the selected value.
+     * @param {SubmitEvent} e - The form submission event.
+     */
     const submitColor = (e) => {
-        const colorInput = e.target.querySelector('[data-test="color-input"]');
+        const form = /** @type {HTMLFormElement} */ (e.target);
+        const colorInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('[data-test="color-input"]')
+        );
         // remove the # from the color value
         const color = colorInput.value.slice(1);
         if (!color) {

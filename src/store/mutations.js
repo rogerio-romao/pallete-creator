@@ -1,12 +1,25 @@
+/** @typedef {ReturnType<typeof import('./state.js').default>} State */
+/** @typedef {import('./state.js').ColorSlot} ColorSlot */
+/** @typedef {import('./state.js').SavedPalette} SavedPalette */
+/** @typedef {'slot2' | 'slot3' | 'slot4' | 'slot5'} SlotKey */
+
 const mutations = {
-    // when variations are generated, this adds them to the state (allColors)
+    /**
+     * Adds generated color variations to the state (allColors).
+     * @param {State} state - The Vuex state object.
+     * @param {{ hsl: string, rgb: string, hex: string }} colors - The color values to add.
+     */
     ADD_COLOR(state, colors) {
         const { hsl, rgb, hex } = colors;
         state.allColors.hsl.push(hsl);
         state.allColors.rgb.push(rgb);
         state.allColors.hex.push(hex);
     },
-    // called when a main color is created, resetting all slots
+    /**
+     * Resets all color slots and sets the main color when a new main color is created.
+     * @param {State} state - The Vuex state object.
+     * @param {{ hsl: string, rgb: string, hex: string }} colors - The new main color values.
+     */
     RESET_ALL_COLORS(state, colors) {
         const { hsl, rgb, hex } = colors;
         state.allColors = {
@@ -37,19 +50,35 @@ const mutations = {
             },
         };
     },
-    // set the copied color from mini slots to state
+    /**
+     * Sets the copied color from mini slots to the state.
+     * @param {State} state - The Vuex state object.
+     * @param {string} color - The copied color value.
+     */
     SET_COPIED_COLOR(state, color) {
         state.copiedColor = color;
     },
-    // set the copied color index from mini slots to state
+    /**
+     * Sets the copied color index from mini slots to the state.
+     * @param {State} state - The Vuex state object.
+     * @param {number|null} index - The index of the copied color, or null if none is selected.
+     */
     SET_COPIED_COLOR_INDEX(state, index) {
         state.copiedColorIndex = index;
     },
-    // set the edited color label from this slot to state
+    /**
+     * Sets the edited color label for a specific slot in the state.
+     * @param {State} state - The Vuex state object.
+     * @param {{ label: string, slotNumber: number }} payload - The label and the slot number to update.
+     */
     SET_LABEL(state, { label, slotNumber }) {
         state.labels[slotNumber] = label;
     },
-    // sets the main color slot
+    /**
+     * Sets the main color slot and updates the main color values in the state.
+     * @param {State} state - The Vuex state object.
+     * @param {{ hsl: string, rgb: string, hex: string }} colors - The new main color values.
+     */
     SET_MAIN_COLOR(state, colors) {
         const { hsl, rgb, hex } = colors;
         state.mainHSL = hsl;
@@ -57,17 +86,29 @@ const mutations = {
         state.mainSlotColor.rgb = rgb;
         state.mainSlotColor.hex = hex;
     },
-    // save the local storage state after operation
+    /**
+     * Saves the palettes to the state after a local storage operation.
+     * @param {State} state - The Vuex state object.
+     * @param {SavedPalette[]} palettes - The array of saved palettes.
+     */
     SET_SAVED_PALETTES(state, palettes) {
         state.savedPalettes = palettes;
     },
-    // set a specific color slot
+    /**
+     * Sets the color values for a specific slot in the state.
+     * @param {State} state - The Vuex state object.
+     * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string }} payload - The slot identifier and color values.
+     */
     SET_SLOT_COLOR(state, { slot, hsl, rgb, hex }) {
         state.slotColors[slot].hsl = hsl;
         state.slotColors[slot].rgb = rgb;
         state.slotColors[slot].hex = hex;
     },
-    // set the text color
+    /**
+     * Sets the text color in the state.
+     * @param {State} state - The Vuex state object.
+     * @param {ColorSlot} colors - The color values for the text color.
+     */
     SET_TEXT_COLOR(state, colors) {
         state.textColor = colors;
     },

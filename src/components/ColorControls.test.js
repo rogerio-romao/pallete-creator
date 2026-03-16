@@ -8,6 +8,7 @@ const NUMBER_OF_SLOTS = 5;
 
 // oxlint-disable-next-line max-lines-per-function
 describe('component ColorControls', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
     beforeEach(() => {

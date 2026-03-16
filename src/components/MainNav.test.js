@@ -6,6 +6,7 @@ import MainNav from './MainNav.vue';
 
 // oxlint-disable-next-line max-lines-per-function
 describe('componentMainNav', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
     beforeEach(() => {

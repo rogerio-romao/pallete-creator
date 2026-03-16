@@ -5,6 +5,7 @@ import store from '../store';
 import ColorSlot from './ColorSlot.vue';
 
 describe('componentColorSlot', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
     beforeEach(() => {
