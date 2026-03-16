@@ -1,3 +1,54 @@
+<script setup>
+    import { useStore } from 'vuex';
+    import { computed, onMounted, ref } from 'vue';
+
+    import ColorsPane from './components/ColorsPane.vue';
+    import CopyModal from './components/ExportCssModal.vue';
+    import Instructions from './components/InstructionsModal.vue';
+    import MainColorBar from './components/MainColorBar.vue';
+    import MainNav from './components/MainNav.vue';
+    import MiniSlots from './components/MiniSlots.vue';
+    import SavedPalettes from './components/SavedPalettes.vue';
+    import SaveModal from './components/SaveModal.vue';
+    import UtilityButtons from './components/UtilityButtons.vue';
+
+    const store = useStore();
+
+    onMounted(() => store.dispatch('LOAD_PALETTES'));
+
+    const showCopyModal = ref(false);
+    const showSaveModal = ref(false);
+    const showInstructionsModal = ref(false);
+
+    const isColorPaneCollapsed = ref(false);
+    const isMiniPaneCollapsed = ref(false);
+    const isSavedPaneCollapsed = ref(false);
+
+    const mainHSL = computed(() => store.state.mainHSL);
+    const uniqueColors = computed(() => store.getters.uniqueColors);
+    const savedPalettes = computed(() => store.state.savedPalettes);
+    const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
+
+    const collapseColorPane = () => {
+        isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
+    };
+
+    const collapseMiniPane = () => {
+        isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
+    };
+
+    const collapseSavedPane = () => {
+        isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
+    };
+
+    // This is needed to make the collapse state of the panes available to the tests
+    defineExpose({
+        isColorPaneCollapsed,
+        isMiniPaneCollapsed,
+        isSavedPaneCollapsed,
+    });
+</script>
+
 <template>
     <!-- NAV  -->
     <MainNav @openInstructionsModal="showInstructionsModal = true" />
@@ -26,6 +77,7 @@
                 Build your palette
                 <span
                     class="collapse"
+                    data-testid="color-pane-collapse"
                     title="Click to collapse"
                     @click="collapseColorPane"
                     role="button"
@@ -49,6 +101,7 @@
                 Pick your variations
                 <span
                     class="collapse"
+                    data-testid="mini-pane-collapse"
                     title="Click to collapse"
                     @click="collapseMiniPane"
                     role="button"
@@ -72,6 +125,7 @@
                 Saved Palettes
                 <span
                     class="collapse"
+                    data-testid="saved-pane-collapse"
                     title="Click to collapse"
                     @click="collapseSavedPane"
                     role="button"
@@ -111,52 +165,6 @@
         <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
     </transition>
 </template>
-
-<script setup>
-    import { useStore } from 'vuex';
-    import { computed, onMounted, ref } from 'vue';
-
-    import ColorsPane from './components/ColorsPane.vue';
-    import CopyModal from './components/ExportCssModal.vue';
-    import Instructions from './components/InstructionsModal.vue';
-    import MainColorBar from './components/MainColorBar.vue';
-    import MainNav from './components/MainNav.vue';
-    import MiniSlots from './components/MiniSlots.vue';
-    import SavedPalettes from './components/SavedPalettes.vue';
-    import SaveModal from './components/SaveModal.vue';
-    import UtilityButtons from './components/UtilityButtons.vue';
-
-    const store = useStore();
-
-    onMounted(() => store.dispatch('LOAD_PALETTES'));
-
-    const showCopyModal = ref(false);
-    const showSaveModal = ref(false);
-    const showInstructionsModal = ref(false);
-
-    const isColorPaneCollapsed = ref(false);
-    const isMiniPaneCollapsed = ref(false);
-    const isSavedPaneCollapsed = ref(false);
-
-    const uniqueColors = computed(() => store.getters.uniqueColors);
-    const mainHSL = computed(() => store.state.mainHSL);
-    const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
-    const savedPalettes = computed(() => store.state.savedPalettes);
-
-    const collapseColorPane = () => {
-        isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
-    };
-
-    const collapseMiniPane = () => {
-        isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
-    };
-
-    const collapseSavedPane = () => {
-        isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
-    };
-
-    defineExpose({ isColorPaneCollapsed, isMiniPaneCollapsed, isSavedPaneCollapsed });
-</script>
 
 <style>
     @import url('./style/app.css');

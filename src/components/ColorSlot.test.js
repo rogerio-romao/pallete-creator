@@ -22,7 +22,7 @@ describe('componentColorSlot', () => {
 
     it('calls PASTE_COLOR action when pasteColor is triggered', async () => {
         // Find the color slot element
-        const colorSlot = wrapper.find('.color-slot');
+        const colorSlot = wrapper.find('.palette-slot-color');
 
         // Trigger click event
         await colorSlot.trigger('click');
@@ -34,7 +34,7 @@ describe('componentColorSlot', () => {
 
     it('calls UPDATE_LABEL action when updateLabel is triggered', async () => {
         // Find the label input
-        const input = wrapper.find('.label input');
+        const input = wrapper.find('.palette-slot-label input');
 
         // Set value and trigger change event
         await input.setValue('New Label');

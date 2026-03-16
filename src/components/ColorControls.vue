@@ -1,9 +1,9 @@
 <template>
     <!-- wrapper  -->
-    <div class="color-controls">
+    <div class="palette-slot-controls">
         <fieldset>
             <!-- individual H slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="hueControl">H</label>
                 <input
                     data-test="hue-input"
@@ -13,12 +13,13 @@
                     min="0"
                     max="360"
                     v-model="h"
+                    :style="{ '--fill-percent': `${((h / 360) * 100).toFixed(1)}%` }"
                     @input="updateColor"
                 />
             </div>
 
             <!-- individual S slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="satControl">S</label>
                 <input
                     data-test="sat-input"
@@ -28,12 +29,13 @@
                     min="0"
                     max="100"
                     v-model="s"
+                    :style="{ '--fill-percent': `${s}%` }"
                     @input="updateColor"
                 />
             </div>
 
             <!-- individual L slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="lumControl">L</label>
                 <input
                     data-test="lum-input"
@@ -43,6 +45,7 @@
                     min="0"
                     max="100"
                     v-model="l"
+                    :style="{ '--fill-percent': `${l}%` }"
                     @input="updateColor"
                 />
             </div>

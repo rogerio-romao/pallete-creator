@@ -14,7 +14,7 @@
             </div>
 
             <!-- individual slots  -->
-            <div class="palette-pane-slots">
+            <div class="palette-slots">
                 <template v-for="i in 5" :key="i">
                     <ColorSlot :slotNumber="i" />
                 </template>

@@ -13,7 +13,7 @@
             </div>
 
             <!-- palettes container  -->
-            <div class="palettes-wrapper">
+            <div class="saved-palettes">
                 <!-- one palette  -->
                 <div
                     v-for="palette in palettes"

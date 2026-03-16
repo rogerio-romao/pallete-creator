@@ -39,7 +39,7 @@ describe('component ColorsPane', () => {
             props: { isColorPaneCollapsed: false },
         });
         expect(wrapper.text()).not.toContain('Click the arrow to expand panel');
-        expect(wrapper.find('.palette-pane-slots').exists()).toBeTruthy();
+        expect(wrapper.find('.palette-slots').exists()).toBeTruthy();
     });
 
     it('has correct default prop', () => {

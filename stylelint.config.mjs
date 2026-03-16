@@ -3,20 +3,24 @@
 /** @type {import("stylelint").Config} */
 export default {
     extends: ['stylelint-config-standard'],
+
     overrides: [
         {
             extends: ['stylelint-config-recommended-vue'],
             files: ['**/*.vue'],
         },
     ],
+
     plugins: [
         'stylelint-plugin-defensive-css',
         'stylelint-plugin-logical-css',
         'stylelint-use-nesting',
     ],
+
     reportDescriptionlessDisables: true,
     reportInvalidScopeDisables: true,
     reportNeedlessDisables: true,
+
     rules: {
         'csstools/use-nesting': true,
         'declaration-no-important': true,

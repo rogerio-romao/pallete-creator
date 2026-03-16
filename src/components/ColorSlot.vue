@@ -1,8 +1,8 @@
 <template>
     <!-- Individual color Slot  -->
-    <div class="slot-container">
+    <div class="palette-slot">
         <!-- label edit div  -->
-        <div class="label centered">
+        <div class="palette-slot-label centered">
             <label :for="`slot-label-${slotNumber}`" class="sr-only"
                 >Color label for slot {{ slotNumber }}</label
             >
@@ -16,7 +16,7 @@
 
         <!-- slot  -->
         <div
-            class="color-slot"
+            class="palette-slot-color"
             @click="pasteColor"
             :style="{
                 backgroundColor: slotBg,

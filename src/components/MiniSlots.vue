@@ -15,7 +15,7 @@
 
             <!-- all the slots  -->
             <div
-                class="mini-slots-slots"
+                class="mini-slots"
                 role="listbox"
                 aria-label="Color variations"
             >
@@ -24,7 +24,7 @@
                     v-for="(color, i) in colors"
                     :class="[
                         'mini-slot',
-                        { copied: colorCopied && colorCopiedIndex === i },
+                        { 'mini-slot-copied': colorCopied && colorCopiedIndex === i },
                     ]"
                     :key="i"
                     :style="{ backgroundColor: color }"

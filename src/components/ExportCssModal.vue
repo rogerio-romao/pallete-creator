@@ -1,7 +1,7 @@
 <template>
     <!-- overlay  -->
     <div
-        class="modal-mask"
+        class="modal-mask modal-export"
         role="dialog"
         aria-modal="true"
         aria-labelledby="export-css-title"
@@ -19,7 +19,7 @@
                 <!-- body  -->
                 <div class="modal-body">
                     <!-- buttons  -->
-                    <div class="export-modal-buttons">
+                    <div class="modal-buttons">
                         <button
                             class="secondary-button"
                             @click="changeMode('rgb')"
@@ -43,8 +43,8 @@
                     </div>
 
                     <!-- textarea  -->
-                    <div class="code" @click="selectAll">
-                        <p class="code-info">Click here to copy</p>
+                    <div class="modal-code" @click="selectAll">
+                        <p class="modal-code-info">Click here to copy</p>
                         <div class="code-wrapper">
                             <p
                                 v-for="(label, i) in labels"
@@ -59,7 +59,7 @@
                 </div>
 
                 <!-- footer  -->
-                <div class="modal-footer export-modal-footer">
+                <div class="modal-footer">
                     <button
                         class="main-button"
                         @click="$emit('close')"
