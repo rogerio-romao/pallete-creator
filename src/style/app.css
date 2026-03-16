@@ -1,11 +1,9 @@
-/* RESET */
 @import url('./reset.css');
 
 /*  EXTERNAL FONTS  */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600;700&family=Zen+Antique&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap');
 
-/* ---- CUSTOM PROPERTIES ----  */
 :root {
     --clr-main: #1d1702;
     --clr-complementary: #f2edd9;
@@ -640,36 +638,36 @@ nav {
     gap: 1.5rem;
     margin-block-end: var(--mb-lg, 1.5rem);
     justify-content: center;
+}
 
-    & .mini-slot {
-        inline-size: var(--mini-slot-size, 50px);
-        block-size: var(--mini-slot-size, 50px);
-        border: 1px solid var(--clr-main, #404f4c);
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow:
-            2px 2px 2px rgb(0 0 0 / 20%),
-            inset 2px 2px 2px rgb(233 233 233 / 40%);
+.mini-slot {
+    inline-size: var(--mini-slot-size, 50px);
+    block-size: var(--mini-slot-size, 50px);
+    border: 1px solid var(--clr-main, #404f4c);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow:
+        2px 2px 2px rgb(0 0 0 / 20%),
+        inset 2px 2px 2px rgb(233 233 233 / 40%);
 
-        @media (prefers-reduced-motion: no-preference) {
-            transition: box-shadow 0.075s ease-in-out;
-        }
-
-        &:hover,
-        &:active {
-            box-shadow: none;
-        }
-
-        &:focus-visible {
-            outline: 3px solid var(--clr-accent, #404f4c);
-            outline-offset: 3px;
-        }
-
-        &-copied {
-            outline: var(--clr-complementary, #f2edd9) solid 7px;
-            outline-offset: 3px;
-        }
+    @media (prefers-reduced-motion: no-preference) {
+        transition: box-shadow 0.075s ease-in-out;
     }
+
+    &:hover,
+    &:active {
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        outline: 3px solid var(--clr-accent, #404f4c);
+        outline-offset: 3px;
+    }
+}
+
+.mini-slot-copied {
+    outline: var(--clr-complementary, #f2edd9) solid 7px;
+    outline-offset: 3px;
 }
 
 /* ----- SAVED PALETTES PANEL ----- */
@@ -764,7 +762,6 @@ nav {
 }
 
 /* ----- MODALS COMMON ----- */
-
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -844,7 +841,6 @@ nav {
 }
 
 /* Modal Transitions  */
-
 .modal-enter-active,
 .modal-leave-active {
     opacity: 1;
