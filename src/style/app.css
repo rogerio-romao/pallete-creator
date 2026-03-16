@@ -178,11 +178,11 @@ h2 {
     max-block-size: 100%;
     overflow: hidden;
     color: var(--clr-main, #404f4c);
+}
 
-    & &-header {
-        color: var(--clr-main, #404f4c);
-        margin-block-end: var(--mb-md, 1rem);
-    }
+.panel-header {
+    color: var(--clr-main, #404f4c);
+    margin-block-end: var(--mb-md, 1rem);
 }
 
 /* ----- NAVBAR ----- */
