@@ -7,13 +7,25 @@ import { mount } from '@vue/test-utils';
 import DEFAULT_HEX_COLORS from '../lib/colors';
 import UtilityButtons from './UtilityButtons.vue';
 
+/** @typedef {import('../store/actions.js').ActionCtx} ActionCtx */
+/** @typedef {ReturnType<typeof import('../store/state').default>} State */
+/** @typedef {import('../store/mutations.js').SlotKey} SlotKey */
+
 const MIN_SCHEME_COLORS = 4;
 
-// Create a mock store
+/**
+ * Creates a Vuex store with mock state, getters, actions, and mutations for testing purposes.
+ * @param {Object} _state - Optional initial state to override the default state.
+ * @returns {ReturnType<typeof createStore>} A Vuex store instance with the specified state, getters, actions, and mutations.
+ */
 // oxlint-disable-next-line max-lines-per-function
 const createVuexStore = (_state = {}) =>
     createStore({
         actions: {
+            /**
+             * Action to set a random color scheme in the state. It generates a random scheme of colors from the uniqueColors getter and commits mutations to set the slot colors in the state.
+             * @param {ActionCtx} ctx - The Vuex action context, containing commit, state, and getters.
+             */
             SET_RANDOM_SCHEME({ commit, state, getters }) {
                 const unique = [...getters.uniqueColors];
                 const randomScheme = new Set();
@@ -37,6 +49,11 @@ const createVuexStore = (_state = {}) =>
                     slot += 1;
                 }
             },
+            /**
+             * Action to set the text color in the state based on the provided type (light or dark). It commits a mutation to update the text color in the state with predefined hex, hsl, and rgb values for light and dark text colors.
+             * @param {ActionCtx} ctx - The Vuex action context, containing commit and state.
+             * @param {'light' | 'dark'} type - The type of text color to set, either 'light' or 'dark'.
+             */
             SET_TEXT_COLOR({ commit }, type) {
                 if (type === 'light') {
                     commit('SET_TEXT_COLOR', {
@@ -54,7 +71,11 @@ const createVuexStore = (_state = {}) =>
             },
         },
         getters: {
-            // Mock the uniqueColors getter
+            /**
+             * Getter to determine if the full color scheme is set in the state. It checks if all slot colors (slot2 to slot5) have a non-empty HSL value, indicating that they are set.
+             * @param {State} state - The Vuex state containing the slot colors.
+             * @returns {boolean} True if all slot colors have a non-empty HSL value, indicating that the full scheme is set; otherwise, false.
+             */
             fullSchemeSet: (state) =>
                 Object.values(state.slotColors).every(
                     (color) => color.hsl !== '',
@@ -68,9 +89,20 @@ const createVuexStore = (_state = {}) =>
             ],
         },
         mutations: {
+            /**
+             * Mutation to set the color of a specific slot in the state.
+             * @param {State} state - The Vuex state containing the slot colors.
+             * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string }} payload - The color information for the slot.
+             */
+
             SET_SLOT_COLOR: (state, { slot, hsl, rgb, hex }) => {
                 state.slotColors[slot] = { hex, hsl, rgb };
             },
+            /**
+             * Mutation to set the text color in the state.
+             * @param {State} state - The Vuex state containing the text color.
+             * @param {{ hex: string, hsl: string, rgb: string }} colors - The color information for the text.
+             */
             SET_TEXT_COLOR(state, colors) {
                 state.textColor = colors;
             },
@@ -114,7 +146,9 @@ const createVuexStore = (_state = {}) =>
 
 // oxlint-disable-next-line max-lines-per-function
 describe('component UtilityButtons', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
+    /** @type {ReturnType<typeof createVuexStore>} */
     let store;
 
     beforeEach(() => {
@@ -134,7 +168,7 @@ describe('component UtilityButtons', () => {
     });
 
     it('calls SET_RANDOM_SCHEME when random button is clicked', async () => {
-        const spy = vi.spyOn(store, 'dispatch').mockResolvedValue();
+        const spy = vi.spyOn(store, 'dispatch').mockResolvedValue(null);
 
         await wrapper
             .find('[data-test="random-scheme-button"]')

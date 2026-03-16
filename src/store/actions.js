@@ -1,5 +1,10 @@
 // oxlint-disable no-console
 
+/** @typedef {ReturnType<typeof import('./state.js').default>} State */
+/** @typedef {import('./state.js').ColorSlot} ColorSlot */
+/** @typedef {{ uniqueColors: Set<string>, fullSchemeSet: boolean, currentScheme: ColorSlot[] }} Getters */
+/** @typedef {{ commit: (mutation: string, payload?: unknown) => void, dispatch: (action: string, payload?: unknown) => void, state: State, getters: Getters }} ActionCtx */
+
 import DEFAULT_HEX_COLORS from '../lib/colors';
 import paletteService from '../services/paletteService';
 import {
@@ -16,12 +21,20 @@ import {
 const MIN_SCHEME_SIZE = 4;
 
 const actions = {
-    // trigerred when user clicks on a mini slot for copying
+    /**
+     * Trigerred when a user clicks on a mini slot to copy its color value. Commits mutations to set the copied color and its index in the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {{ color: string, index: number }} payload - color to copy and its slot index
+     */
     COPY_COLOR({ commit }, { color, index }) {
         commit('SET_COPIED_COLOR', color);
         commit('SET_COPIED_COLOR_INDEX', index);
     },
-    // deletes a palette from local storage
+    /**
+     * Trigerred when a user clicks the delete button on a saved palette. Calls the paletteService to delete the palette and dispatches an action to reload the palettes in the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {string} id - palette id to delete
+     */
     DELETE_PALETTE({ dispatch }, id) {
         try {
             paletteService.delete(id);
@@ -31,7 +44,11 @@ const actions = {
             throw error;
         }
     },
-    // trigerred when user generates a main color
+    /**
+     * Trigerred when a user generates a main color. Dispatches actions to reset the color slots and generate variations based on the new main color.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {{ color: string, fn: (color: string) => string[] }} payload - base color and variation generator function
+     */
     GENERATE_VARIATIONS({ commit }, { color, fn }) {
         const variations = fn(color);
         for (const hsl of variations) {
@@ -40,6 +57,10 @@ const actions = {
             commit('ADD_COLOR', { hex, hsl, rgb });
         }
     },
+    /**
+     * Trigerred when a user loads the saved palettes, and on app start. Calls the paletteService to fetch all palettes and commits them to the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     */
     LOAD_PALETTES({ commit }) {
         try {
             const palettes = paletteService.getAll();
@@ -49,7 +70,11 @@ const actions = {
             commit('SET_SAVED_PALETTES', []);
         }
     },
-    // pastes the selected variation on the specific color slot
+    /**
+     * Trigerred when a user clicks on a color slot to paste the copied color value. Commits mutations to set the target slot color based on the copied color in the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {number} slot - slot number to paste into
+     */
     PASTE_COLOR({ commit, state, dispatch }, slot) {
         if (!state.copiedColor) {
             return;
@@ -63,7 +88,11 @@ const actions = {
             commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}` });
         }
     },
-    // save to local storage
+    /**
+     * Trigerred when a user saves a palette. Calls the paletteService to save the palette to local storage and dispatches an action to reload the palettes in the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {{ name: string, scheme: ColorSlot[] }} payload - palette name and color scheme to save
+     */
     SAVE_PALETTE({ dispatch }, { name, scheme }) {
         try {
             paletteService.save({
@@ -76,7 +105,11 @@ const actions = {
             throw error;
         }
     },
-    // resets everything, sets the main color and generates variations
+    /**
+     * Trigerred when a user generates a new main color. Commits mutations to set the main color and reset the color slots, then dispatches actions to generate variations based on the new main color.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {string | null} color - HSL color string, or null to generate a random one
+     */
     SET_MAIN_COLOR({ commit, dispatch }, color) {
         const hsl = color || generateHsl();
         const rgb = hslToRgb(hsl);
@@ -92,16 +125,26 @@ const actions = {
             fn: generateSaturations,
         });
     },
-    // makes the site colors be this scheme
+    /**
+     * Trigerred when a user clicks on a saved palette to load it into the main view. Dispatches actions to set the main color and slot colors based on the colors in the saved palette.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {ColorSlot[]} palette - saved palette slots to restore
+     */
     SET_PALETTE_FROM_SAVED({ dispatch }, palette) {
         const [main, ...others] = palette;
+        if (!main?.hsl) {
+            return;
+        }
         dispatch('SET_MAIN_COLOR', main.hsl);
         for (const [index, slot] of others.entries()) {
             // oxlint-disable-next-line no-magic-numbers -- slots start at 1 and the first slot is the main color
             dispatch('UPDATE_SLOT_COLOR', { hsl: slot.hsl, slot: index + 2 });
         }
     },
-    // fills the slots with random unique colors from the variations
+    /**
+     * Trigerred when a user clicks on the "Randomize" button to fill the slots with random unique colors from the variations.
+     * @param {ActionCtx} ctx - Vuex action context
+     */
     // oxlint-disable-next-line max-statements
     SET_RANDOM_SCHEME({ commit, state, getters }) {
         const unique = [...getters.uniqueColors].filter(
@@ -131,7 +174,11 @@ const actions = {
             slot += 1;
         }
     },
-    // changes the text colors from light to dark
+    /**
+     * Trigerred when a user changes the text color variant. Commits mutations to set the text color based on the selected variant.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {'light' | 'dark'} type - text color variant to apply
+     */
     SET_TEXT_COLOR({ commit }, type) {
         if (type === 'light') {
             commit('SET_TEXT_COLOR', {
@@ -147,12 +194,24 @@ const actions = {
             });
         }
     },
-    // updates the label of a specific slot
+    /**
+     * Trigerred when a user updates the label of a specific slot. Commits mutations to set the new label for the target slot.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {{ label: string, slotNumber: number }} payload - new label text and target slot number
+     */
     UPDATE_LABEL({ commit }, { label, slotNumber }) {
-        const formattedLabel = label[0].toUpperCase() + label.slice(1);
+        if (label.trim() === '') {
+            return;
+        }
+
+        const formattedLabel = label.charAt(0).toUpperCase() + label.slice(1);
         commit('SET_LABEL', { label: formattedLabel, slotNumber });
     },
-    // updates the color of a specific slot
+    /**
+     * Trigerred when a user updates the color of a specific slot. Commits mutations to set the new color values for the target slot based on the provided HSL color.
+     * @param {ActionCtx} ctx - Vuex action context
+     * @param {{ slot: number, hsl: string }} payload - target slot number and HSL color to set
+     */
     UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
         const rgb = hslToRgb(hsl);
         const hex = rgbToHex(rgb);

@@ -52,6 +52,8 @@
     import { createToast } from 'mosha-vue-toastify';
     import { useStore } from 'vuex';
 
+    /** @typedef {import('../store/state').ColorSlot} ColorSlot */
+
     const store = useStore();
 
     const { isSavedPaneCollapsed } = defineProps({
@@ -63,14 +65,18 @@
 
     const palettes = computed(() => store.state.savedPalettes);
 
-    // Puts the clicked on palette on the color slots for editing.
-
+    /**
+     * Loads the clicked palette into the color slots for editing.
+     * @param {ColorSlot[]} palette - The palette scheme to load into the slots.
+     */
     const editPalette = (palette) => {
         store.dispatch('SET_PALETTE_FROM_SAVED', palette);
     };
 
-    // Deletes the clicked on palette from the saved palletes.
-
+    /**
+     * Deletes the clicked palette from the saved palettes.
+     * @param {string} id - The ID of the palette to delete.
+     */
     const deletePalette = async (id) => {
         // oxlint-disable-next-line no-alert
         const confirm = globalThis.confirm(

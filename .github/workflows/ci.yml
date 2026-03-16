@@ -32,6 +32,9 @@ jobs:
             - name: Run CSS linting
               run: pnpm lint:css
 
+            - name: Run type checking
+              run: pnpm typecheck
+
             - name: Run tests
               run: pnpm test:ci
 

@@ -86,6 +86,7 @@
     const store = useStore();
     const labels = computed(() => store.state.labels);
     const currentScheme = computed(() => store.getters.currentScheme);
+    /** @type {import('vue').Ref<HTMLElement | null>} */
     const closeButton = ref(null);
 
     const emit = defineEmits(['close']);
@@ -104,6 +105,10 @@
         document.removeEventListener('keydown', handleKeydown);
     });
 
+    /**
+     * Closes the modal when the escape key is pressed.
+     * @param {KeyboardEvent} e - The keyboard event.
+     */
     const handleKeydown = (e) => {
         if (e.key === 'Escape') {
             emit('close');
@@ -121,8 +126,10 @@
         }
     };
 
-    // RGB / HSL / HEX mode when exporting
-
+    /**
+     * Changes the color mode for the exported CSS.
+     * @param {'rgb' | 'hex' | 'hsl'} newMode - The new color mode to use in the export (e.g. 'rgb', 'hex', 'hsl').
+     */
     const changeMode = (newMode) => {
         mode.value = newMode;
     };
@@ -130,8 +137,8 @@
     // Copying the code to the clipboard
 
     const selectAll = async () => {
-        const text = document.querySelector('.code-wrapper').textContent;
-        await navigator.clipboard.writeText(text);
+        const text = document.querySelector('.code-wrapper')?.textContent;
+        await navigator.clipboard.writeText(text ?? '');
         copied.value = true;
         createToast('CSS copied to clipboard', {
             hideProgressBar: true,

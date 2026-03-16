@@ -28,10 +28,10 @@
                     ]"
                     :key="i"
                     :style="{ backgroundColor: color }"
-                    @click="copyColor(color, i)"
+                    @click="copyColor(color, Number(i))"
                     role="option"
                     :aria-selected="colorCopied && colorCopiedIndex === i"
-                    :aria-label="`Color variation ${i + 1}: ${color}. Click to copy.`"
+                    :aria-label="`Color variation ${Number(i) + 1}: ${color}. Click to copy.`"
                 ></div>
             </div>
         </div>
@@ -55,8 +55,11 @@
     const colorCopiedIndex = computed(() => store.state.copiedColorIndex);
     const colors = computed(() => store.getters.uniqueColors);
 
-    // Puts the clicked on variation in memory for pasting.
-
+    /**
+     * Puts the clicked on variation in memory for pasting.
+     * @param {string} color - The color to copy.
+     * @param {number} index - The index of the color in the list.
+     */
     const copyColor = (color, index) => {
         store.dispatch('COPY_COLOR', { color, index });
     };

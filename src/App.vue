@@ -154,6 +154,8 @@
     const collapseSavedPane = () => {
         isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
     };
+
+    defineExpose({ isColorPaneCollapsed, isMiniPaneCollapsed, isSavedPaneCollapsed });
 </script>
 
 <style>

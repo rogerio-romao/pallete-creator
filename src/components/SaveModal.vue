@@ -65,6 +65,7 @@
     const store = useStore();
 
     const emit = defineEmits(['close']);
+    /** @type {import('vue').Ref<HTMLElement | null>} */
     const nameInput = ref(null);
 
     onMounted(() => {
@@ -76,6 +77,10 @@
         document.removeEventListener('keydown', handleKeydown);
     });
 
+    /**
+     *
+     * @param {KeyboardEvent} e - the keyboard event
+     */
     const handleKeydown = (e) => {
         if (e.key === 'Escape') {
             emit('close');

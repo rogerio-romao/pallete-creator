@@ -61,8 +61,13 @@
     import { onBeforeUnmount, onMounted, ref } from 'vue';
 
     const emit = defineEmits(['close']);
+    /** @type {import('vue').Ref<HTMLElement | null>} */
     const closeButton = ref(null);
 
+    /**
+     * Closes the modal when the escape key is pressed.
+     * @param {KeyboardEvent} e - The keyboard event.
+     */
     const handleKeydown = (e) => {
         if (e.key === 'Escape') {
             emit('close');

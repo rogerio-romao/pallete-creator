@@ -6,6 +6,7 @@ import MainColorBar from './MainColorBar.vue';
 
 // oxlint-disable-next-line max-lines-per-function
 describe('component MainColorBar', () => {
+    /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
     beforeEach(() => {

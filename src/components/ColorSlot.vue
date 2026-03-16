@@ -49,7 +49,6 @@
     });
 
     const store = useStore();
-    const colorCopied = computed(() => store.state.copiedColor);
     const labels = computed(() => store.state.labels);
 
     // Getting values to display in the slot
@@ -72,8 +71,11 @@
             : store.state.slotColors[`slot${slotNumber}`].hex,
     );
 
-    // Uility to get rid of spaces in the color codes before displaying them
-
+    /**
+     * Removes all spaces from a color code string before displaying it.
+     * @param {string} str - The color code string to format.
+     * @returns {string} The formatted color code string without spaces.
+     */
     const format = (str) => str.replaceAll(' ', '');
 
     // Getting the background color of the slot
@@ -98,11 +100,14 @@
         store.dispatch('PASTE_COLOR', slotNumber);
     };
 
-    // Handles changing the text in the labels
-
+    /**
+     * Updates the label for the color slot in the store when the input value changes.
+     * @param {Event} e - The change event from the label input.
+     */
     const updateLabel = (e) => {
+        const input = /** @type {HTMLInputElement} */ (e.target);
         store.dispatch('UPDATE_LABEL', {
-            label: e.target.value.trim(),
+            label: input.value.trim(),
             slotNumber,
         });
     };

@@ -49,10 +49,6 @@
     // function to make the app fullscreen
     const toggleFullscreen = () => {
         const elem = document.documentElement;
-        elem.requestFullscreen =
-            elem.requestFullscreen ||
-            elem.mozRequestFullScreen ||
-            elem.webkitRequestFullscreen;
         if (isFullscreen.value) {
             document.exitFullscreen();
             isFullscreen.value = false;
