@@ -1,7 +1,7 @@
 <template>
     <!-- overlay  -->
     <div
-        class="modal-mask"
+        class="modal-mask modal-save"
         role="dialog"
         aria-modal="true"
         aria-labelledby="save-palette-title"
@@ -18,7 +18,7 @@
                     <div class="modal-body">
                         <div
                             :class="
-                                invalid ? 'invalid save-input' : 'save-input'
+                                invalid ? 'modal-input modal-input-invalid' : 'modal-input'
                             "
                         >
                             <label for="savePaletteName" class="sr-only"
@@ -35,7 +35,7 @@
                     </div>
 
                     <!-- footer  -->
-                    <div class="modal-footer save-modal-footer">
+                    <div class="modal-footer">
                         <button
                             class="secondary-button"
                             @click="$emit('close')"

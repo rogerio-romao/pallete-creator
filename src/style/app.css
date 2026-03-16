@@ -58,9 +58,7 @@
     transform: rotate(0);
 
     @media (prefers-reduced-motion: no-preference) {
-        .chevron-wrapper {
-            transition: transform 0.15s ease;
-        }
+        transition: transform 0.15s ease;
     }
 
     &.expanded {
@@ -181,7 +179,7 @@ h2 {
     overflow: hidden;
     color: var(--clr-main, #404f4c);
 
-    & .panel-header {
+    & &-header {
         color: var(--clr-main, #404f4c);
         margin-block-end: var(--mb-md, 1rem);
     }
@@ -455,8 +453,21 @@ nav {
 
 /* ----- COLOR PALETTE PANEL ----- */
 
-/* slot labels  */
-.label {
+.palette-slots {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.75rem;
+}
+
+.palette-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.palette-slot-label {
     color: var(--clr-accent, #404f4c);
     font-size: 1rem;
     padding: 4px;
@@ -481,25 +492,7 @@ nav {
     }
 }
 
-/* color slots  */
-
-.palette-pane-slots {
-    display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1.75rem;
-}
-
-.slot-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* individual slot  */
-
-.color-slot {
+.palette-slot-color {
     inline-size: var(--slot-size, 120px);
     block-size: var(--slot-size, 120px);
     border: 1px solid var(--clr-accent, #404f4c);
@@ -518,9 +511,7 @@ nav {
     margin-block-end: var(--mb-md, 1rem);
 }
 
-/* slot controls  */
-
-.color-controls {
+.palette-slot-controls {
     border: 1px solid var(--clr-accent, #404f4c);
     background-color: var(--clr-light, #d9def2);
     border-radius: var(--base-radius, 0.5rem);
@@ -532,15 +523,15 @@ nav {
         padding: 0;
         margin: 0;
     }
+}
 
-    & .control-field {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-    }
+.palette-slot-control {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 
-    & .control-field label {
+    & label {
         color: var(--clr-main, #404f4c);
         font-size: 0.8rem;
         font-weight: 900;
@@ -549,9 +540,7 @@ nav {
     }
 }
 
-/* custom range control  */
-
-.color-controls input[type='range'] {
+.palette-slot-controls input[type='range'] {
     max-inline-size: 75%;
     align-items: center;
     appearance: none;
@@ -567,124 +556,124 @@ nav {
         box-shadow: none;
         outline: none;
     }
-}
 
-.color-controls input[type='range']::-webkit-slider-runnable-track {
-    background: linear-gradient(
-        to right,
-        var(--clr-accent-light, #404f4c) var(--fill-percent, 0%),
-        var(--clr-complementary, #f2edd9) var(--fill-percent, 0%)
-    );
-    content: '';
-    block-size: 2px;
-    pointer-events: none;
-}
+    &::-webkit-slider-runnable-track {
+        background: linear-gradient(
+            to right,
+            var(--clr-accent-light, #404f4c) var(--fill-percent, 0%),
+            var(--clr-complementary, #f2edd9) var(--fill-percent, 0%)
+        );
+        content: '';
+        block-size: 2px;
+        pointer-events: none;
+    }
 
-.color-controls input[type='range']::-webkit-slider-thumb {
-    block-size: 18px;
-    inline-size: 28px;
-    appearance: none;
-    background: #fff;
-    border-radius: 8px;
-    margin-block-start: -8px;
-    border: 1px solid var(--clr-accent-light, #404f4c);
-}
+    &::-webkit-slider-thumb {
+        block-size: 18px;
+        inline-size: 28px;
+        appearance: none;
+        background: #fff;
+        border-radius: 8px;
+        margin-block-start: -8px;
+        border: 1px solid var(--clr-accent-light, #404f4c);
+    }
 
-.color-controls input[type='range']::-moz-range-track {
-    inline-size: 240px;
-    block-size: 2px;
-}
+    &::-moz-range-track {
+        inline-size: 240px;
+        block-size: 2px;
+    }
 
-.color-controls input[type='range']::-moz-range-thumb {
-    block-size: 18px;
-    inline-size: 28px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px solid var(--clr-accent-light, #404f4c);
-    position: relative;
-}
+    &::-moz-range-thumb {
+        block-size: 18px;
+        inline-size: 28px;
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid var(--clr-accent-light, #404f4c);
+        position: relative;
+    }
 
-.color-controls input[type='range']::-moz-range-progress {
-    block-size: 2px;
-    background: var(--clr-accent-light, #404f4c);
-    border: 0;
-    margin-block-start: 0;
-}
+    &::-moz-range-progress {
+        block-size: 2px;
+        background: var(--clr-accent-light, #404f4c);
+        border: 0;
+        margin-block-start: 0;
+    }
 
-.color-controls input[type='range']::-ms-track {
-    background: transparent;
-    border: 0;
-    border-color: transparent;
-    border-radius: 0;
-    color: transparent;
-    block-size: 2px;
-    margin-block-start: 10px;
-    inline-size: 240px;
-}
+    &::-ms-track {
+        background: transparent;
+        border: 0;
+        border-color: transparent;
+        border-radius: 0;
+        color: transparent;
+        block-size: 2px;
+        margin-block-start: 10px;
+        inline-size: 240px;
+    }
 
-.color-controls input[type='range']::-ms-thumb {
-    block-size: 18px;
-    inline-size: 28px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px solid var(--clr-accent-light, #404f4c);
-}
+    &::-ms-thumb {
+        block-size: 18px;
+        inline-size: 28px;
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid var(--clr-accent-light, #404f4c);
+    }
 
-.color-controls input[type='range']::-ms-fill-lower {
-    background: var(--clr-complementary, #f2edd9);
-    border-radius: 0;
-}
+    &::-ms-fill-lower {
+        background: var(--clr-complementary, #f2edd9);
+        border-radius: 0;
+    }
 
-.color-controls input[type='range']::-ms-fill-upper {
-    background: var(--clr-complementary, #f2edd9);
-    border-radius: 0;
-}
+    &::-ms-fill-upper {
+        background: var(--clr-complementary, #f2edd9);
+        border-radius: 0;
+    }
 
-.color-controls input[type='range']::-ms-tooltip {
-    display: none;
+    &::-ms-tooltip {
+        display: none;
+    }
 }
 
 /* ----- MINI SLOTS PANEL ----- */
-.mini-slots-slots {
+.mini-slots {
     display: grid;
     grid-template-columns: repeat(auto-fill, var(--mini-slot-size, 50px));
     gap: 1.5rem;
     margin-block-end: var(--mb-lg, 1.5rem);
     justify-content: center;
-}
 
-.mini-slot {
-    inline-size: var(--mini-slot-size, 50px);
-    block-size: var(--mini-slot-size, 50px);
-    border: 1px solid var(--clr-main, #404f4c);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow:
-        2px 2px 2px rgb(0 0 0 / 20%),
-        inset 2px 2px 2px rgb(233 233 233 / 40%);
+    & .mini-slot {
+        inline-size: var(--mini-slot-size, 50px);
+        block-size: var(--mini-slot-size, 50px);
+        border: 1px solid var(--clr-main, #404f4c);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow:
+            2px 2px 2px rgb(0 0 0 / 20%),
+            inset 2px 2px 2px rgb(233 233 233 / 40%);
 
-    @media (prefers-reduced-motion: no-preference) {
-        transition: box-shadow 0.075s ease-in-out;
+        @media (prefers-reduced-motion: no-preference) {
+            transition: box-shadow 0.075s ease-in-out;
+        }
+
+        &:hover,
+        &:active {
+            box-shadow: none;
+        }
+
+        &:focus-visible {
+            outline: 3px solid var(--clr-accent, #404f4c);
+            outline-offset: 3px;
+        }
+
+        &-copied {
+            outline: var(--clr-complementary, #f2edd9) solid 7px;
+            outline-offset: 3px;
+        }
     }
-
-    &:hover,
-    &:active {
-        box-shadow: none;
-    }
-
-    &:focus-visible {
-        outline: 3px solid var(--clr-accent, #404f4c);
-        outline-offset: 3px;
-    }
-}
-
-.copied {
-    outline: var(--clr-complementary, #f2edd9) solid 7px;
-    outline-offset: 3px;
 }
 
 /* ----- SAVED PALETTES PANEL ----- */
-.palettes-wrapper {
+.saved-palettes {
     display: grid;
     grid-template-columns: repeat(auto-fill, min(300px, 100%));
     justify-content: center;
@@ -733,14 +722,8 @@ nav {
     inline-size: 50px;
     block-size: 50px;
     border: 1px solid black;
-}
 
-@media (width <= 420px) {
-    .palettes-wrapper {
-        gap: 0.5rem;
-    }
-
-    .saved-palette-color {
+    @media (width <= 420px) {
         inline-size: 36px;
         block-size: 36px;
     }
@@ -780,52 +763,6 @@ nav {
     }
 }
 
-/* ----- EXPORT CSS ----- */
-.export-modal-buttons button {
-    margin-inline-end: 2px;
-}
-
-.code {
-    border: 1px solid var(--clr-main, #404f4c);
-    text-align: start;
-    padding: 1rem;
-    background-color: var(--clr-main, #404f4c);
-    margin-block-start: 1.5rem;
-    user-select: all;
-    cursor: pointer;
-
-    & p {
-        font-size: 0.8rem;
-        line-height: 1.4rem;
-    }
-}
-
-.code-info {
-    text-align: center;
-    color: var(--clr-light, #f2edd9);
-    margin-block-end: 0.3rem;
-    font-weight: 600;
-}
-
-.export-modal-footer {
-    justify-self: start;
-    align-content: center;
-}
-
-/* ----- SAVE MODAL ----- */
-.save-input {
-    margin: var(--mb-lg, 1rem);
-}
-
-.invalid {
-    outline: var(--clr-accent-light, #404f4c) solid 5px;
-}
-
-.save-modal-footer button {
-    margin-inline-end: 2px;
-    padding: 4px 8px;
-}
-
 /* ----- MODALS COMMON ----- */
 
 .modal-mask {
@@ -833,13 +770,14 @@ nav {
     z-index: 9998;
     inset: 0;
     background-color: rgb(0 0 0 / 65%);
-    display: table;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-wrapper {
-    display: grid;
-    place-items: center;
-    block-size: 100dvh;
+    display: contents;
 }
 
 .modal-container {
@@ -907,12 +845,6 @@ nav {
 
 /* Modal Transitions  */
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- */
-
 .modal-enter-active,
 .modal-leave-active {
     opacity: 1;
@@ -936,4 +868,50 @@ nav {
     .modal-leave-to {
         transform: translateX(-100%);
     }
+}
+
+/* ----- EXPORT MODAL ----- */
+.modal-export .modal-buttons {
+    margin-inline-end: 2px;
+}
+
+.modal-export .modal-code {
+    border: 1px solid var(--clr-main, #404f4c);
+    text-align: start;
+    padding: 1rem;
+    background-color: var(--clr-main, #404f4c);
+    margin-block-start: 1.5rem;
+    user-select: all;
+    cursor: pointer;
+
+    & p {
+        font-size: 0.8rem;
+        line-height: 1.4rem;
+    }
+}
+
+.modal-export .modal-code-info {
+    text-align: center;
+    color: var(--clr-light, #f2edd9);
+    margin-block-end: 0.3rem;
+    font-weight: 600;
+}
+
+.modal-export .modal-footer {
+    justify-self: start;
+    align-content: center;
+}
+
+/* ----- SAVE MODAL ----- */
+.modal-save .modal-input {
+    margin: var(--mb-lg, 1rem);
+}
+
+.modal-save .modal-input-invalid {
+    outline: var(--clr-accent-light, #404f4c) solid 5px;
+}
+
+.modal-save .modal-footer button {
+    margin-inline-end: 2px;
+    padding: 4px 8px;
 }

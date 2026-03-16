@@ -1,9 +1,9 @@
 <template>
     <!-- wrapper  -->
-    <div class="color-controls">
+    <div class="palette-slot-controls">
         <fieldset>
             <!-- individual H slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="hueControl">H</label>
                 <input
                     data-test="hue-input"
@@ -19,7 +19,7 @@
             </div>
 
             <!-- individual S slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="satControl">S</label>
                 <input
                     data-test="sat-input"
@@ -35,7 +35,7 @@
             </div>
 
             <!-- individual L slider  -->
-            <div class="control-field">
+            <div class="palette-slot-control">
                 <label for="lumControl">L</label>
                 <input
                     data-test="lum-input"
