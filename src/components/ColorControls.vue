@@ -13,6 +13,7 @@
                     min="0"
                     max="360"
                     v-model="h"
+                    :style="{ '--fill-percent': `${((h / 360) * 100).toFixed(1)}%` }"
                     @input="updateColor"
                 />
             </div>
@@ -28,6 +29,7 @@
                     min="0"
                     max="100"
                     v-model="s"
+                    :style="{ '--fill-percent': `${s}%` }"
                     @input="updateColor"
                 />
             </div>
@@ -43,6 +45,7 @@
                     min="0"
                     max="100"
                     v-model="l"
+                    :style="{ '--fill-percent': `${l}%` }"
                     @input="updateColor"
                 />
             </div>
