@@ -1,29 +1,15 @@
-import { createStore } from 'vuex';
 import { mount } from '@vue/test-utils';
+
+import store from '../store';
 
 import PalettePanel from './PalettePanel.vue';
 
-const createVuexStore = () =>
-    createStore({
-        state: {
-            copiedColor: null,
-            copiedColorIndex: -1,
-            labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
-            mainHSL: 'hsl(180, 50%, 50%)',
-            mainSlotColor: { hex: '', hsl: '', rgb: '' },
-            slotColors: {
-                slot2: { hex: '', hsl: '', rgb: '' },
-                slot3: { hex: '', hsl: '', rgb: '' },
-                slot4: { hex: '', hsl: '', rgb: '' },
-                slot5: { hex: '', hsl: '', rgb: '' },
-            },
-            textColor: { hex: '', hsl: '', rgb: '' },
-        },
+describe('component ColorsPane', () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
     });
 
-describe('component ColorsPane', () => {
     it('renders collapsed message when collapsed', () => {
-        const store = createVuexStore();
         const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
             props: { isColorPaneCollapsed: true },
@@ -33,10 +19,11 @@ describe('component ColorsPane', () => {
         expect(
             wrapper.find('[data-testid="palette-panel-hide"]').exists(),
         ).toBeFalsy();
+
+        wrapper.unmount();
     });
 
     it('renders slots when not collapsed', () => {
-        const store = createVuexStore();
         const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
             props: { isColorPaneCollapsed: false },
@@ -46,14 +33,17 @@ describe('component ColorsPane', () => {
         expect(
             wrapper.find('[data-testid="palette-slots"]').exists(),
         ).toBeTruthy();
+
+        wrapper.unmount();
     });
 
     it('has correct default prop', () => {
-        const store = createVuexStore();
         const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
         });
 
         expect(wrapper.props('isColorPaneCollapsed')).toBeFalsy();
+
+        wrapper.unmount();
     });
 });

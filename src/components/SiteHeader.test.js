@@ -17,6 +17,11 @@ describe('componentSiteHeader', () => {
         });
     });
 
+    afterEach(() => {
+        wrapper.unmount();
+        vi.restoreAllMocks();
+    });
+
     it('renders', () => {
         expect(wrapper.exists()).toBeTruthy();
     });

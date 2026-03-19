@@ -35,6 +35,7 @@ describe('component SavedPalettes', () => {
 
     afterEach(() => {
         wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders the saved palettes pane', () => {

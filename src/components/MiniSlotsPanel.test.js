@@ -33,6 +33,7 @@ describe('component MiniSlotsPanel', () => {
 
     afterEach(() => {
         wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders', () => {

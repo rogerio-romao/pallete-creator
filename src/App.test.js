@@ -1,90 +1,32 @@
 // oxlint-disable max-lines
 
-import { createStore } from 'vuex';
 import { mount } from '@vue/test-utils';
 
 import App from './App.vue';
+import stateFactory from './store/state';
+import store from './store';
 
-/** @typedef {import('./store/state.js').ColorSlot} ColorSlot */
-/** @typedef {import('./store/state.js').SavedPalette} SavedPalette */
-
-const DEFAULT_SCHEME_LENGTH = 5;
-
-/**
- * Creates a Vuex store with the specified state for testing purposes.
- * @param {{ uniqueColors?: string[], labels?: string[], mainHSL?: string | null, mainSlotColor?: ColorSlot, currentScheme?: ColorSlot[], savedPalettes?: SavedPalette[], slotColors?: { slot2: ColorSlot, slot3: ColorSlot, slot4: ColorSlot, slot5: ColorSlot } }} [state] - Optional state overrides for the store
- * @returns {ReturnType<typeof createStore>} A Vuex store instance with the specified state
- */
-// oxlint-disable-next-line max-lines-per-function
-const createVuexStore = (state = {}) =>
-    createStore({
-        actions: {
-            LOAD_PALETTES: vi.fn(),
-        },
-        getters: {
-            currentScheme: () =>
-                state.currentScheme ||
-                Array.from({ length: DEFAULT_SCHEME_LENGTH }, () => ({
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                })),
-            uniqueColors: () => new Set(state.uniqueColors || []),
-        },
-        state: {
-            labels: state.labels || [
-                'Main',
-                'Complementary',
-                'Light',
-                'Accent',
-                'Accent Light',
-            ],
-            mainHSL: state.mainHSL || null,
-            mainSlotColor: state.mainSlotColor || {
-                hex: '',
-                hsl: '',
-                rgb: '',
-            },
-            savedPalettes: state.savedPalettes || [],
-            slotColors: state.slotColors || {
-                slot2: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot3: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot4: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot5: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-            },
-        },
-    });
+vi.mock(import('mosha-vue-toastify'), () => ({
+    createToast: vi.fn(),
+}));
 
 // oxlint-disable-next-line max-lines-per-function
 describe('component App.vue', () => {
     /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
-    /** @type {ReturnType<typeof createVuexStore>} */
-    let store;
 
     beforeEach(() => {
-        store = createVuexStore({});
+        Object.assign(store.state, stateFactory());
         wrapper = mount(App, {
             global: {
                 plugins: [store],
             },
         });
+    });
+
+    afterEach(() => {
+        wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders the main navigation', () => {
@@ -93,16 +35,9 @@ describe('component App.vue', () => {
         ).toBeTruthy();
     });
 
-    it('shows utility buttons panel when colors are present', () => {
-        store = createVuexStore({
-            uniqueColors: ['#FF0000'],
-        });
-
-        wrapper = mount(App, {
-            global: {
-                plugins: [store],
-            },
-        });
+    it('shows utility buttons panel when colors are present', async () => {
+        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
+        await wrapper.vm.$nextTick();
 
         expect(
             wrapper.findComponent({ name: 'UtilityButtonsPanel' }).exists(),
@@ -115,23 +50,16 @@ describe('component App.vue', () => {
         ).toBeFalsy();
     });
 
-    it('shows saved palettes section when there are saved palettes', () => {
-        store = createVuexStore({
-            savedPalettes: [
-                {
-                    createdAt: new Date().toISOString(),
-                    id: '1',
-                    name: 'Test',
-                    scheme: [],
-                },
-            ],
-        });
-
-        wrapper = mount(App, {
-            global: {
-                plugins: [store],
+    it('shows saved palettes section when there are saved palettes', async () => {
+        store.state.savedPalettes = [
+            {
+                createdAt: new Date().toISOString(),
+                id: '1',
+                name: 'Test',
+                scheme: [],
             },
-        });
+        ];
+        await wrapper.vm.$nextTick();
 
         expect(
             wrapper.findComponent({ name: 'SavedPalettesPanel' }).exists(),
@@ -139,16 +67,8 @@ describe('component App.vue', () => {
     });
 
     it('toggles isColorPaneCollapsed when collapse icon is clicked', async () => {
-        // Setup with mainHSL to make the color pane visible
-        store = createVuexStore({
-            mainHSL: 'hsl(180, 50%, 50%)',
-        });
-
-        wrapper = mount(App, {
-            global: {
-                plugins: [store],
-            },
-        });
+        store.state.mainHSL = 'hsl(180, 50%, 50%)';
+        await wrapper.vm.$nextTick();
 
         const collapseIcon = wrapper.find(
             '[data-testid="color-pane-collapse"]',
@@ -170,16 +90,8 @@ describe('component App.vue', () => {
     });
 
     it('toggles isMiniPaneCollapsed when the mini pane collapse icon is clicked', async () => {
-        // Setup with uniqueColors to make the mini pane visible
-        store = createVuexStore({
-            uniqueColors: ['#FF0000'],
-        });
-
-        wrapper = mount(App, {
-            global: {
-                plugins: [store],
-            },
-        });
+        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
+        await wrapper.vm.$nextTick();
 
         const collapseIcon = wrapper.find('[data-testid="mini-pane-collapse"]');
 
@@ -200,23 +112,15 @@ describe('component App.vue', () => {
     });
 
     it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
-        // Setup with savedPalettes to make the saved palettes visible
-        store = createVuexStore({
-            savedPalettes: [
-                {
-                    createdAt: new Date().toISOString(),
-                    id: '1',
-                    name: 'Test',
-                    scheme: [],
-                },
-            ],
-        });
-
-        wrapper = mount(App, {
-            global: {
-                plugins: [store],
+        store.state.savedPalettes = [
+            {
+                createdAt: new Date().toISOString(),
+                id: '1',
+                name: 'Test',
+                scheme: [],
             },
-        });
+        ];
+        await wrapper.vm.$nextTick();
 
         const collapseIcon = wrapper.find(
             '[data-testid="saved-pane-collapse"]',
@@ -261,41 +165,13 @@ describe('component App.vue', () => {
 
     // oxlint-disable-next-line max-lines-per-function
     it('opens and closes Copy modal', async () => {
-        // Open modal via UtilityButtons event
-        store = createVuexStore({
-            savedPalettes: [
-                {
-                    createdAt: new Date().toISOString(),
-                    id: '1',
-                    name: 'Test',
-                    scheme: [
-                        {
-                            hex: '#FF0000',
-                            hsl: 'hsl(0,100%,50%)',
-                            rgb: 'rgb(255,0,0)',
-                        },
-                        {
-                            hex: '#FF0000',
-                            hsl: 'hsl(0,100%,50%)',
-                            rgb: 'rgb(255,0,0)',
-                        },
-                        {
-                            hex: '#00FF00',
-                            hsl: 'hsl(120,100%,50%)',
-                            rgb: 'rgb(0,255,0)',
-                        },
-                        {
-                            hex: '#0000FF',
-                            hsl: 'hsl(240,100%,50%)',
-                            rgb: 'rgb(0,0,255)',
-                        },
-                    ],
-                },
-            ],
-            uniqueColors: ['#FF0000', '#00FF00', '#0000FF'],
-        });
+        store.state.allColors.hsl = [
+            'hsl(0, 100%, 50%)',
+            'hsl(120, 100%, 50%)',
+            'hsl(240, 100%, 50%)',
+        ];
+        await wrapper.vm.$nextTick();
 
-        wrapper = mount(App, { global: { plugins: [store] } });
         await wrapper
             .findComponent({ name: 'UtilityButtonsPanel' })
             .vm.$emit('copyPalette');
@@ -316,9 +192,8 @@ describe('component App.vue', () => {
     });
 
     it('opens and closes SavePalette modal', async () => {
-        // Open modal via UtilityButtons event
-        store = createVuexStore({ uniqueColors: ['#FF0000'] });
-        wrapper = mount(App, { global: { plugins: [store] } });
+        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
+        await wrapper.vm.$nextTick();
 
         await wrapper
             .findComponent({ name: 'UtilityButtonsPanel' })

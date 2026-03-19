@@ -27,6 +27,7 @@ describe('component SavePaletteModal', () => {
 
     afterEach(() => {
         wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders', () => {

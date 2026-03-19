@@ -16,6 +16,11 @@ describe('component MainColorChooserBar', () => {
         });
     });
 
+    afterEach(() => {
+        wrapper.unmount();
+        vi.restoreAllMocks();
+    });
+
     it('renders', () => {
         expect(wrapper.exists()).toBeTruthy();
     });

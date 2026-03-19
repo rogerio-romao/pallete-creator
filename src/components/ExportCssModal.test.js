@@ -53,6 +53,7 @@ describe('component ExportCssModal', () => {
 
     afterEach(() => {
         wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders', () => {

@@ -15,22 +15,26 @@ describe('componentColorSlot', () => {
                 slotNumber: 2,
             },
         });
+    });
 
-        // Mock store dispatch
-        store.dispatch = vi.fn();
+    afterEach(() => {
+        wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('calls PASTE_COLOR action when pasteColor is triggered', async () => {
+        const dispatchSpy = vi.spyOn(store, 'dispatch');
         const colorSlot = wrapper.find('[data-testid="palette-color-slot"]');
 
         await colorSlot.trigger('click');
 
         // Assert that store dispatch was called with correct action and parameter
         // oxlint-disable-next-line no-magic-numbers -- its the slot number from the wrapper props for this test
-        expect(store.dispatch).toHaveBeenCalledWith('PASTE_COLOR', 2);
+        expect(dispatchSpy).toHaveBeenCalledWith('PASTE_COLOR', 2);
     });
 
     it('calls UPDATE_LABEL action when updateLabel is triggered', async () => {
+        const dispatchSpy = vi.spyOn(store, 'dispatch');
         const input = wrapper.find(
             '[data-testid="palette-color-slot-label-input"]',
         );
@@ -39,7 +43,7 @@ describe('componentColorSlot', () => {
         await input.trigger('change');
 
         // Assert that store dispatch was called with correct action and parameters
-        expect(store.dispatch).toHaveBeenCalledWith('UPDATE_LABEL', {
+        expect(dispatchSpy).toHaveBeenCalledWith('UPDATE_LABEL', {
             label: 'New Label',
             slotNumber: 2,
         });
