@@ -5,7 +5,8 @@ import { createStore } from 'vuex';
 import { mount } from '@vue/test-utils';
 
 import DEFAULT_HEX_COLORS from '../lib/colors';
-import UtilityButtons from './UtilityButtons.vue';
+
+import UtilityButtonsPanel from './UtilityButtonsPanel.vue';
 
 /** @typedef {import('../store/actions.js').ActionCtx} ActionCtx */
 /** @typedef {ReturnType<typeof import('../store/state').default>} State */
@@ -145,7 +146,7 @@ const createVuexStore = (_state = {}) =>
     });
 
 // oxlint-disable-next-line max-lines-per-function
-describe('component UtilityButtons', () => {
+describe('component UtilityButtonsPanel', () => {
     /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
     /** @type {ReturnType<typeof createVuexStore>} */
@@ -153,7 +154,7 @@ describe('component UtilityButtons', () => {
 
     beforeEach(() => {
         store = createVuexStore();
-        wrapper = mount(UtilityButtons, {
+        wrapper = mount(UtilityButtonsPanel, {
             global: { plugins: [store] },
         });
     });
@@ -184,9 +185,6 @@ describe('component UtilityButtons', () => {
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
-        // wait for all promises to resolve
-        await wrapper.vm.$nextTick();
-        await wrapper.vm.$nextTick();
         await wrapper.vm.$nextTick();
 
         const { slotColors } = store.state;
@@ -249,7 +247,6 @@ describe('component UtilityButtons', () => {
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
-        // wait for the next tick
         await wrapper.vm.$nextTick();
 
         for (const button of buttons) {
@@ -317,6 +314,7 @@ describe('component UtilityButtons', () => {
         const mainColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--clr-main');
+
         expect(mainColor).not.toBe(DEFAULT_HEX_COLORS.MAIN);
 
         await wrapper
@@ -393,7 +391,6 @@ describe('component UtilityButtons', () => {
 
         await wrapper.find('[data-test="export-css-button"]').trigger('click');
 
-        // expect to emit copyPallete event
         expect(wrapper.emitted('copyPalette')).toBeTruthy();
     });
 

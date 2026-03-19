@@ -10,6 +10,7 @@ import DEFAULT_HEX_COLORS from '../lib/colors';
  *  @property {string} id - the unique identifier of the saved palette
  *  @property {string} name - the name of the saved palette
  *  @property {ColorSlot[]} scheme - the colors in the saved palette
+ *  @property {string} createdAt - the ISO date string of when the palette was created
  */
 
 /**

@@ -14,7 +14,7 @@
         <!-- utility buttons  -->
         <div v-if="showUtilityButtons">
             <h2>Utilities</h2>
-            <UtilityButtons
+            <UtilityButtonsPanel
                 @copyPalette="showCopyModal = true"
                 @savePalette="showSaveModal = true"
             />
@@ -89,7 +89,7 @@
                     </span>
                 </span>
             </h2>
-            <SavedPalettes :isSavedPaneCollapsed="isSavedPaneCollapsed" />
+            <SavedPalettesPanel :isSavedPaneCollapsed="isSavedPaneCollapsed" />
         </div>
     </main>
     <!-- END MAIN  -->
@@ -106,12 +106,12 @@
 
     <!-- copy modal -->
     <transition name="modal">
-        <CopyModal v-if="showCopyModal" @close="showCopyModal = false" />
+        <ExportCssModal v-if="showCopyModal" @close="showCopyModal = false" />
     </transition>
 
     <!-- save modal -->
     <transition name="modal">
-        <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
+        <SavePaletteModal v-if="showSaveModal" @close="showSaveModal = false" />
     </transition>
 </template>
 
@@ -123,15 +123,15 @@
     import { useStore } from 'vuex';
     import { computed, onMounted, ref } from 'vue';
 
-    import CopyModal from './components/ExportCssModal.vue';
+    import ExportCssModal from './components/ExportCssModal.vue';
     import Instructions from './components/InstructionsModal.vue';
     import MainColorChooserBar from './components/MainColorChooserBar.vue';
     import MiniSlotsPanel from './components/MiniSlotsPanel.vue';
     import PalettePanel from './components/PalettePanel.vue';
-    import SavedPalettes from './components/SavedPalettes.vue';
-    import SaveModal from './components/SaveModal.vue';
+    import SavedPalettesPanel from './components/SavedPalettesPanel.vue';
+    import SavePaletteModal from './components/SavePaletteModal.vue';
     import SiteHeader from './components/SiteHeader.vue';
-    import UtilityButtons from './components/UtilityButtons.vue';
+    import UtilityButtonsPanel from './components/UtilityButtonsPanel.vue';
 
     const store = useStore();
 

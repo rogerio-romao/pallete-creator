@@ -38,6 +38,14 @@ describe('utility functions', () => {
             expect(hslToRgb('hsl(120, 100%, 50%)')).toBe('rgb(0, 255, 0)');
             expect(hslToRgb('hsl(240, 100%, 50%)')).toBe('rgb(0, 0, 255)');
         });
+
+        it('handles hue > 240 (triggers t > 1 in hue2rgb)', () => {
+            expect(hslToRgb('hsl(300, 100%, 50%)')).toBe('rgb(255, 0, 255)');
+        });
+
+        it('returns black for invalid input', () => {
+            expect(hslToRgb('invalid')).toBe('rgb(0, 0, 0)');
+        });
     });
 
     describe('rgbToHsl utility', () => {
@@ -48,6 +56,14 @@ describe('utility functions', () => {
             expect(rgbToHsl('rgb(0, 255, 0)')).toBe('hsl(120, 100%, 50%)');
             expect(rgbToHsl('rgb(0, 0, 255)')).toBe('hsl(240, 100%, 50%)');
         });
+
+        it('handles high-lightness colors (l > 0.5 saturation branch)', () => {
+            expect(rgbToHsl('rgb(255, 128, 128)')).toBe('hsl(0, 100%, 75%)');
+        });
+
+        it('returns black for invalid input', () => {
+            expect(rgbToHsl('invalid')).toBe('hsl(0, 0%, 0%)');
+        });
     });
 
     describe('rgbToHex utility', () => {
@@ -57,6 +73,10 @@ describe('utility functions', () => {
             expect(rgbToHex('rgb(255, 0, 0)')).toBe('#ff0000');
             expect(rgbToHex('rgb(0, 255, 0)')).toBe('#00ff00');
             expect(rgbToHex('rgb(0, 0, 255)')).toBe('#0000ff');
+        });
+
+        it('returns black for invalid input', () => {
+            expect(rgbToHex('invalid')).toBe('#000000');
         });
     });
 
@@ -80,6 +100,10 @@ describe('utility functions', () => {
 
             expect(result[0]).toBe('hsl(180, 50%, 50%)');
         });
+
+        it('returns empty array for invalid input', () => {
+            expect(generateComplement('invalid')).toEqual([]);
+        });
     });
 
     describe('generateMono utility', () => {
@@ -92,6 +116,10 @@ describe('utility functions', () => {
 
             expect(result[0]).toBe('hsl(180, 50%, 8%)');
             expect(result[7]).toBe('hsl(180, 50%, 95%)');
+        });
+
+        it('returns empty array for invalid input', () => {
+            expect(generateMono('invalid')).toEqual([]);
         });
     });
 
@@ -106,6 +134,24 @@ describe('utility functions', () => {
             expect(result[0]).toBe('hsl(120, 50%, 50%)');
             expect(result[1]).toBe('hsl(240, 50%, 50%)');
         });
+
+        it('clamps lightness below 0 when l - 20 < 0', () => {
+            const result = generateTriad('hsl(0, 50%, 10%)');
+
+            expect(result[2]).toBe('hsl(120, 50%, 0%)');
+            expect(result[3]).toBe('hsl(240, 50%, 0%)');
+        });
+
+        it('clamps lightness above 100 when l + 20 > 100', () => {
+            const result = generateTriad('hsl(0, 50%, 90%)');
+
+            expect(result[4]).toBe('hsl(120, 50%, 100%)');
+            expect(result[5]).toBe('hsl(240, 50%, 100%)');
+        });
+
+        it('returns empty array for invalid input', () => {
+            expect(generateTriad('invalid')).toEqual([]);
+        });
     });
 
     describe('generateAnalogous utility', () => {
@@ -118,6 +164,10 @@ describe('utility functions', () => {
 
             expect(result[0]).toBe('hsl(120, 50%, 50%)');
             expect(result[2]).toBe('hsl(210, 50%, 50%)');
+        });
+
+        it('returns empty array for invalid input', () => {
+            expect(generateAnalogous('invalid')).toEqual([]);
         });
     });
 
@@ -132,6 +182,10 @@ describe('utility functions', () => {
             for (const color of result) {
                 expect(color).toMatch(/^hsl\(180, \d+%, 50%\)$/);
             }
+        });
+
+        it('returns empty array for invalid input', () => {
+            expect(generateSaturations('invalid')).toEqual([]);
         });
     });
 });

@@ -93,7 +93,7 @@ describe('component App.vue', () => {
         ).toBeTruthy();
     });
 
-    it('shows utility buttons when colors are present', () => {
+    it('shows utility buttons panel when colors are present', () => {
         store = createVuexStore({
             uniqueColors: ['#FF0000'],
         });
@@ -105,19 +105,26 @@ describe('component App.vue', () => {
         });
 
         expect(
-            wrapper.findComponent({ name: 'UtilityButtons' }).exists(),
+            wrapper.findComponent({ name: 'UtilityButtonsPanel' }).exists(),
         ).toBeTruthy();
     });
 
-    it('hides utility buttons when no colors are present', () => {
+    it('hides utility buttons panel when no colors are present', () => {
         expect(
-            wrapper.findComponent({ name: 'UtilityButtons' }).exists(),
+            wrapper.findComponent({ name: 'UtilityButtonsPanel' }).exists(),
         ).toBeFalsy();
     });
 
     it('shows saved palettes section when there are saved palettes', () => {
         store = createVuexStore({
-            savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
+            savedPalettes: [
+                {
+                    createdAt: new Date().toISOString(),
+                    id: '1',
+                    name: 'Test',
+                    scheme: [],
+                },
+            ],
         });
 
         wrapper = mount(App, {
@@ -127,7 +134,7 @@ describe('component App.vue', () => {
         });
 
         expect(
-            wrapper.findComponent({ name: 'SavedPalettes' }).exists(),
+            wrapper.findComponent({ name: 'SavedPalettesPanel' }).exists(),
         ).toBeTruthy();
     });
 
@@ -195,7 +202,14 @@ describe('component App.vue', () => {
     it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
         // Setup with savedPalettes to make the saved palettes visible
         store = createVuexStore({
-            savedPalettes: [{ id: '1', name: 'Test', scheme: [] }],
+            savedPalettes: [
+                {
+                    createdAt: new Date().toISOString(),
+                    id: '1',
+                    name: 'Test',
+                    scheme: [],
+                },
+            ],
         });
 
         wrapper = mount(App, {
@@ -251,6 +265,7 @@ describe('component App.vue', () => {
         store = createVuexStore({
             savedPalettes: [
                 {
+                    createdAt: new Date().toISOString(),
                     id: '1',
                     name: 'Test',
                     scheme: [
@@ -282,40 +297,44 @@ describe('component App.vue', () => {
 
         wrapper = mount(App, { global: { plugins: [store] } });
         await wrapper
-            .findComponent({ name: 'UtilityButtons' })
+            .findComponent({ name: 'UtilityButtonsPanel' })
             .vm.$emit('copyPalette');
         await wrapper.vm.$nextTick();
 
         expect(wrapper.vm.showCopyModal).toBeTruthy();
 
         // Close modal via @close event
-        const copyModal = wrapper.findComponent({ name: 'ExportCssModal' });
+        const exportCssModal = wrapper.findComponent({
+            name: 'ExportCssModal',
+        });
 
-        expect(copyModal.exists()).toBeTruthy();
+        expect(exportCssModal.exists()).toBeTruthy();
 
-        await copyModal.vm.$emit('close');
+        await exportCssModal.vm.$emit('close');
         await wrapper.vm.$nextTick();
         expect(wrapper.vm.showCopyModal).toBeFalsy();
     });
 
-    it('opens and closes Save modal', async () => {
+    it('opens and closes SavePalette modal', async () => {
         // Open modal via UtilityButtons event
         store = createVuexStore({ uniqueColors: ['#FF0000'] });
         wrapper = mount(App, { global: { plugins: [store] } });
 
         await wrapper
-            .findComponent({ name: 'UtilityButtons' })
+            .findComponent({ name: 'UtilityButtonsPanel' })
             .vm.$emit('savePalette');
         await wrapper.vm.$nextTick();
 
         expect(wrapper.vm.showSaveModal).toBeTruthy();
 
         // Close modal via @close event
-        const saveModal = wrapper.findComponent({ name: 'SaveModal' });
+        const savePaletteModal = wrapper.findComponent({
+            name: 'SavePaletteModal',
+        });
 
-        expect(saveModal.exists()).toBeTruthy();
+        expect(savePaletteModal.exists()).toBeTruthy();
 
-        await saveModal.vm.$emit('close');
+        await savePaletteModal.vm.$emit('close');
         await wrapper.vm.$nextTick();
 
         expect(wrapper.vm.showSaveModal).toBeFalsy();

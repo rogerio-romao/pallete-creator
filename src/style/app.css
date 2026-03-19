@@ -898,6 +898,19 @@ nav {
     align-content: center;
 }
 
+.delete-modal .delete-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    & button {
+        flex: 1;
+        min-block-size: 2.25rem;
+        padding-block: 0.4rem;
+        box-sizing: border-box;
+    }
+}
+
 /* ----- SAVE MODAL ----- */
 .modal-save .modal-input {
     margin: var(--mb-lg, 1rem);
