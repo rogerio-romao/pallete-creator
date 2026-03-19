@@ -1,12 +1,23 @@
+// This component is the mini slots panel that displays color variations based
+on the main color. Users can click on any variation to copy it, and then paste
+it into one of the color slots in the palette panel. The panel can be collapsed
+or expanded.
+
 <template>
     <!-- wrapper   -->
     <section class="mini-slots-pane panel">
         <!-- panel collapsed message  -->
-        <p v-if="isMiniPaneCollapsed">Click the arrow to expand panel.</p>
-        <div class="hide" v-if="!isMiniPaneCollapsed">
+        <p data-testid="panel-collapsed-text" v-if="isMiniPaneCollapsed"
+            >Click the arrow to expand panel.</p
+        >
+        <div
+            class="hide"
+            data-testid="expanded-panel"
+            v-if="!isMiniPaneCollapsed"
+        >
             <!-- header text  -->
             <div class="panel-header">
-                <p>
+                <p data-testid="panel-header-text">
                     Click any variation to copy it, then click on one of the
                     main color slots above to paste it. Or click the randomize
                     button above to generate a full palette.
@@ -24,8 +35,12 @@
                     v-for="(color, i) in colors"
                     :class="[
                         'mini-slot',
-                        { 'mini-slot-copied': colorCopied && colorCopiedIndex === i },
+                        {
+                            'mini-slot-copied':
+                                colorCopied && colorCopiedIndex === i,
+                        },
                     ]"
+                    :data-testid="`mini-slot-${i}`"
                     :key="i"
                     :style="{ backgroundColor: color }"
                     @click="copyColor(color, Number(i))"

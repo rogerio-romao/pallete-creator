@@ -1,3 +1,8 @@
+// This component displays the user's saved palettes and allows them to load a
+palette into the color slots for editing or exporting. It also provides a delete
+button for each saved palette, with a confirmation prompt to prevent accidental
+deletions.
+
 <template>
     <!-- panel wrapper  -->
     <section class="saved-palette-pane panel">

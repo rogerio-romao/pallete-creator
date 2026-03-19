@@ -5,6 +5,7 @@
         "lib": ["dom", "es2023", "DOM.Iterable"],
         "noEmit": true,
         "moduleResolution": "bundler",
+        "module": "esnext",
         "strict": true,
         "noPropertyAccessFromIndexSignature": true,
         "noUncheckedIndexedAccess": true,

@@ -1,3 +1,9 @@
+// This component represents an individual color slot in the palette, displaying
+the color and its various formats (HSL, RGB, HEX). It also includes an input for
+editing the color label and a set of sliders for adjusting the color values. The
+component interacts with the Vuex store to manage state and update colors
+accordingly.
+
 <template>
     <!-- Individual color Slot  -->
     <div class="palette-slot">
@@ -11,12 +17,14 @@
                 :value="labels[slotNumber]"
                 @change="updateLabel"
                 :id="`slot-label-${slotNumber}`"
+                data-testid="palette-color-slot-label-input"
             />
         </div>
 
         <!-- slot  -->
         <div
             class="palette-slot-color"
+            data-testid="palette-color-slot"
             @click="pasteColor"
             :style="{
                 backgroundColor: slotBg,
@@ -31,7 +39,7 @@
         </div>
 
         <!-- controls  -->
-        <ColorControls :slotNumber="slotNumber" />
+        <PaletteColorSliders :slotNumber="slotNumber" />
     </div>
 </template>
 
@@ -39,7 +47,7 @@
     import { computed } from 'vue';
     import { useStore } from 'vuex';
 
-    import ColorControls from './ColorControls.vue';
+    import PaletteColorSliders from './PaletteColorSliders.vue';
 
     const { slotNumber } = defineProps({
         slotNumber: {

@@ -1,3 +1,9 @@
+// This component is the main color chooser bar that allows users to select a
+main color for their palette. It includes a random color generator button,
+inputs for RGB, HEX, and HSL color formats, and a color picker. The component
+interacts with the Vuex store to set the main color and generate variations
+based on it.
+
 <template>
     <!-- wrapper  -->
     <div class="main-color-bar">
@@ -5,7 +11,7 @@
         <button
             class="main-button"
             @click="setMainColor"
-            data-test="random-button"
+            data-testid="random-button"
         >
             <i class="fas fa-random" title="Generate random color" />
             Random
@@ -13,14 +19,14 @@
 
         <div class="inputs-wrapper">
             <!-- rgb input  -->
-            <form @submit.prevent="submitRgb" data-test="rgb-form">
+            <form @submit.prevent="submitRgb" data-testid="rgb-form">
                 <div class="input-wrapper">
                     <label for="rgbInput" class="sr-only"
                         >RGB color value</label
                     >
                     <input
                         type="text"
-                        data-test="rgb-input"
+                        data-testid="rgb-input"
                         placeholder="RGB - 255,255,255"
                         title="Enter 3 numbers between 0 and 255, separated by commas"
                         :pattern="rgbPattern"
@@ -34,12 +40,12 @@
             </form>
 
             <!-- hex input  -->
-            <form @submit.prevent="submitHex" data-test="hex-form">
+            <form @submit.prevent="submitHex" data-testid="hex-form">
                 <div class="input-wrapper">
                     <label for="hexInput" class="sr-only">Hex color code</label>
                     <input
                         type="text"
-                        data-test="hex-input"
+                        data-testid="hex-input"
                         placeholder="HEX # - ffffff"
                         title="Enter a hex color code, without the #"
                         :pattern="hexPattern"
@@ -53,14 +59,14 @@
             </form>
 
             <!-- hsl input  -->
-            <form @submit.prevent="submitHsl" data-test="hsl-form">
+            <form @submit.prevent="submitHsl" data-testid="hsl-form">
                 <div class="input-wrapper">
                     <label for="hslInput" class="sr-only"
                         >HSL color value</label
                     >
                     <input
                         type="text"
-                        data-test="hsl-input"
+                        data-testid="hsl-input"
                         placeholder="HSL - 190,75,80"
                         title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
                         :pattern="hslPattern"
@@ -75,12 +81,12 @@
         </div>
 
         <!-- color input  -->
-        <form @submit.prevent="submitColor" data-test="color-form">
+        <form @submit.prevent="submitColor" data-testid="color-form">
             <div class="input-wrapper">
                 <label for="colorInput" class="sr-only">Color picker</label>
                 <input
                     type="color"
-                    data-test="color-input"
+                    data-testid="color-input"
                     id="colorInput"
                     title="Click to select from color wheel"
                     aria-label="Color picker"
@@ -99,15 +105,13 @@
 
     const store = useStore();
 
-    // Regex patterns for inputs validation
-
     const hexPattern = '^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$';
     const rgbPattern = String.raw`\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b`;
     const hslPattern = String.raw`\b(([0-9]|[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|360))\b,\s*\b([0-9]|[1-9][0-9]|100)\b,\s*\b([0-9]|[1-9][0-9]|100)\b`;
 
-    /* --- maybe refactor these handlers --- */
-    /* ---  vvvvvvvvvv     vvvvvvvvvvv   --- */
-
+    /**
+     * Generates a random HSL color and sets it as the main color in the store.
+     */
     const setMainColor = () => {
         const hsl = generateHsl();
         store.dispatch('SET_MAIN_COLOR', hsl);
@@ -120,14 +124,17 @@
     const submitRgb = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
         const rgbInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('[data-test="rgb-input"]')
+            form.querySelector('#rgbInput')
         );
+
         const rgb = rgbInput.value;
         if (!rgb) {
             return;
         }
+
         const hsl = rgbToHsl(rgb);
         store.dispatch('SET_MAIN_COLOR', hsl);
+
         rgbInput.value = '';
     };
 
@@ -138,14 +145,17 @@
     const submitHex = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
         const hexInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('[data-test="hex-input"]')
+            form.querySelector('#hexInput')
         );
+
         const hex = hexInput.value;
         if (!hex) {
             return;
         }
+
         const hsl = hexToHsl(hex);
         store.dispatch('SET_MAIN_COLOR', hsl);
+
         hexInput.value = '';
     };
 
@@ -156,15 +166,18 @@
     const submitHsl = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
         const hslInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('[data-test="hsl-input"]')
+            form.querySelector('#hslInput')
         );
+
         const val = hslInput.value;
         if (!val) {
             return;
         }
+
         const [h, s, l] = val.split(',').map(Number);
         const hsl = toHslString(h ?? 0, s ?? 0, l ?? 0);
         store.dispatch('SET_MAIN_COLOR', hsl);
+
         hslInput.value = '';
     };
 
@@ -175,8 +188,9 @@
     const submitColor = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
         const colorInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('[data-test="color-input"]')
+            form.querySelector('#colorInput')
         );
+
         // remove the # from the color value
         const color = colorInput.value.slice(1);
         if (!color) {

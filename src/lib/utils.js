@@ -1,8 +1,6 @@
 // oxlint-disable max-lines
 // oxlint-disable no-magic-numbers
 
-// Generate random HSL color
-
 const MAX_HUE = 360;
 const MAX_SATURATION = 100;
 const MAX_LIGHTNESS = 100;
@@ -38,6 +36,13 @@ const hue2rgb = (p, q, t) => {
 };
 
 /**
+ * Clamps a value between 0 and MAX_LIGHTNESS.
+ * @param {number} v - The value to clamp
+ * @returns {number} The clamped value
+ */
+const clamp = (v) => Math.max(0, Math.min(MAX_LIGHTNESS, v));
+
+/**
  * Generates an HSL color string from the provided hue, saturation, and luminosity values.
  * @param {number} h - the hue value
  * @param {number} s - the saturation value
@@ -46,6 +51,10 @@ const hue2rgb = (p, q, t) => {
  */
 export const toHslString = (h, s, l) => `hsl(${h}, ${s}%, ${l}%)`;
 
+/**
+ * Generates a random HSL color string by randomly selecting hue, saturation, and luminosity values within their respective ranges.
+ * @returns {string} a random HSL color string in the format "hsl(h, s%, l%)"
+ */
 export const generateHsl = () => {
     const h = Math.floor(Math.random() * MAX_HUE);
     const s = Math.floor(Math.random() * MAX_SATURATION);
@@ -64,12 +73,15 @@ export const hslToRgb = (hsl) => {
     if (h === undefined || s === undefined || l === undefined) {
         return 'rgb(0, 0, 0)';
     }
+
     h /= MAX_HUE;
     s /= MAX_SATURATION;
     l /= MAX_LIGHTNESS;
+
     let r;
     let g;
     let b;
+
     if (s === 0) {
         // oxlint-disable-next-line no-multi-assign
         r = g = b = l;
@@ -80,6 +92,7 @@ export const hslToRgb = (hsl) => {
         g = hue2rgb(p, q, h);
         b = hue2rgb(p, q, h - 1 / 3);
     }
+
     return `rgb(${Math.round(r * MAX_RGB_VALUE)}, ${Math.round(g * MAX_RGB_VALUE)}, ${Math.round(
         b * MAX_RGB_VALUE,
     )})`;
@@ -96,11 +109,14 @@ export const rgbToHsl = (rgb) => {
     if (r === undefined || g === undefined || b === undefined) {
         return 'hsl(0, 0%, 0%)';
     }
+
     r /= MAX_RGB_VALUE;
     g /= MAX_RGB_VALUE;
     b /= MAX_RGB_VALUE;
+
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
+
     let h;
     let s;
     const l = (max + min) / 2;
@@ -130,6 +146,7 @@ export const rgbToHsl = (rgb) => {
         h ??= 0;
         h /= 6;
     }
+
     return `hsl(${Math.round(h * MAX_HUE)}, ${Math.round(s * MAX_SATURATION)}%, ${Math.round(
         l * MAX_LIGHTNESS,
     )}%)`;
@@ -145,16 +162,19 @@ export const rgbToHex = (rgb) => {
     if (r === undefined || g === undefined || b === undefined) {
         return '#000000';
     }
+
     const hex = [
         r.toString(HEX_RADIX),
         g.toString(HEX_RADIX),
         b.toString(HEX_RADIX),
     ];
+
     for (const [index, color] of hex.entries()) {
         if (color.length === 1) {
             hex[index] = `0${color}`;
         }
     }
+
     return `#${hex.join('')}`;
 };
 
@@ -181,10 +201,12 @@ export const generateComplement = (hsl) => {
     if (h === undefined || s === undefined || l === undefined) {
         return [];
     }
+
     const h2 = (h + 180) % MAX_HUE;
     const h3 = Math.abs((h - 150) % MAX_HUE);
     const h4 = (h + 150) % MAX_HUE;
     const l2 = (l - 30 + MAX_LIGHTNESS) % MAX_LIGHTNESS;
+
     return [
         toHslString(h2, s, l),
         toHslString(h, s, l2),
@@ -206,6 +228,7 @@ export const generateMono = (hsl) => {
     if (h === undefined || s === undefined) {
         return [];
     }
+
     return [
         toHslString(h, s, 8),
         toHslString(h, s, 20),
@@ -228,14 +251,10 @@ export const generateTriad = (hsl) => {
     if (h === undefined || s === undefined || l === undefined) {
         return [];
     }
+
     const h2 = (h + 120) % MAX_HUE;
     const h3 = (h + 240) % MAX_HUE;
-    /**
-     * Clamps a value between 0 and MAX_LIGHTNESS.
-     * @param {number} v - The value to clamp
-     * @returns {number} The clamped value
-     */
-    const clamp = (v) => Math.max(0, Math.min(MAX_LIGHTNESS, v));
+
     return [
         toHslString(h2, s, l),
         toHslString(h3, s, l),
@@ -256,6 +275,7 @@ export const generateAnalogous = (hsl) => {
     if (h === undefined || s === undefined || l === undefined) {
         return [];
     }
+
     const h2 = Math.abs((h - 60) % MAX_HUE);
     const h3 = Math.abs((h - 30) % MAX_HUE);
     const h4 = (h + 30) % MAX_HUE;
@@ -283,6 +303,7 @@ export const generateSaturations = (hsl) => {
     if (h === undefined || s === undefined || l === undefined) {
         return [];
     }
+
     const s2 = Math.abs((s - 10) % MAX_SATURATION);
     const s3 = (s + 10) % MAX_SATURATION;
     const s4 = Math.abs((s - 20) % MAX_SATURATION);
@@ -291,6 +312,7 @@ export const generateSaturations = (hsl) => {
     const s7 = (s + 30) % MAX_SATURATION;
     const s8 = Math.abs((s - 40) % MAX_SATURATION);
     const s9 = (s + 40) % MAX_SATURATION;
+
     return [
         toHslString(h, s2, l),
         toHslString(h, s3, l),

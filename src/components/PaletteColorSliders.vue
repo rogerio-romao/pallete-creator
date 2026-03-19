@@ -1,3 +1,6 @@
+// This component provides the HSL sliders for adjusting the color of either the
+main slot or a specific palette color slot, depending on the `slotNumber` prop.
+
 <template>
     <!-- wrapper  -->
     <div class="palette-slot-controls">
@@ -6,14 +9,16 @@
             <div class="palette-slot-control">
                 <label for="hueControl">H</label>
                 <input
-                    data-test="hue-input"
+                    data-testid="hue-input"
                     type="range"
                     name="hue"
                     id="hueControl"
                     min="0"
                     max="360"
                     v-model="h"
-                    :style="{ '--fill-percent': `${((h / 360) * 100).toFixed(1)}%` }"
+                    :style="{
+                        '--fill-percent': `${((h / 360) * 100).toFixed(1)}%`,
+                    }"
                     @input="updateColor"
                 />
             </div>
@@ -22,7 +27,7 @@
             <div class="palette-slot-control">
                 <label for="satControl">S</label>
                 <input
-                    data-test="sat-input"
+                    data-testid="sat-input"
                     type="range"
                     name="sat"
                     id="satControl"
@@ -38,7 +43,7 @@
             <div class="palette-slot-control">
                 <label for="lumControl">L</label>
                 <input
-                    data-test="lum-input"
+                    data-testid="lum-input"
                     type="range"
                     name="lum"
                     id="lumControl"

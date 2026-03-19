@@ -5,12 +5,19 @@
 
 const STORAGE_KEY = 'palettes';
 
+/**
+ * Gets the saved palettes from localstorage. If there is an issue, returns an empty array.
+ * @returns {SavedPalette[]} the saved palettes
+ */
 const getPalettes = () => {
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
         return stored ? JSON.parse(stored) : [];
     } catch (error) {
-        console.error('Failed to parse palettes from localStorage:', error);
+        console.error(
+            'Failed to retrieve palettes from localStorage. Returning empty array.',
+            error,
+        );
         return [];
     }
 };
@@ -29,6 +36,7 @@ const savePalettes = (palettes) => {
 
 /**
  * Service for managing palette operations such as saving, retrieving, and deleting palettes from localStorage.
+ * @module paletteService
  */
 const paletteService = {
     /**
@@ -37,7 +45,6 @@ const paletteService = {
      */
     delete(id) {
         try {
-            /** @type {SavedPalette[]} */
             const palettes = getPalettes();
             const filtered = palettes.filter((p) => p.id !== id);
             savePalettes(filtered);

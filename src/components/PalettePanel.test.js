@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import { mount } from '@vue/test-utils';
 
-import ColorsPane from './ColorsPane.vue';
+import PalettePanel from './PalettePanel.vue';
 
 const createVuexStore = () =>
     createStore({
@@ -24,29 +24,36 @@ const createVuexStore = () =>
 describe('component ColorsPane', () => {
     it('renders collapsed message when collapsed', () => {
         const store = createVuexStore();
-        const wrapper = mount(ColorsPane, {
+        const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
             props: { isColorPaneCollapsed: true },
         });
+
         expect(wrapper.text()).toContain('Click the arrow to expand panel');
-        expect(wrapper.find('.hide').exists()).toBeFalsy();
+        expect(
+            wrapper.find('[data-testid="palette-panel-hide"]').exists(),
+        ).toBeFalsy();
     });
 
     it('renders slots when not collapsed', () => {
         const store = createVuexStore();
-        const wrapper = mount(ColorsPane, {
+        const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
             props: { isColorPaneCollapsed: false },
         });
+
         expect(wrapper.text()).not.toContain('Click the arrow to expand panel');
-        expect(wrapper.find('.palette-slots').exists()).toBeTruthy();
+        expect(
+            wrapper.find('[data-testid="palette-slots"]').exists(),
+        ).toBeTruthy();
     });
 
     it('has correct default prop', () => {
         const store = createVuexStore();
-        const wrapper = mount(ColorsPane, {
+        const wrapper = mount(PalettePanel, {
             global: { plugins: [store] },
         });
+
         expect(wrapper.props('isColorPaneCollapsed')).toBeFalsy();
     });
 });

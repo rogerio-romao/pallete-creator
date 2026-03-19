@@ -18,6 +18,9 @@ const DEFAULT_SCHEME_LENGTH = 5;
 // oxlint-disable-next-line max-lines-per-function
 const createVuexStore = (state = {}) =>
     createStore({
+        actions: {
+            LOAD_PALETTES: vi.fn(),
+        },
         getters: {
             currentScheme: () =>
                 state.currentScheme ||
@@ -86,7 +89,7 @@ describe('component App.vue', () => {
 
     it('renders the main navigation', () => {
         expect(
-            wrapper.findComponent({ name: 'MainNav' }).exists(),
+            wrapper.findComponent({ name: 'SiteHeader' }).exists(),
         ).toBeTruthy();
     });
 
@@ -221,9 +224,9 @@ describe('component App.vue', () => {
     });
 
     it('opens and closes Instructions modal', async () => {
-        // Open modal via MainNav event
+        // Open modal via SiteHeader event
         await wrapper
-            .findComponent({ name: 'MainNav' })
+            .findComponent({ name: 'SiteHeader' })
             .vm.$emit('openInstructionsModal');
         await wrapper.vm.$nextTick();
 

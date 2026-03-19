@@ -1,57 +1,6 @@
-<script setup>
-    import { useStore } from 'vuex';
-    import { computed, onMounted, ref } from 'vue';
-
-    import ColorsPane from './components/ColorsPane.vue';
-    import CopyModal from './components/ExportCssModal.vue';
-    import Instructions from './components/InstructionsModal.vue';
-    import MainColorBar from './components/MainColorBar.vue';
-    import MainNav from './components/MainNav.vue';
-    import MiniSlots from './components/MiniSlots.vue';
-    import SavedPalettes from './components/SavedPalettes.vue';
-    import SaveModal from './components/SaveModal.vue';
-    import UtilityButtons from './components/UtilityButtons.vue';
-
-    const store = useStore();
-
-    onMounted(() => store.dispatch('LOAD_PALETTES'));
-
-    const showCopyModal = ref(false);
-    const showSaveModal = ref(false);
-    const showInstructionsModal = ref(false);
-
-    const isColorPaneCollapsed = ref(false);
-    const isMiniPaneCollapsed = ref(false);
-    const isSavedPaneCollapsed = ref(false);
-
-    const mainHSL = computed(() => store.state.mainHSL);
-    const uniqueColors = computed(() => store.getters.uniqueColors);
-    const savedPalettes = computed(() => store.state.savedPalettes);
-    const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
-
-    const collapseColorPane = () => {
-        isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
-    };
-
-    const collapseMiniPane = () => {
-        isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
-    };
-
-    const collapseSavedPane = () => {
-        isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
-    };
-
-    // This is needed to make the collapse state of the panes available to the tests
-    defineExpose({
-        isColorPaneCollapsed,
-        isMiniPaneCollapsed,
-        isSavedPaneCollapsed,
-    });
-</script>
-
 <template>
     <!-- NAV  -->
-    <MainNav @openInstructionsModal="showInstructionsModal = true" />
+    <SiteHeader @openInstructionsModal="showInstructionsModal = true" />
 
     <!-- MAIN  -->
     <main>
@@ -60,7 +9,7 @@
         <p class="description"
             >Click random color or use the inputs to start your color scheme.</p
         >
-        <MainColorBar />
+        <MainColorChooserBar />
 
         <!-- utility buttons  -->
         <div v-if="showUtilityButtons">
@@ -92,7 +41,7 @@
                     </span>
                 </span>
             </h2>
-            <ColorsPane :isColorPaneCollapsed="isColorPaneCollapsed" />
+            <PalettePanel :isColorPaneCollapsed="isColorPaneCollapsed" />
         </div>
 
         <!-- mini slots / variations  -->
@@ -116,7 +65,7 @@
                     </span>
                 </span>
             </h2>
-            <MiniSlots :isMiniPaneCollapsed="isMiniPaneCollapsed" />
+            <MiniSlotsPanel :isMiniPaneCollapsed="isMiniPaneCollapsed" />
         </div>
 
         <!-- saved palletes -->
@@ -165,6 +114,71 @@
         <SaveModal v-if="showSaveModal" @close="showSaveModal = false" />
     </transition>
 </template>
+
+<script setup>
+    // oxlint-disable-next-line import/no-unassigned-import
+    import 'mosha-vue-toastify/dist/style.css';
+
+    import { createToast } from 'mosha-vue-toastify';
+    import { useStore } from 'vuex';
+    import { computed, onMounted, ref } from 'vue';
+
+    import CopyModal from './components/ExportCssModal.vue';
+    import Instructions from './components/InstructionsModal.vue';
+    import MainColorChooserBar from './components/MainColorChooserBar.vue';
+    import MiniSlotsPanel from './components/MiniSlotsPanel.vue';
+    import PalettePanel from './components/PalettePanel.vue';
+    import SavedPalettes from './components/SavedPalettes.vue';
+    import SaveModal from './components/SaveModal.vue';
+    import SiteHeader from './components/SiteHeader.vue';
+    import UtilityButtons from './components/UtilityButtons.vue';
+
+    const store = useStore();
+
+    onMounted(async () => {
+        try {
+            await store.dispatch('LOAD_PALETTES');
+        } catch {
+            createToast('Failed to load palettes. Please try again.', {
+                hideProgressBar: true,
+                position: 'bottom-right',
+                type: 'danger',
+            });
+        }
+    });
+
+    const showCopyModal = ref(false);
+    const showSaveModal = ref(false);
+    const showInstructionsModal = ref(false);
+
+    const isColorPaneCollapsed = ref(false);
+    const isMiniPaneCollapsed = ref(false);
+    const isSavedPaneCollapsed = ref(false);
+
+    const mainHSL = computed(() => store.state.mainHSL);
+    const uniqueColors = computed(() => store.getters.uniqueColors);
+    const savedPalettes = computed(() => store.state.savedPalettes);
+    const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
+
+    const collapseColorPane = () => {
+        isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
+    };
+
+    const collapseMiniPane = () => {
+        isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
+    };
+
+    const collapseSavedPane = () => {
+        isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
+    };
+
+    // This is needed to make the collapse state of the panes available to the tests
+    defineExpose({
+        isColorPaneCollapsed,
+        isMiniPaneCollapsed,
+        isSavedPaneCollapsed,
+    });
+</script>
 
 <style>
     @import url('./style/app.css');
