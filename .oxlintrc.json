@@ -49,6 +49,7 @@
         "import/no-relative-parent-imports": "off",
         "oxc/no-async-await": "off",
         "oxc/no-optional-chaining": "off",
+        "oxc/no-rest-spread-properties": "off",
         "unicorn/filename-case": [
             "error",
             {

@@ -14,6 +14,12 @@ export default defineConfig({
             ],
             provider: 'v8',
             reporter: ['text', 'json', 'html'],
+            threshold: {
+                branches: 90,
+                functions: 90,
+                lines: 90,
+                statements: 90,
+            },
         },
         environment: 'jsdom',
         globals: true,
