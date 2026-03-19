@@ -1,161 +1,38 @@
 // oxlint-disable jest/max-expects
 // oxlint-disable max-lines
 
-import { createStore } from 'vuex';
 import { mount } from '@vue/test-utils';
 
 import DEFAULT_HEX_COLORS from '../lib/colors';
-import UtilityButtons from './UtilityButtons.vue';
+import stateFactory from '../store/state';
+import store from '../store';
 
-/** @typedef {import('../store/actions.js').ActionCtx} ActionCtx */
-/** @typedef {ReturnType<typeof import('../store/state').default>} State */
-/** @typedef {import('../store/mutations.js').SlotKey} SlotKey */
-
-const MIN_SCHEME_COLORS = 4;
-
-/**
- * Creates a Vuex store with mock state, getters, actions, and mutations for testing purposes.
- * @param {Object} _state - Optional initial state to override the default state.
- * @returns {ReturnType<typeof createStore>} A Vuex store instance with the specified state, getters, actions, and mutations.
- */
-// oxlint-disable-next-line max-lines-per-function
-const createVuexStore = (_state = {}) =>
-    createStore({
-        actions: {
-            /**
-             * Action to set a random color scheme in the state. It generates a random scheme of colors from the uniqueColors getter and commits mutations to set the slot colors in the state.
-             * @param {ActionCtx} ctx - The Vuex action context, containing commit, state, and getters.
-             */
-            SET_RANDOM_SCHEME({ commit, state, getters }) {
-                const unique = [...getters.uniqueColors];
-                const randomScheme = new Set();
-                while (randomScheme.size < MIN_SCHEME_COLORS) {
-                    const hsl =
-                        unique[Math.floor(Math.random() * unique.length)];
-                    if (!randomScheme.has(hsl) && hsl !== state.mainHSL) {
-                        randomScheme.add(hsl);
-                    }
-                }
-                let slot = 2;
-                for (const hsl of randomScheme) {
-                    const rgb = `rgb(0, 0, 0)`;
-                    const hex = '#000000';
-                    commit('SET_SLOT_COLOR', {
-                        hex,
-                        hsl,
-                        rgb,
-                        slot: `slot${slot}`,
-                    });
-                    slot += 1;
-                }
-            },
-            /**
-             * Action to set the text color in the state based on the provided type (light or dark). It commits a mutation to update the text color in the state with predefined hex, hsl, and rgb values for light and dark text colors.
-             * @param {ActionCtx} ctx - The Vuex action context, containing commit and state.
-             * @param {'light' | 'dark'} type - The type of text color to set, either 'light' or 'dark'.
-             */
-            SET_TEXT_COLOR({ commit }, type) {
-                if (type === 'light') {
-                    commit('SET_TEXT_COLOR', {
-                        hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
-                        hsl: 'hsl(38, 35%, 62%)',
-                        rgb: 'rgb(184, 168, 134)',
-                    });
-                } else if (type === 'dark') {
-                    commit('SET_TEXT_COLOR', {
-                        hex: DEFAULT_HEX_COLORS.DARK_TEXT,
-                        hsl: 'hsl(218, 27%, 8%)',
-                        rgb: 'rgb(15, 19, 26)',
-                    });
-                }
-            },
-        },
-        getters: {
-            /**
-             * Getter to determine if the full color scheme is set in the state. It checks if all slot colors (slot2 to slot5) have a non-empty HSL value, indicating that they are set.
-             * @param {State} state - The Vuex state containing the slot colors.
-             * @returns {boolean} True if all slot colors have a non-empty HSL value, indicating that the full scheme is set; otherwise, false.
-             */
-            fullSchemeSet: (state) =>
-                Object.values(state.slotColors).every(
-                    (color) => color.hsl !== '',
-                ),
-            uniqueColors: () => [
-                'hsl(180, 50%, 50%)',
-                'hsl(200, 50%, 50%)',
-                'hsl(220, 50%, 50%)',
-                'hsl(240, 50%, 50%)',
-                'hsl(260, 50%, 50%)',
-            ],
-        },
-        mutations: {
-            /**
-             * Mutation to set the color of a specific slot in the state.
-             * @param {State} state - The Vuex state containing the slot colors.
-             * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string }} payload - The color information for the slot.
-             */
-
-            SET_SLOT_COLOR: (state, { slot, hsl, rgb, hex }) => {
-                state.slotColors[slot] = { hex, hsl, rgb };
-            },
-            /**
-             * Mutation to set the text color in the state.
-             * @param {State} state - The Vuex state containing the text color.
-             * @param {{ hex: string, hsl: string, rgb: string }} colors - The color information for the text.
-             */
-            SET_TEXT_COLOR(state, colors) {
-                state.textColor = colors;
-            },
-        },
-        state: {
-            mainHSL: 'hsl(20, 20%, 20%)',
-            mainSlotColor: {
-                hex: '',
-                hsl: '',
-                rgb: '',
-            },
-            slotColors: {
-                slot2: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot3: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot4: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-                slot5: {
-                    hex: '',
-                    hsl: '',
-                    rgb: '',
-                },
-            },
-            textColor: {
-                hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
-                hsl: 'hsl(38, 35%, 62%)',
-                rgb: 'rgb(184, 168, 134)',
-            },
-        },
-    });
+import UtilityButtonsPanel from './UtilityButtonsPanel.vue';
 
 // oxlint-disable-next-line max-lines-per-function
-describe('component UtilityButtons', () => {
+describe('component UtilityButtonsPanel', () => {
     /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
-    /** @type {ReturnType<typeof createVuexStore>} */
-    let store;
 
     beforeEach(() => {
-        store = createVuexStore();
-        wrapper = mount(UtilityButtons, {
+        Object.assign(store.state, stateFactory());
+        store.state.mainHSL = 'hsl(20, 20%, 20%)';
+        store.state.allColors.hsl = [
+            'hsl(180, 50%, 50%)',
+            'hsl(200, 50%, 50%)',
+            'hsl(220, 50%, 50%)',
+            'hsl(240, 50%, 50%)',
+            'hsl(260, 50%, 50%)',
+        ];
+
+        wrapper = mount(UtilityButtonsPanel, {
             global: { plugins: [store] },
         });
+    });
+
+    afterEach(() => {
+        wrapper.unmount();
+        vi.restoreAllMocks();
     });
 
     it('renders the component', () => {
@@ -175,7 +52,6 @@ describe('component UtilityButtons', () => {
             .trigger('click');
 
         expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
-        spy.mockRestore();
     });
 
     // oxlint-disable-next-line max-statements
@@ -184,9 +60,6 @@ describe('component UtilityButtons', () => {
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
-        // wait for all promises to resolve
-        await wrapper.vm.$nextTick();
-        await wrapper.vm.$nextTick();
         await wrapper.vm.$nextTick();
 
         const { slotColors } = store.state;
@@ -249,7 +122,6 @@ describe('component UtilityButtons', () => {
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
-        // wait for the next tick
         await wrapper.vm.$nextTick();
 
         for (const button of buttons) {
@@ -317,6 +189,7 @@ describe('component UtilityButtons', () => {
         const mainColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--clr-main');
+
         expect(mainColor).not.toBe(DEFAULT_HEX_COLORS.MAIN);
 
         await wrapper
@@ -393,7 +266,6 @@ describe('component UtilityButtons', () => {
 
         await wrapper.find('[data-test="export-css-button"]').trigger('click');
 
-        // expect to emit copyPallete event
         expect(wrapper.emitted('copyPalette')).toBeTruthy();
     });
 

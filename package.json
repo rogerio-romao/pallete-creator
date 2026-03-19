@@ -5,9 +5,9 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
+        "build": "vite build",
         "check": "pnpm knip && pnpm lint && pnpm lint:css && pnpm typecheck && pnpm test:ci && pnpm build",
         "dev": "vite",
-        "build": "vite build",
         "knip": "knip",
         "lint": "oxlint",
         "lint:css": "stylelint '**/*.{css,vue}'",

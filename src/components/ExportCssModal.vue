@@ -1,3 +1,9 @@
+// This component is a modal dialog that allows users to export their color
+palette as CSS code. It provides options to choose the color format (RGB, HEX,
+HSL) and syntax (CSS or SCSS). The modal also includes functionality to copy the
+generated CSS code to the clipboard and displays a toast notification upon
+successful copying.
+
 <template>
     <!-- overlay  -->
     <div
@@ -6,7 +12,11 @@
         aria-modal="true"
         aria-labelledby="export-css-title"
     >
-        <div class="modal-wrapper" @click.self="$emit('close')">
+        <div
+            class="modal-wrapper"
+            data-testid="modal-wrapper"
+            @click.self="$emit('close')"
+        >
             <div class="modal-container">
                 <!-- header  -->
                 <div class="modal-header">
@@ -22,30 +32,38 @@
                     <div class="modal-buttons">
                         <button
                             class="secondary-button"
+                            data-testid="rgb-button"
                             @click="changeMode('rgb')"
                             >RGB</button
                         >
                         <button
                             class="secondary-button"
+                            data-testid="hex-button"
                             @click="changeMode('hex')"
                             >HEX</button
                         >
                         <button
                             class="secondary-button"
+                            data-testid="hsl-button"
                             @click="changeMode('hsl')"
                             >HSL</button
                         >
                         <button
                             class="secondary-button"
+                            data-testid="syntax-toggle"
                             @click="changeSyntax"
                             >{{ syntaxLabel }}</button
                         >
                     </div>
 
                     <!-- textarea  -->
-                    <div class="modal-code" @click="selectAll">
+                    <div
+                        class="modal-code"
+                        data-testid="modal-code"
+                        @click="selectAll"
+                    >
                         <p class="modal-code-info">Click here to copy</p>
-                        <div class="code-wrapper">
+                        <div class="code-wrapper" data-testid="code-wrapper">
                             <p
                                 v-for="(label, i) in labels"
                                 :key="i"
@@ -62,6 +80,7 @@
                 <div class="modal-footer">
                     <button
                         class="main-button"
+                        data-testid="close-button"
                         @click="$emit('close')"
                         ref="closeButton"
                         autofocus
@@ -86,6 +105,7 @@
     const store = useStore();
     const labels = computed(() => store.state.labels);
     const currentScheme = computed(() => store.getters.currentScheme);
+
     /** @type {import('vue').Ref<HTMLElement | null>} */
     const closeButton = ref(null);
 
@@ -115,7 +135,9 @@
         }
     };
 
-    // SCSS / CSS syntax when exporting
+    /**
+     * Toggles the syntax between CSS and SCSS for the exported code.
+     */
     const changeSyntax = () => {
         if (syntax.value === '--clr-') {
             syntax.value = '$clr-';
@@ -134,12 +156,14 @@
         mode.value = newMode;
     };
 
-    // Copying the code to the clipboard
-
+    /**
+     * Copies the exported CSS code to the clipboard and shows a toast notification.
+     */
     const selectAll = async () => {
         const text = document.querySelector('.code-wrapper')?.textContent;
         await navigator.clipboard.writeText(text ?? '');
         copied.value = true;
+
         createToast('CSS copied to clipboard', {
             hideProgressBar: true,
             position: 'bottom-right',

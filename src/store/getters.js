@@ -1,6 +1,11 @@
 /** @typedef {ReturnType<typeof import('./state.js').default>} State */
 /** @typedef {import('./state.js').ColorSlot} ColorSlot */
 
+/**
+ * Vuex getters for the color palette application.
+ * These getters provide computed properties based on the state, such as the current color scheme, whether all slots are set, and the unique colors across all generated variations.
+ * @module store/getters
+ */
 const getters = {
     /**
      * Used for the export css and save palette modals
@@ -39,15 +44,17 @@ const getters = {
             rgb: state.slotColors.slot5.rgb,
         },
     ],
-    // used to display the utility buttons
+
     /**
+     * Checks if all color slots (main slot and slots 2 to 5) have their HSL values set. This is used to determine whether to display utility buttons that require a complete color scheme.
      * @param {State} state - Vuex root state
      * @returns {boolean} Whether all slots have a color set
      */
     fullSchemeSet: (state) =>
         Object.values(state.slotColors).every((color) => color.hsl !== ''),
-    // used for the mini slots panel
+
     /**
+     * Computes a set of unique HSL color values across all generated variations. This is useful for features that need to know the distinct colors used in the palette, such as displaying all colors.
      * @param {State} state - Vuex root state
      * @returns {Set<string>} Unique HSL color values across all generated variations
      */

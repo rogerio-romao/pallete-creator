@@ -43,12 +43,13 @@
             }
         ],
         "import/group-exports": "off",
-        "import/max-dependencies": ["warn", { "max": 11 }],
+        "import/max-dependencies": ["warn", { "max": 12 }],
         "import/no-default-export": "off",
         "import/no-named-export": "off",
         "import/no-relative-parent-imports": "off",
         "oxc/no-async-await": "off",
         "oxc/no-optional-chaining": "off",
+        "oxc/no-rest-spread-properties": "off",
         "unicorn/filename-case": [
             "error",
             {

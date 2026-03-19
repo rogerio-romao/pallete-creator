@@ -1,3 +1,6 @@
+// This component is a modal dialog that provides instructions on how to use the
+palette creator app.
+
 <template>
     <!-- overlay  -->
     <div
@@ -11,7 +14,7 @@
                 <div class="instructions-wrapper">
                     <!-- header  -->
                     <div class="modal-header">
-                        <h3 id="instructions-title">Instructions</h3>
+                        <h3 data-testid="instructions-title">Instructions</h3>
                     </div>
 
                     <!-- body  -->

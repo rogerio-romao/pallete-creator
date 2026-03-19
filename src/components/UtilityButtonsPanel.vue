@@ -1,3 +1,5 @@
+// Utility buttons for testing palette, resetting colors, etc.
+
 <template>
     <!-- wrapper  -->
     <div class="utility-buttons" data-test="utility-buttons">
@@ -85,8 +87,7 @@
 
     const showButtons = computed(() => store.getters.fullSchemeSet);
 
-    // Text color to light
-
+    /** Sets text color to light */
     const setLightText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
@@ -95,8 +96,7 @@
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
-    // Text color to dark
-
+    /** Sets text color to dark */
     const setDarkText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
@@ -105,22 +105,22 @@
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
 
+    /** Copies the current palette to the clipboard */
     const copyPalette = () => {
         emit('copyPalette');
     };
 
+    /** Saves the current palette */
     const savePalette = () => {
         emit('savePalette');
     };
 
-    // Picks a unique random color from the variations and sets it on the main palette pane.
-
+    /** Picks a unique random color from the variations and sets it on the main palette pane */
     const setRandomScheme = () => {
         store.dispatch('SET_RANDOM_SCHEME');
     };
 
-    // Back to default colors
-
+    /** Resets the site colors to default */
     const resetSiteColors = () => {
         document.documentElement.style.setProperty(
             '--clr-main',
@@ -144,8 +144,7 @@
         );
     };
 
-    // Test this palette on the site
-
+    /** Sets the CSS variables to the current palette colors, allowing the user to test the palette on the site */
     const setCssVars = () => {
         const main = store.state.mainSlotColor.hex;
         const complementary = store.state.slotColors.slot2.hex;
