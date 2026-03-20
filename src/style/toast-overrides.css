@@ -1,0 +1,51 @@
+/* stylelint-disable declaration-no-important -- need to override third-party library styles */
+/* stylelint-disable selector-class-pattern -- need to override third-party library styles */
+
+/* ---- TOAST OVERRIDES (mosha-vue-toastify) ---- */
+.mosha__toast {
+    min-block-size: 44px !important;
+    padding: 8px 10px !important;
+    min-inline-size: 260px !important;
+}
+
+.mosha__toast__content {
+    font-family: Montserrat, sans-serif;
+}
+
+.mosha__toast__content__text {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+.mosha__toast__content__description {
+    font-size: 0.7rem !important;
+}
+
+.mosha__toast__close-icon::before {
+    font-size: 18px !important;
+    color: color-mix(in srgb, currentcolor 65%, transparent 35%) !important;
+}
+
+.mosha__toast__close-icon:hover::before {
+    color: currentcolor !important;
+}
+
+.mosha__toast.success {
+    background-color: var(--clr-accent, #14b8a6) !important;
+    color: var(--clr-dark, #52525b) !important;
+}
+
+.mosha__toast.danger {
+    background-color: var(--clr-main, #18181b) !important;
+    color: var(--clr-light, #f4f4f5) !important;
+}
+
+.mosha__toast.warning {
+    background-color: var(--clr-secondary, #5eead4) !important;
+    color: var(--clr-dark, #52525b) !important;
+}
+
+.mosha__toast.info {
+    background-color: var(--clr-dark, #52525b) !important;
+    color: var(--clr-light, #f4f4f5) !important;
+}
