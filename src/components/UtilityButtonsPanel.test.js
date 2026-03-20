@@ -333,4 +333,96 @@ describe('component UtilityButtonsPanel', () => {
 
         expect(store.state.isTestingColorScheme).toBeTruthy();
     });
+
+    it('Test this palette applies text color from palette (dark theme uses slot4)', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        // default theme is dark → text should use slot4
+        const { slot4 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="test-palette-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot4.hex);
+        expect(
+            document.documentElement.style.getPropertyValue('--text-color'),
+        ).toBe(slot4.hex);
+    });
+
+    it('Light Text uses slot4 color when testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+
+        const { slot4 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="set-light-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot4.hex);
+    });
+
+    it('Dark Text uses slot5 color when testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+
+        const { slot5 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="set-dark-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot5.hex);
+    });
+
+    it('Light Text uses theme default when not testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', false);
+
+        await wrapper
+            .find('[data-test="set-light-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
+    });
+
+    // oxlint-disable-next-line max-statements
+    it('Reset restores text color to theme default', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+        await store.dispatch('SET_TEXT_COLOR', 'dark');
+
+        await wrapper
+            .find('[data-test="reset-site-colors-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.isTestingColorScheme).toBeFalsy();
+        // default theme is dark → textType becomes 'light'
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
+    });
 });

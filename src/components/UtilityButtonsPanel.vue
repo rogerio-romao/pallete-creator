@@ -106,22 +106,34 @@
 
     /** Sets text color to the default light color for the current theme */
     const setLightText = () => {
-        const hex =
-            store.state.theme === 'light'
-                ? DEFAULT_LIGHT_COLORS.LIGHT
-                : DEFAULT_HEX_COLORS.LIGHT;
-        document.documentElement.style.setProperty('--text-color', hex);
-        store.dispatch('SET_TEXT_COLOR', 'light');
+        if (store.state.isTestingColorScheme) {
+            const { hex, hsl, rgb } = store.state.slotColors.slot4;
+            document.documentElement.style.setProperty('--text-color', hex);
+            store.commit('SET_TEXT_COLOR', { hex, hsl, rgb });
+        } else {
+            const hex =
+                store.state.theme === 'light'
+                    ? DEFAULT_LIGHT_COLORS.LIGHT
+                    : DEFAULT_HEX_COLORS.LIGHT;
+            document.documentElement.style.setProperty('--text-color', hex);
+            store.dispatch('SET_TEXT_COLOR', 'light');
+        }
     };
 
     /** Sets text color to the default dark color for the current theme */
     const setDarkText = () => {
-        const hex =
-            store.state.theme === 'light'
-                ? DEFAULT_LIGHT_COLORS.DARK
-                : DEFAULT_HEX_COLORS.DARK;
-        document.documentElement.style.setProperty('--text-color', hex);
-        store.dispatch('SET_TEXT_COLOR', 'dark');
+        if (store.state.isTestingColorScheme) {
+            const { hex, hsl, rgb } = store.state.slotColors.slot5;
+            document.documentElement.style.setProperty('--text-color', hex);
+            store.commit('SET_TEXT_COLOR', { hex, hsl, rgb });
+        } else {
+            const hex =
+                store.state.theme === 'light'
+                    ? DEFAULT_LIGHT_COLORS.DARK
+                    : DEFAULT_HEX_COLORS.DARK;
+            document.documentElement.style.setProperty('--text-color', hex);
+            store.dispatch('SET_TEXT_COLOR', 'dark');
+        }
     };
 
     /** Copies the current palette to the clipboard */
@@ -154,10 +166,13 @@
             '--clr-accent',
             '--clr-light',
             '--clr-dark',
+            '--text-color',
         ]) {
             document.documentElement.style.removeProperty(v);
         }
         store.commit('SET_IS_TESTING', false);
+        const textType = store.state.theme === 'dark' ? 'light' : 'dark';
+        store.dispatch('SET_TEXT_COLOR', textType);
     };
 
     /** Sets the CSS variables to the current palette colors, allowing the user to test the palette on the site */
@@ -176,6 +191,14 @@
         document.documentElement.style.setProperty('--clr-accent', accent);
         document.documentElement.style.setProperty('--clr-light', light);
         document.documentElement.style.setProperty('--clr-dark', dark);
+
+        const textSlot =
+            store.state.theme === 'dark'
+                ? store.state.slotColors.slot4
+                : store.state.slotColors.slot5;
+        document.documentElement.style.setProperty('--text-color', textSlot.hex);
+        store.commit('SET_TEXT_COLOR', { hex: textSlot.hex, hsl: textSlot.hsl, rgb: textSlot.rgb });
+
         store.commit('SET_IS_TESTING', true);
     };
 </script>
