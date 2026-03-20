@@ -889,9 +889,9 @@ nav {
 }
 
 .saved-palettes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, min(220px, 100%));
-    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 8px;
 }
 
@@ -935,8 +935,8 @@ nav {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-end;
-    justify-content: space-between;
-    gap: 6px;
+    justify-content: flex-start;
+    gap: 12px;
 
     [data-testid='delete-palette-trigger'] {
         font-size: 0.8rem;
@@ -970,6 +970,12 @@ nav {
         inline-size: 22px;
         block-size: 22px;
     }
+}
+
+/* suppress card tooltip when hovering the trash */
+.saved-palette:has([data-testid='delete-palette-trigger']:hover)::after {
+    animation: none;
+    opacity: 0;
 }
 
 /* ----- FORMAT TOGGLE ----- */

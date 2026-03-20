@@ -14,6 +14,7 @@ deletions.
                     :key="palette.id"
                     class="saved-palette"
                     :data-testid="'saved-palette-' + palette.id"
+                    data-tooltip="click to load this palette"
                     @click="editPalette(palette.scheme.slice(1))"
                 >
                     <!-- palette name  -->
@@ -31,6 +32,7 @@ deletions.
                         </div>
                         <div
                             data-testid="delete-palette-trigger"
+                            data-tooltip="delete this palette"
                             @click.stop="deletePalette(palette)"
                         >
                             <i class="fas fa-trash-alt"></i>
