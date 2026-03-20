@@ -58,6 +58,7 @@ failure of the save operation.
                     <!-- footer  -->
                     <div class="modal-footer">
                         <button
+                            type="button"
                             class="secondary-button"
                             data-testid="close-button"
                             @click="$emit('close')"
