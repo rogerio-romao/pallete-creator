@@ -109,10 +109,21 @@ h2 {
 
 /* tooltips */
 @keyframes tooltip-fade {
-    0%   { opacity: 0; }
-    4%   { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+
+    4% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 [data-tooltip] {
@@ -841,10 +852,19 @@ nav {
     box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
 
     @media (prefers-reduced-motion: no-preference) {
-        transition: box-shadow 0.075s ease-in-out;
+        transition:
+            transform 0.12s ease,
+            box-shadow 0.12s ease;
     }
 
-    &:hover,
+    &:hover {
+        @media (prefers-reduced-motion: no-preference) {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px
+                color-mix(in srgb, var(--clr-light, #f4f4f5) 30%, transparent);
+        }
+    }
+
     &:active {
         box-shadow: none;
     }
