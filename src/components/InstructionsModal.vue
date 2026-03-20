@@ -8,8 +8,9 @@ palette creator app.
         role="dialog"
         aria-modal="true"
         aria-labelledby="instructions-title"
+        @click.self="$emit('close')"
     >
-        <div class="modal-wrapper" @click.self="$emit('close')">
+        <div class="modal-wrapper">
             <div class="modal-container instructions">
                 <div class="instructions-wrapper">
                     <!-- header  -->
@@ -20,17 +21,19 @@ palette creator app.
                     <!-- body  -->
                     <div class="modal-body">
                         <p>
-                            A random palette is generated on load. Use the
-                            <strong>Random</strong> button or the inputs to set
-                            a specific main color — this resets all slots and
-                            regenerates the variations based on color theory.
+                            A random palette is generated on load. Hit
+                            <strong>One Shot</strong> to generate a new random
+                            color, scheme, and live preview all at once. Or use
+                            the <strong>Random</strong> button and inputs in the
+                            color bar to set a specific base color — this
+                            regenerates all slots based on color theory.
                         </p>
                         <p>
                             Click a color in the <strong>Variations</strong>
                             panel to copy it, then click any palette slot to
                             paste it. Click a selected variation again to
                             deselect it. Or hit <strong>Random Variations</strong>
-                            to fill all five slots at once.
+                            to randomize all five slots at once.
                         </p>
                         <p>
                             Fine-tune any slot with the <strong>H / S / L
@@ -40,12 +43,12 @@ palette creator app.
                         </p>
                         <p>
                             <strong>Test this palette</strong> applies your
-                            colors to the app itself so you can see them in
+                            colors to the app so you can preview them in
                             context — <strong>Reset site colors</strong> reverts
-                            it. The <strong>Light / Dark Text</strong> buttons
-                            set a readable text color for your scheme.
-                            Use the sun / moon icon in the nav to toggle the
-                            app's own light or dark mode.
+                            it. Use <strong>Light Text</strong> or
+                            <strong>Dark Text</strong> to set a readable text
+                            color for your scheme. The sun / moon icon in the
+                            nav toggles the app's own light or dark mode.
                         </p>
                         <p>
                             <strong>Export CSS</strong> copies the palette as

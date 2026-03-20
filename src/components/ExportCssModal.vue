@@ -11,11 +11,11 @@ successful copying.
         role="dialog"
         aria-modal="true"
         aria-labelledby="export-css-title"
+        @click.self="$emit('close')"
     >
         <div
             class="modal-wrapper"
             data-testid="modal-wrapper"
-            @click.self="$emit('close')"
         >
             <div class="modal-container">
                 <!-- header  -->
