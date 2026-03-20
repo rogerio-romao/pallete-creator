@@ -42,6 +42,9 @@ describe('component UtilityButtonsPanel', () => {
         expect(
             wrapper.find('[data-test="random-scheme-button"]').exists(),
         ).toBeTruthy();
+        expect(
+            wrapper.find('[data-test="one-shot-button"]').exists(),
+        ).toBeTruthy();
     });
 
     it('calls SET_RANDOM_SCHEME when random button is clicked', async () => {
@@ -196,11 +199,16 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="reset-site-colors-button"]')
             .trigger('click');
 
-        const mainColorAfterReset = document.documentElement.style.getPropertyValue('--clr-main');
-        const secondaryColor = document.documentElement.style.getPropertyValue('--clr-secondary');
-        const accentColor = document.documentElement.style.getPropertyValue('--clr-accent');
-        const lightColor = document.documentElement.style.getPropertyValue('--clr-light');
-        const darkColor = document.documentElement.style.getPropertyValue('--clr-dark');
+        const mainColorAfterReset =
+            document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor =
+            document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor =
+            document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor =
+            document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor =
+            document.documentElement.style.getPropertyValue('--clr-dark');
 
         expect(mainColorAfterReset).toBe('');
         expect(secondaryColor).toBe('');
@@ -275,5 +283,54 @@ describe('component UtilityButtonsPanel', () => {
             .trigger('click');
 
         expect(wrapper.emitted('savePalette')).toBeTruthy();
+    });
+
+    it('one-shot button dispatches SET_MAIN_COLOR and SET_RANDOM_SCHEME', async () => {
+        const spy = vi.spyOn(store, 'dispatch').mockResolvedValue(null);
+
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        expect(spy).toHaveBeenCalledWith('SET_MAIN_COLOR');
+        expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
+    });
+
+    // oxlint-disable-next-line max-statements
+    it('one-shot button sets a full random palette and applies CSS vars', async () => {
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        const { slotColors, mainSlotColor } = store.state;
+
+        expect(mainSlotColor.hex).not.toBe('');
+        expect(slotColors.slot2.hsl).not.toBe('');
+        expect(slotColors.slot3.hsl).not.toBe('');
+        expect(slotColors.slot4.hsl).not.toBe('');
+        expect(slotColors.slot5.hsl).not.toBe('');
+
+        const mainColor =
+            document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor =
+            document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor =
+            document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor =
+            document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor =
+            document.documentElement.style.getPropertyValue('--clr-dark');
+
+        expect(mainColor).toBe(mainSlotColor.hex);
+        expect(secondaryColor).toBe(slotColors.slot2.hex);
+        expect(accentColor).toBe(slotColors.slot3.hex);
+        expect(lightColor).toBe(slotColors.slot4.hex);
+        expect(darkColor).toBe(slotColors.slot5.hex);
+    });
+
+    it('one-shot button sets isTestingColorScheme to true', async () => {
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.isTestingColorScheme).toBeTruthy();
     });
 });

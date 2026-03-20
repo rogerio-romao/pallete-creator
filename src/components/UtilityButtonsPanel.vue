@@ -5,6 +5,16 @@
     <div class="utility-buttons" data-test="utility-buttons">
         <!-- individual buttons  -->
         <button
+            class="main-button"
+            @click="oneShotPalette"
+            data-test="one-shot-button"
+            data-tooltip="Random color + random scheme + apply to UI in one click"
+        >
+            <i class="fas fa-dice"></i>
+            One Shot
+        </button>
+
+        <button
             class="secondary-button"
             @click="setRandomScheme"
             data-test="random-scheme-button"
@@ -127,6 +137,13 @@
     /** Picks a unique random color from the variations and sets it on the main palette pane */
     const setRandomScheme = () => {
         store.dispatch('SET_RANDOM_SCHEME');
+    };
+
+    /** Generates a random main color, randomizes all slots, and applies the palette to the UI in one action */
+    const oneShotPalette = () => {
+        store.dispatch('SET_MAIN_COLOR');
+        store.dispatch('SET_RANDOM_SCHEME');
+        setCssVars();
     };
 
     /** Resets the site colors to default by removing inline overrides */
