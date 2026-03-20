@@ -17,12 +17,12 @@ describe('component UtilityButtonsPanel', () => {
     beforeEach(() => {
         Object.assign(store.state, stateFactory());
         store.state.mainHSL = 'hsl(20, 20%, 20%)';
-        store.state.allColors.hsl = [
-            'hsl(180, 50%, 50%)',
-            'hsl(200, 50%, 50%)',
-            'hsl(220, 50%, 50%)',
-            'hsl(240, 50%, 50%)',
-            'hsl(260, 50%, 50%)',
+        store.state.allColors = [
+            { hex: '#000000', hsl: 'hsl(180, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'analogous' },
+            { hex: '#000000', hsl: 'hsl(200, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'complement' },
+            { hex: '#000000', hsl: 'hsl(220, 50%, 85%)', rgb: 'rgb(0,0,0)', type: 'triad' },
+            { hex: '#000000', hsl: 'hsl(240, 50%, 15%)', rgb: 'rgb(0,0,0)', type: 'mono' },
+            { hex: '#000000', hsl: 'hsl(260, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'saturation' },
         ];
 
         wrapper = mount(UtilityButtonsPanel, {

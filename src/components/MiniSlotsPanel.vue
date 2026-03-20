@@ -14,7 +14,7 @@ or expanded.
         >
             <!-- one slot  -->
             <div
-                v-for="(color, i) in colors"
+                v-for="(entry, i) in colors"
                 :class="[
                     'mini-slot',
                     {
@@ -24,12 +24,12 @@ or expanded.
                 ]"
                 :data-testid="`mini-slot-${i}`"
                 :key="i"
-                :style="{ backgroundColor: color }"
+                :style="{ backgroundColor: entry.hsl }"
                 :data-tooltip="colorCopied && colorCopiedIndex === i ? 'click to deselect' : 'select · then click a slot to paste'"
-                @click="copyColor(color, Number(i))"
+                @click="copyColor(entry.hsl, Number(i))"
                 role="option"
                 :aria-selected="colorCopied && colorCopiedIndex === i"
-                :aria-label="`Color variation ${Number(i) + 1}: ${color}. Click to copy.`"
+                :aria-label="`Color variation ${Number(i) + 1}: ${entry.hsl}. Click to copy.`"
             ></div>
         </div>
     </section>

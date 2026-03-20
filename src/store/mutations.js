@@ -15,10 +15,7 @@ const mutations = {
      * @param {ColorSlot} colors - The color values to add.
      */
     ADD_COLOR(state, colors) {
-        const { hsl, rgb, hex } = colors;
-        state.allColors.hsl.push(hsl);
-        state.allColors.rgb.push(rgb);
-        state.allColors.hex.push(hex);
+        state.allColors.push(colors);
     },
 
     /**
@@ -28,31 +25,31 @@ const mutations = {
      */
     RESET_ALL_COLORS(state, colors) {
         const { hsl, rgb, hex } = colors;
-        state.allColors = {
-            hex: [hex],
-            hsl: [hsl],
-            rgb: [rgb],
-        };
+        state.allColors = [{ hex, hsl, rgb, type: 'main' }];
         state.slotColors = {
             slot2: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'complement',
             },
             slot3: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'mono',
             },
             slot4: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'triad',
             },
             slot5: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'saturation',
             },
         };
     },

@@ -4,7 +4,7 @@ import paletteService from './paletteService';
 
 /** @type {ColorSlot[]} */
 const mockScheme = [
-    { hex: 'ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255, 0, 0)' },
+    { hex: 'ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255, 0, 0)', type: 'main' },
 ];
 
 // oxlint-disable-next-line max-lines-per-function

@@ -66,6 +66,7 @@ describe('store mutations', () => {
                 hex: '#0f131a',
                 hsl: 'hsl(218, 27%, 8%)',
                 rgb: 'rgb(15, 19, 26)',
+                type: 'text',
             };
             mutations.SET_TEXT_COLOR(testState, color);
 
