@@ -135,7 +135,7 @@ describe('component ExportCssModal', () => {
     });
 
     it('emits close when clicking the modal wrapper background', async () => {
-        await wrapper.find('[data-testid="modal-wrapper"]').trigger('click');
+        await wrapper.find('.modal-mask').trigger('click');
 
         expect(wrapper.emitted('close')).toBeTruthy();
     });
