@@ -20,25 +20,40 @@ palette creator app.
                     <!-- body  -->
                     <div class="modal-body">
                         <p>
-                            First generate a main color by using the inputs or
-                            the random button. The slots will appear and
-                            variations will be generated based on color theory.
+                            A random palette is generated on load. Use the
+                            <strong>Random</strong> button or the inputs to set
+                            a specific main color — this resets all slots and
+                            regenerates the variations based on color theory.
                         </p>
                         <p>
-                            When you change the main slot, everything else
-                            resets and new variations are added. You can click
-                            on the variations to select the color, then click on
-                            one of the palette slots to paste it.
+                            Click a color in the <strong>Variations</strong>
+                            panel to copy it, then click any palette slot to
+                            paste it. Click a selected variation again to
+                            deselect it. Or hit <strong>Random Variations</strong>
+                            to fill all five slots at once.
                         </p>
                         <p>
-                            Or press the random scheme button to generate a new
-                            scheme from the variations. Then the colors can be
-                            adjusted using the sliders.
+                            Fine-tune any slot with the <strong>H / S / L
+                            sliders</strong> below it. Click the format pill
+                            (HEX / HSL / RGB) to cycle the displayed value.
+                            Click a slot label to rename it.
                         </p>
                         <p>
-                            You can then save the scheme (sign in first) or
-                            export the css, test the scheme on the page, change
-                            color names, test dark and light text, etc...
+                            <strong>Test this palette</strong> applies your
+                            colors to the app itself so you can see them in
+                            context — <strong>Reset site colors</strong> reverts
+                            it. The <strong>Light / Dark Text</strong> buttons
+                            set a readable text color for your scheme.
+                            Use the sun / moon icon in the nav to toggle the
+                            app's own light or dark mode.
+                        </p>
+                        <p>
+                            <strong>Export CSS</strong> copies the palette as
+                            CSS custom properties ready to paste into your
+                            project. <strong>Save Palette</strong> stores it
+                            locally in your browser — no account needed. Saved
+                            palettes appear below and can be reloaded or
+                            deleted at any time.
                         </p>
                     </div>
 

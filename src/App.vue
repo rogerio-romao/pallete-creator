@@ -106,6 +106,9 @@
     const store = useStore();
 
     onMounted(async () => {
+        store.dispatch('SET_MAIN_COLOR', null);
+        store.dispatch('SET_RANDOM_SCHEME');
+
         try {
             await store.dispatch('LOAD_PALETTES');
         } catch {

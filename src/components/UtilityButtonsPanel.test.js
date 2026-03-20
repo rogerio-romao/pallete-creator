@@ -196,37 +196,25 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="reset-site-colors-button"]')
             .trigger('click');
 
-        const mainColorAfterReset = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-main');
-        const secondaryColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-secondary');
-        const accentColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-accent');
-        const lightColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-light');
-        const darkColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-dark');
+        const mainColorAfterReset = document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor = document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor = document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor = document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor = document.documentElement.style.getPropertyValue('--clr-dark');
 
-        expect(mainColorAfterReset).toBe(DEFAULT_HEX_COLORS.MAIN);
-        expect(secondaryColor).toBe(DEFAULT_HEX_COLORS.SECONDARY);
-        expect(accentColor).toBe(DEFAULT_HEX_COLORS.ACCENT);
-        expect(lightColor).toBe(DEFAULT_HEX_COLORS.LIGHT);
-        expect(darkColor).toBe(DEFAULT_HEX_COLORS.DARK);
+        expect(mainColorAfterReset).toBe('');
+        expect(secondaryColor).toBe('');
+        expect(accentColor).toBe('');
+        expect(lightColor).toBe('');
+        expect(darkColor).toBe('');
     });
 
-    it('sets the text color to the Light slot color when the light button is clicked', async () => {
+    it('sets the text color to the default light color when the light button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
-
-        const lightSlotColor = store.state.slotColors.slot4.hex;
 
         await wrapper
             .find('[data-test="set-light-text-button"]')
@@ -238,18 +226,16 @@ describe('component UtilityButtonsPanel', () => {
             document.documentElement,
         ).getPropertyValue('--text-color');
 
-        expect(textColor).toBe(lightSlotColor);
-        expect(textColor).toBe(store.state.textColor.hex);
+        expect(textColor).toBe(DEFAULT_HEX_COLORS.LIGHT);
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
     });
 
-    it('sets the text color to the Dark slot color when the dark button is clicked', async () => {
+    it('sets the text color to the default dark color when the dark button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
-
-        const darkSlotColor = store.state.slotColors.slot5.hex;
 
         await wrapper
             .find('[data-test="set-dark-text-button"]')
@@ -261,8 +247,8 @@ describe('component UtilityButtonsPanel', () => {
             document.documentElement,
         ).getPropertyValue('--text-color');
 
-        expect(textColor).toBe(darkSlotColor);
-        expect(textColor).toBe(store.state.textColor.hex);
+        expect(textColor).toBe(DEFAULT_HEX_COLORS.DARK);
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.DARK);
     });
 
     it('sends copyPalette event when the export css button is clicked', async () => {

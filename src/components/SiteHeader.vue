@@ -22,6 +22,20 @@ and open the instructions modal.
                         >Instructions</li
                     >
                     <li
+                        data-testid="theme-toggle"
+                        :class="{ 'theme-toggle-disabled': isTesting }"
+                        :title="
+                            isTesting
+                                ? 'Reset site colors before switching themes'
+                                : isDark
+                                  ? 'Switch to light mode'
+                                  : 'Switch to dark mode'
+                        "
+                        @click="!isTesting && toggleTheme()"
+                    >
+                        <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" />
+                    </li>
+                    <li
                         data-testid="fullscreen-link-minimised"
                         v-if="!isFullscreen"
                         @click="toggleFullscreen"
@@ -44,11 +58,16 @@ and open the instructions modal.
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { useStore } from 'vuex';
+    import { computed, ref } from 'vue';
 
     const emit = defineEmits(['openInstructionsModal']);
 
+    const store = useStore();
+
     const isFullscreen = ref(false);
+    const isDark = computed(() => store.state.theme === 'dark');
+    const isTesting = computed(() => store.state.isTesting);
 
     /**
      * Toggles the browser's fullscreen mode.
@@ -62,5 +81,20 @@ and open the instructions modal.
             elem.requestFullscreen();
             isFullscreen.value = true;
         }
+    };
+
+    /**
+     * Toggles between dark and light mode, persisting the choice to localStorage.
+     * Also resets text color to the appropriate default for the new theme.
+     */
+    const toggleTheme = () => {
+        const next = store.state.theme === 'dark' ? 'light' : 'dark';
+        store.commit('SET_THEME', next);
+        document.documentElement.dataset['theme'] = next;
+        localStorage.setItem('theme', next);
+        // 'light' text on dark bg, 'dark' text on light bg
+        const textType = next === 'dark' ? 'light' : 'dark';
+        store.dispatch('SET_TEXT_COLOR', textType);
+        document.documentElement.style.removeProperty('--text-color');
     };
 </script>

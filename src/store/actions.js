@@ -1,11 +1,12 @@
 // oxlint-disable no-console
 
-/** @typedef {ReturnType<typeof import('./state.js').default>} State */
+/** @typedef {ReturnType<typeof import('./state.js').default> & { theme: 'dark' | 'light' }} State */
 /** @typedef {import('./state.js').ColorSlot} ColorSlot */
 /** @typedef {{ uniqueColors: Set<string>, fullSchemeSet: boolean, currentScheme: ColorSlot[] }} Getters */
 /** @typedef {{ commit: (mutation: string, payload?: unknown) => void, dispatch: (action: string, payload?: unknown) => void, state: State, getters: Getters }} ActionCtx */
 
 import paletteService from '../services/paletteService';
+import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
 import {
     generateAnalogous,
     generateComplement,
@@ -208,10 +209,37 @@ const actions = {
      * @param {'light' | 'dark'} type - text color variant to apply
      */
     SET_TEXT_COLOR({ commit, state }, type) {
+        const isLight = state.theme === 'light';
         if (type === 'light') {
-            commit('SET_TEXT_COLOR', state.slotColors.slot4);
+            commit(
+                'SET_TEXT_COLOR',
+                isLight
+                    ? {
+                          hex: DEFAULT_LIGHT_COLORS.LIGHT_TEXT,
+                          hsl: 'hsl(216, 56%, 91%)',
+                          rgb: 'rgb(220, 230, 245)',
+                      }
+                    : {
+                          hex: DEFAULT_HEX_COLORS.LIGHT,
+                          hsl: 'hsl(240, 5%, 96%)',
+                          rgb: 'rgb(244, 244, 245)',
+                      },
+            );
         } else if (type === 'dark') {
-            commit('SET_TEXT_COLOR', state.slotColors.slot5);
+            commit(
+                'SET_TEXT_COLOR',
+                isLight
+                    ? {
+                          hex: DEFAULT_LIGHT_COLORS.DARK_TEXT,
+                          hsl: 'hsl(231, 25%, 20%)',
+                          rgb: 'rgb(38, 42, 64)',
+                      }
+                    : {
+                          hex: DEFAULT_HEX_COLORS.DARK,
+                          hsl: 'hsl(240, 4%, 35%)',
+                          rgb: 'rgb(82, 82, 91)',
+                      },
+            );
         } else {
             // This should never happen since the UI only allows selecting between 'light' and 'dark', but we log a warning just in case.
             console.warn('Unknown text color type:', type);

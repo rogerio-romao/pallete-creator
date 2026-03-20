@@ -14,7 +14,7 @@ describe('component InstructionsModal', () => {
     it('contains instruction text', () => {
         const wrapper = mount(InstructionsModal);
 
-        expect(wrapper.text()).toContain('generate a main color');
+        expect(wrapper.text()).toContain('random palette is generated on load');
     });
 
     it('emits close event when close button clicked', async () => {

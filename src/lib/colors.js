@@ -2,12 +2,22 @@
 
 const DEFAULT_HEX_COLORS = {
     ACCENT: '#14b8a6',
-    DARK: '#5eead4',
+    DARK: '#52525b',
     DARK_TEXT: '#0f131a',
-    LIGHT: '#3f3f46',
-    LIGHT_TEXT: '#a1a1aa',
+    LIGHT: '#f4f4f5',
+    LIGHT_TEXT: '#f4f4f5',
     MAIN: '#18181b',
-    SECONDARY: '#f4f4f5',
+    SECONDARY: '#5eead4',
+};
+
+export const DEFAULT_LIGHT_COLORS = {
+    ACCENT: '#d4793a',
+    DARK: '#262a40',
+    DARK_TEXT: '#262a40',
+    LIGHT: '#dce6f5',
+    LIGHT_TEXT: '#dce6f5',
+    MAIN: '#f9f9fb',
+    SECONDARY: '#555f91',
 };
 
 export default DEFAULT_HEX_COLORS;

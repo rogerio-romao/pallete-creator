@@ -44,7 +44,10 @@ describe('component App.vue', () => {
         ).toBeTruthy();
     });
 
-    it('hides utility buttons panel when no colors are present', () => {
+    it('hides utility buttons panel when no colors are present', async () => {
+        store.state.allColors.hsl = [];
+        await wrapper.vm.$nextTick();
+
         expect(
             wrapper.findComponent({ name: 'UtilityButtonsPanel' }).exists(),
         ).toBeFalsy();

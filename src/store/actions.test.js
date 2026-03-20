@@ -4,6 +4,7 @@
 
 import actions from './actions';
 import paletteService from '../services/paletteService';
+import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
 
 vi.mock(import('../services/paletteService'), () => ({
     default: {
@@ -325,37 +326,50 @@ describe('store actions', () => {
         });
     });
 
+    // oxlint-disable-next-line max-lines-per-function
     describe('SET_TEXT_COLOR', () => {
-        it('commits light text color values for "light"', () => {
-            const slot4 = {
-                hex: '#aabbcc',
-                hsl: 'hsl(210, 14%, 73%)',
-                rgb: 'rgb(170, 187, 204)',
-            };
-            const ctx = makeCtx({
-                state: {
-                    slotColors: { slot4, slot5: { hex: '', hsl: '', rgb: '' } },
-                },
-            });
+        it('commits light text color values for "light" in dark mode', () => {
+            const ctx = makeCtx({ state: { theme: 'dark' } });
             actions.SET_TEXT_COLOR(ctx, 'light');
 
-            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', slot4);
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
+                hex: DEFAULT_HEX_COLORS.LIGHT,
+                hsl: 'hsl(240, 5%, 96%)',
+                rgb: 'rgb(244, 244, 245)',
+            });
         });
 
-        it('commits dark text color values for "dark"', () => {
-            const slot5 = {
-                hex: '#112233',
-                hsl: 'hsl(210, 50%, 13%)',
-                rgb: 'rgb(17, 34, 51)',
-            };
-            const ctx = makeCtx({
-                state: {
-                    slotColors: { slot4: { hex: '', hsl: '', rgb: '' }, slot5 },
-                },
-            });
+        it('commits dark text color values for "dark" in dark mode', () => {
+            const ctx = makeCtx({ state: { theme: 'dark' } });
             actions.SET_TEXT_COLOR(ctx, 'dark');
 
-            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', slot5);
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
+                hex: DEFAULT_HEX_COLORS.DARK,
+                hsl: 'hsl(240, 4%, 35%)',
+                rgb: 'rgb(82, 82, 91)',
+            });
+        });
+
+        it('commits light text color values for "light" in light mode', () => {
+            const ctx = makeCtx({ state: { theme: 'light' } });
+            actions.SET_TEXT_COLOR(ctx, 'light');
+
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
+                hex: DEFAULT_LIGHT_COLORS.LIGHT_TEXT,
+                hsl: 'hsl(216, 56%, 91%)',
+                rgb: 'rgb(220, 230, 245)',
+            });
+        });
+
+        it('commits dark text color values for "dark" in light mode', () => {
+            const ctx = makeCtx({ state: { theme: 'light' } });
+            actions.SET_TEXT_COLOR(ctx, 'dark');
+
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
+                hex: DEFAULT_LIGHT_COLORS.DARK_TEXT,
+                hsl: 'hsl(231, 25%, 20%)',
+                rgb: 'rgb(38, 42, 64)',
+            });
         });
 
         it('does not commit for unknown type', () => {
