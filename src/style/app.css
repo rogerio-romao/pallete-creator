@@ -74,6 +74,11 @@ html {
     background-color: var(--clr-main, #18181b);
 }
 
+:focus-visible {
+    outline: 2px solid var(--clr-accent, #14b8a6);
+    outline-offset: 2px;
+}
+
 body {
     font-family: Montserrat, sans-serif;
     user-select: none;
@@ -195,7 +200,11 @@ h2 {
             );
             color: var(--clr-light, #f4f4f5);
             border: 1px solid
-                color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+                color-mix(
+                    in srgb,
+                    var(--clr-dark, #52525b) 50%,
+                    transparent 50%
+                );
             border-radius: 4px;
             padding: 4px 8px;
             font-size: 0.65rem;
@@ -461,13 +470,14 @@ nav {
     }
 
     & .input-wrapper input {
-        padding-inline: 6px;
+        padding-inline: 12px 6px;
         background: transparent;
         border: 0;
         inline-size: 100%;
         min-inline-size: 50px;
         color: var(--text-color, #d1d5db);
         font-size: 0.75rem;
+        letter-spacing: 0.04em;
     }
 
     & .input-wrapper input:focus-visible {
@@ -486,18 +496,28 @@ nav {
         background: transparent;
         color: var(--clr-accent, #14b8a6);
         font-size: 0.75rem;
+        opacity: 0;
+        pointer-events: none;
     }
 
     & .input-wrapper button:hover {
         color: var(--clr-accent, #0d9488);
     }
 
-    & .input-wrapper input:invalid + button {
+    & .input-wrapper input:focus + button,
+    & .input-wrapper input:focus-visible + button {
+        opacity: 0.25;
+    }
+
+    & .input-wrapper input:focus:invalid + button,
+    & .input-wrapper input:focus-visible:invalid + button {
         opacity: 0.25;
         pointer-events: none;
     }
 
-    & .input-wrapper input:valid + button {
+    & .input-wrapper input:not(:placeholder-shown):valid + button {
+        opacity: 1;
+        pointer-events: auto;
         cursor: pointer;
     }
 
@@ -518,7 +538,11 @@ nav {
             );
             color: var(--clr-light, #f4f4f5);
             border: 1px solid
-                color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+                color-mix(
+                    in srgb,
+                    var(--clr-dark, #52525b) 50%,
+                    transparent 50%
+                );
             border-radius: 4px;
             padding: 4px 8px;
             font-size: 0.65rem;
@@ -579,7 +603,8 @@ nav {
 
         & .main-button,
         & form,
-        & form input {
+        & form input,
+        & .color-form {
             inline-size: 100%;
         }
 
