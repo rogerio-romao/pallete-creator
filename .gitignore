@@ -6,3 +6,4 @@ dist-ssr
 .env
 coverage
 CODE_REVIEW.md
+.playwright-mcp

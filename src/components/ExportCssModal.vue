@@ -79,7 +79,7 @@ successful copying.
                 <!-- footer  -->
                 <div class="modal-footer">
                     <button
-                        class="main-button"
+                        class="secondary-button"
                         data-testid="close-button"
                         @click="$emit('close')"
                         ref="closeButton"

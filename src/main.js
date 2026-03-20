@@ -9,6 +9,15 @@ import store from './store';
 
 import App from './App.vue';
 
+// Apply saved theme (or system preference) before first render to avoid flash
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = globalThis.matchMedia(
+    '(prefers-color-scheme: dark)',
+).matches;
+const initialTheme = savedTheme ?? (prefersDark ? 'dark' : 'light');
+document.documentElement.dataset['theme'] = initialTheme;
+store.commit('SET_THEME', initialTheme);
+
 library.add(fas);
 library.add(fab);
 library.add(far);

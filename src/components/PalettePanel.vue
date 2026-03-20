@@ -6,40 +6,16 @@ effectively.
 
 <template>
     <!-- wrapper  -->
-    <section class="palette-pane panel">
-        <!-- panel collapsed message  -->
-        <p v-if="isColorPaneCollapsed">Click the arrow to expand panel.</p>
-        <div
-            class="hide"
-            data-testid="palette-panel-hide"
-            v-if="!isColorPaneCollapsed"
-        >
-            <!-- header  -->
-            <div class="panel-header">
-                <p>
-                    Setting main color resets everything. Edit color labels and
-                    adjust color properties with the controls. Scroll down for
-                    variations.
-                </p>
-            </div>
-
-            <!-- individual slots  -->
-            <div class="palette-slots" data-testid="palette-slots">
-                <template v-for="i in 5" :key="i">
-                    <PaletteColorSlot :slotNumber="i" />
-                </template>
-            </div>
+    <section class="palette-pane" data-testid="palette-panel-hide">
+        <!-- individual slots  -->
+        <div class="palette-slots" data-testid="palette-slots">
+            <template v-for="i in 5" :key="i">
+                <PaletteColorSlot :slotNumber="i" />
+            </template>
         </div>
     </section>
 </template>
 
 <script setup>
     import PaletteColorSlot from './PaletteColorSlot.vue';
-
-    const { isColorPaneCollapsed } = defineProps({
-        isColorPaneCollapsed: {
-            default: false,
-            type: Boolean,
-        },
-    });
 </script>

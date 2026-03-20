@@ -44,7 +44,10 @@ describe('component App.vue', () => {
         ).toBeTruthy();
     });
 
-    it('hides utility buttons panel when no colors are present', () => {
+    it('hides utility buttons panel when no colors are present', async () => {
+        store.state.allColors.hsl = [];
+        await wrapper.vm.$nextTick();
+
         expect(
             wrapper.findComponent({ name: 'UtilityButtonsPanel' }).exists(),
         ).toBeFalsy();
@@ -64,81 +67,6 @@ describe('component App.vue', () => {
         expect(
             wrapper.findComponent({ name: 'SavedPalettesPanel' }).exists(),
         ).toBeTruthy();
-    });
-
-    it('toggles isColorPaneCollapsed when collapse icon is clicked', async () => {
-        store.state.mainHSL = 'hsl(180, 50%, 50%)';
-        await wrapper.vm.$nextTick();
-
-        const collapseIcon = wrapper.find(
-            '[data-testid="color-pane-collapse"]',
-        );
-        expect(collapseIcon.exists()).toBeTruthy();
-
-        // Verify default state is not collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBeFalsy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's now collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBeTruthy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's back to not collapsed
-        expect(wrapper.vm.isColorPaneCollapsed).toBeFalsy();
-    });
-
-    it('toggles isMiniPaneCollapsed when the mini pane collapse icon is clicked', async () => {
-        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
-        await wrapper.vm.$nextTick();
-
-        const collapseIcon = wrapper.find('[data-testid="mini-pane-collapse"]');
-
-        expect(collapseIcon.exists()).toBeTruthy();
-
-        // Verify default state is not collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's now collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBeTruthy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's back to not collapsed
-        expect(wrapper.vm.isMiniPaneCollapsed).toBeFalsy();
-    });
-
-    it('toggles isSavedPaneCollapsed when the saved palettes collapse icon is clicked', async () => {
-        store.state.savedPalettes = [
-            {
-                createdAt: new Date().toISOString(),
-                id: '1',
-                name: 'Test',
-                scheme: [],
-            },
-        ];
-        await wrapper.vm.$nextTick();
-
-        const collapseIcon = wrapper.find(
-            '[data-testid="saved-pane-collapse"]',
-        );
-        expect(collapseIcon.exists()).toBeTruthy();
-
-        // Verify default state is not collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's now collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBeTruthy();
-
-        await collapseIcon.trigger('click');
-
-        // Verify it's back to not collapsed
-        expect(wrapper.vm.isSavedPaneCollapsed).toBeFalsy();
     });
 
     it('opens and closes Instructions modal', async () => {

@@ -152,24 +152,24 @@ describe('component UtilityButtonsPanel', () => {
         const mainColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--clr-main');
-        const complementaryColor = getComputedStyle(
+        const secondaryColor = getComputedStyle(
             document.documentElement,
-        ).getPropertyValue('--clr-complementary');
-        const lightColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-light');
+        ).getPropertyValue('--clr-secondary');
         const accentColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--clr-accent');
-        const accentLightColor = getComputedStyle(
+        const lightColor = getComputedStyle(
             document.documentElement,
-        ).getPropertyValue('--clr-accent-light');
+        ).getPropertyValue('--clr-light');
+        const darkColor = getComputedStyle(
+            document.documentElement,
+        ).getPropertyValue('--clr-dark');
 
         expect(mainColor).toBe(mainSlotColor);
-        expect(complementaryColor).toBe(slot2Color);
-        expect(lightColor).toBe(slot3Color);
-        expect(accentColor).toBe(slot4Color);
-        expect(accentLightColor).toBe(slot5Color);
+        expect(secondaryColor).toBe(slot2Color);
+        expect(accentColor).toBe(slot3Color);
+        expect(lightColor).toBe(slot4Color);
+        expect(darkColor).toBe(slot5Color);
     });
 
     // oxlint-disable-next-line max-statements
@@ -196,30 +196,20 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="reset-site-colors-button"]')
             .trigger('click');
 
-        const mainColorAfterReset = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-main');
-        const complementaryColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-complementary');
-        const lightColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-light');
-        const accentColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-accent');
-        const accentLightColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-accent-light');
+        const mainColorAfterReset = document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor = document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor = document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor = document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor = document.documentElement.style.getPropertyValue('--clr-dark');
 
-        expect(mainColorAfterReset).toBe(DEFAULT_HEX_COLORS.MAIN);
-        expect(complementaryColor).toBe(DEFAULT_HEX_COLORS.COMPLEMENTARY);
-        expect(lightColor).toBe(DEFAULT_HEX_COLORS.LIGHT);
-        expect(accentColor).toBe(DEFAULT_HEX_COLORS.ACCENT);
-        expect(accentLightColor).toBe(DEFAULT_HEX_COLORS.ACCENT_LIGHT);
+        expect(mainColorAfterReset).toBe('');
+        expect(secondaryColor).toBe('');
+        expect(accentColor).toBe('');
+        expect(lightColor).toBe('');
+        expect(darkColor).toBe('');
     });
 
-    it('sets the text colors to light when the light button is clicked', async () => {
+    it('sets the text color to the default light color when the light button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -230,15 +220,17 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="set-light-text-button"]')
             .trigger('click');
 
-        const mainTextColor = getComputedStyle(
+        await wrapper.vm.$nextTick();
+
+        const textColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--text-color');
 
-        expect(mainTextColor).toBe(store.state.textColor.hex);
-        expect(mainTextColor).toBe(DEFAULT_HEX_COLORS.LIGHT_TEXT);
+        expect(textColor).toBe(DEFAULT_HEX_COLORS.LIGHT);
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
     });
 
-    it('sets the text colors to dark when the dark button is clicked', async () => {
+    it('sets the text color to the default dark color when the dark button is clicked', async () => {
         await wrapper
             .find('[data-test="random-scheme-button"]')
             .trigger('click');
@@ -249,12 +241,14 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="set-dark-text-button"]')
             .trigger('click');
 
-        const mainTextColor = getComputedStyle(
+        await wrapper.vm.$nextTick();
+
+        const textColor = getComputedStyle(
             document.documentElement,
         ).getPropertyValue('--text-color');
 
-        expect(mainTextColor).toBe(store.state.textColor.hex);
-        expect(mainTextColor).toBe(DEFAULT_HEX_COLORS.DARK_TEXT);
+        expect(textColor).toBe(DEFAULT_HEX_COLORS.DARK);
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.DARK);
     });
 
     it('sends copyPalette event when the export css button is clicked', async () => {

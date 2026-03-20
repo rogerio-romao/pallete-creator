@@ -21,10 +21,12 @@ import DEFAULT_HEX_COLORS from '../lib/colors';
  *   allColors: { hex: string[], hsl: string[], rgb: string[] },
  *   copiedColor: string,
  *   copiedColorIndex: number | null,
+ *   isTestingColorScheme: boolean,
  *   labels: string[],
  *   mainHSL: string | null,
  *   mainSlotColor: ColorSlot,
  *   savedPalettes: SavedPalette[],
+ *   theme: 'dark' | 'light',
  *   slotColors: { slot2: ColorSlot, slot3: ColorSlot, slot4: ColorSlot, slot5: ColorSlot },
  *   textColor: ColorSlot
  * }}
@@ -47,6 +49,8 @@ export default function state() {
         // this is the index of the mini slot that is selected, for styling purposes
         /** @type {number | null} */
         copiedColorIndex: null,
+        // true while the user is testing a generated palette on the app chrome
+        isTestingColorScheme: false,
         // the labels that appear over the color slots (editable)
         labels: ['Text', 'Main', 'Secondary', 'Accent', 'Light', 'Dark'],
         // used for showing main slot and setting its properties
@@ -87,8 +91,10 @@ export default function state() {
         // default light text, changes when using the dark text button
         textColor: {
             hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
-            hsl: 'hsl(38, 35%, 62%)',
-            rgb: 'rgb(184, 168, 134)',
+            hsl: 'hsl(240, 5%, 96%)',
+            rgb: 'rgb(244, 244, 245)',
         },
+        // persisted display theme ('dark' | 'light')
+        theme: 'dark',
     };
 }

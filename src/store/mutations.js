@@ -76,6 +76,15 @@ const mutations = {
     },
 
     /**
+     * Tracks whether the user is currently testing a generated palette on the app chrome.
+     * @param {State} state - The Vuex state object.
+     * @param {boolean} value - True if the user is testing a palette, false otherwise.
+     */
+    SET_IS_TESTING(state, value) {
+        state.isTestingColorScheme = value;
+    },
+
+    /**
      * Sets the edited color label for a specific slot in the state.
      * @param {State} state - The Vuex state object.
      * @param {{ label: string, slotNumber: number }} payload - The label and the slot number to update.
@@ -124,6 +133,15 @@ const mutations = {
      */
     SET_TEXT_COLOR(state, colors) {
         state.textColor = colors;
+    },
+
+    /**
+     * Sets the current display theme.
+     * @param {State} state - The Vuex state object.
+     * @param {'dark' | 'light'} theme - The theme to set, either 'dark' or 'light'.
+     */
+    SET_THEME(state, theme) {
+        state.theme = theme;
     },
 };
 

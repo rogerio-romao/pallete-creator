@@ -79,7 +79,7 @@
     import { computed } from 'vue';
     import { useStore } from 'vuex';
 
-    import DEFAULT_HEX_COLORS from '../lib/colors';
+    import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
 
     const emit = defineEmits(['copyPalette', 'savePalette']);
 
@@ -87,21 +87,17 @@
 
     const showButtons = computed(() => store.getters.fullSchemeSet);
 
-    /** Sets text color to light */
+    /** Sets text color to the default light color for the current theme */
     const setLightText = () => {
-        document.documentElement.style.setProperty(
-            '--text-color',
-            DEFAULT_HEX_COLORS.LIGHT_TEXT,
-        );
+        const hex = store.state.theme === 'light' ? DEFAULT_LIGHT_COLORS.LIGHT : DEFAULT_HEX_COLORS.LIGHT;
+        document.documentElement.style.setProperty('--text-color', hex);
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
-    /** Sets text color to dark */
+    /** Sets text color to the default dark color for the current theme */
     const setDarkText = () => {
-        document.documentElement.style.setProperty(
-            '--text-color',
-            DEFAULT_HEX_COLORS.DARK_TEXT,
-        );
+        const hex = store.state.theme === 'light' ? DEFAULT_LIGHT_COLORS.DARK : DEFAULT_HEX_COLORS.DARK;
+        document.documentElement.style.setProperty('--text-color', hex);
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
 
@@ -120,48 +116,27 @@
         store.dispatch('SET_RANDOM_SCHEME');
     };
 
-    /** Resets the site colors to default */
+    /** Resets the site colors to default by removing inline overrides */
     const resetSiteColors = () => {
-        document.documentElement.style.setProperty(
-            '--clr-main',
-            DEFAULT_HEX_COLORS.MAIN,
-        );
-        document.documentElement.style.setProperty(
-            '--clr-complementary',
-            DEFAULT_HEX_COLORS.COMPLEMENTARY,
-        );
-        document.documentElement.style.setProperty(
-            '--clr-light',
-            DEFAULT_HEX_COLORS.LIGHT,
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent',
-            DEFAULT_HEX_COLORS.ACCENT,
-        );
-        document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            DEFAULT_HEX_COLORS.ACCENT_LIGHT,
-        );
+        for (const v of ['--clr-main', '--clr-secondary', '--clr-accent', '--clr-light', '--clr-dark']) {
+            document.documentElement.style.removeProperty(v);
+        }
+        store.commit('SET_IS_TESTING', false);
     };
 
     /** Sets the CSS variables to the current palette colors, allowing the user to test the palette on the site */
     const setCssVars = () => {
         const main = store.state.mainSlotColor.hex;
-        const complementary = store.state.slotColors.slot2.hex;
-        const light = store.state.slotColors.slot3.hex;
-        const accent = store.state.slotColors.slot4.hex;
-        const accentLight = store.state.slotColors.slot5.hex;
+        const secondary = store.state.slotColors.slot2.hex;
+        const accent = store.state.slotColors.slot3.hex;
+        const light = store.state.slotColors.slot4.hex;
+        const dark = store.state.slotColors.slot5.hex;
 
         document.documentElement.style.setProperty('--clr-main', main);
-        document.documentElement.style.setProperty(
-            '--clr-complementary',
-            complementary,
-        );
-        document.documentElement.style.setProperty('--clr-light', light);
+        document.documentElement.style.setProperty('--clr-secondary', secondary);
         document.documentElement.style.setProperty('--clr-accent', accent);
-        document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            accentLight,
-        );
+        document.documentElement.style.setProperty('--clr-light', light);
+        document.documentElement.style.setProperty('--clr-dark', dark);
+        store.commit('SET_IS_TESTING', true);
     };
 </script>

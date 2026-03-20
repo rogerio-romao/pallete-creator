@@ -1,13 +1,23 @@
 // Centralized color constants for palette creator
 
 const DEFAULT_HEX_COLORS = {
-    ACCENT: '#087d65',
-    ACCENT_LIGHT: '#404f4c',
-    COMPLEMENTARY: '#f2edd9',
+    ACCENT: '#14b8a6',
+    DARK: '#52525b',
     DARK_TEXT: '#0f131a',
-    LIGHT: '#d9def2',
-    LIGHT_TEXT: '#b8a886',
-    MAIN: '#1d1702',
+    LIGHT: '#f4f4f5',
+    LIGHT_TEXT: '#f4f4f5',
+    MAIN: '#18181b',
+    SECONDARY: '#5eead4',
+};
+
+export const DEFAULT_LIGHT_COLORS = {
+    ACCENT: '#d4793a',
+    DARK: '#262a40',
+    DARK_TEXT: '#262a40',
+    LIGHT: '#dce6f5',
+    LIGHT_TEXT: '#dce6f5',
+    MAIN: '#f9f9fb',
+    SECONDARY: '#555f91',
 };
 
 export default DEFAULT_HEX_COLORS;

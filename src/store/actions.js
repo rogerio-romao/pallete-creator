@@ -1,12 +1,12 @@
 // oxlint-disable no-console
 
-/** @typedef {ReturnType<typeof import('./state.js').default>} State */
+/** @typedef {ReturnType<typeof import('./state.js').default> & { theme: 'dark' | 'light' }} State */
 /** @typedef {import('./state.js').ColorSlot} ColorSlot */
 /** @typedef {{ uniqueColors: Set<string>, fullSchemeSet: boolean, currentScheme: ColorSlot[] }} Getters */
 /** @typedef {{ commit: (mutation: string, payload?: unknown) => void, dispatch: (action: string, payload?: unknown) => void, state: State, getters: Getters }} ActionCtx */
 
-import DEFAULT_HEX_COLORS from '../lib/colors';
 import paletteService from '../services/paletteService';
+import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
 import {
     generateAnalogous,
     generateComplement,
@@ -25,6 +25,14 @@ const MIN_SCHEME_SIZE = 4;
  * @module store/actions
  */
 const actions = {
+    /**
+     * Trigerred when a user clicks the "Copy" button on a color slot. Commits mutations to clear the copied color from the state.
+     * @param {ActionCtx} ctx - Vuex action context
+     */
+    CLEAR_COPIED_COLOR({ commit }) {
+        commit('SET_COPIED_COLOR', '');
+        commit('SET_COPIED_COLOR_INDEX', null);
+    },
     /**
      * Trigerred when a user clicks on a mini slot to copy its color value. Commits mutations to set the copied color and its index in the state.
      * @param {ActionCtx} ctx - Vuex action context
@@ -200,19 +208,38 @@ const actions = {
      * @param {ActionCtx} ctx - Vuex action context
      * @param {'light' | 'dark'} type - text color variant to apply
      */
-    SET_TEXT_COLOR({ commit }, type) {
+    SET_TEXT_COLOR({ commit, state }, type) {
+        const isLight = state.theme === 'light';
         if (type === 'light') {
-            commit('SET_TEXT_COLOR', {
-                hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
-                hsl: 'hsl(38, 35%, 62%)',
-                rgb: 'rgb(184, 168, 134)',
-            });
+            commit(
+                'SET_TEXT_COLOR',
+                isLight
+                    ? {
+                          hex: DEFAULT_LIGHT_COLORS.LIGHT_TEXT,
+                          hsl: 'hsl(216, 56%, 91%)',
+                          rgb: 'rgb(220, 230, 245)',
+                      }
+                    : {
+                          hex: DEFAULT_HEX_COLORS.LIGHT,
+                          hsl: 'hsl(240, 5%, 96%)',
+                          rgb: 'rgb(244, 244, 245)',
+                      },
+            );
         } else if (type === 'dark') {
-            commit('SET_TEXT_COLOR', {
-                hex: DEFAULT_HEX_COLORS.DARK_TEXT,
-                hsl: 'hsl(218, 27%, 8%)',
-                rgb: 'rgb(15, 19, 26)',
-            });
+            commit(
+                'SET_TEXT_COLOR',
+                isLight
+                    ? {
+                          hex: DEFAULT_LIGHT_COLORS.DARK_TEXT,
+                          hsl: 'hsl(231, 25%, 20%)',
+                          rgb: 'rgb(38, 42, 64)',
+                      }
+                    : {
+                          hex: DEFAULT_HEX_COLORS.DARK,
+                          hsl: 'hsl(240, 4%, 35%)',
+                          rgb: 'rgb(82, 82, 91)',
+                      },
+            );
         } else {
             // This should never happen since the UI only allows selecting between 'light' and 'dark', but we log a warning just in case.
             console.warn('Unknown text color type:', type);

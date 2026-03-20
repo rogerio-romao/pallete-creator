@@ -32,11 +32,31 @@ accordingly.
             role="button"
             :aria-label="`Color slot ${slotNumber}: ${hex}. Click to paste color.`"
         >
-            <!-- text inside slots  -->
-            <span :style="{ color: lightOrDark }">{{ format(hsl) }}</span>
-            <span :style="{ color: lightOrDark }">{{ hex }}</span>
-            <span :style="{ color: lightOrDark }">{{ format(rgb) }}</span>
+            <!-- one format at a time  -->
+            <span
+                v-if="activeFormat === 'hex'"
+                :style="{ color: lightOrDark }"
+                >{{ hex }}</span
+            >
+            <span
+                v-else-if="activeFormat === 'hsl'"
+                :style="{ color: lightOrDark }"
+                >{{ format(hsl) }}</span
+            >
+            <span v-else :style="{ color: lightOrDark }">{{
+                format(rgb)
+            }}</span>
         </div>
+
+        <!-- format cycle button  -->
+        <button
+            class="format-toggle"
+            :style="{ color: 'var(--text-color)' }"
+            @click.stop="cycleFormat"
+            :title="`Show ${nextFormat} format`"
+            data-testid="format-toggle"
+            >{{ activeFormat }}</button
+        >
 
         <!-- controls  -->
         <PaletteColorSliders :slotNumber="slotNumber" />
@@ -44,8 +64,8 @@ accordingly.
 </template>
 
 <script setup>
-    import { computed } from 'vue';
     import { useStore } from 'vuex';
+    import { computed, ref } from 'vue';
 
     import PaletteColorSliders from './PaletteColorSliders.vue';
 
@@ -58,6 +78,18 @@ accordingly.
 
     const store = useStore();
     const labels = computed(() => store.state.labels);
+
+    const formats = ['hex', 'hsl', 'rgb'];
+    const activeFormat = ref('hex');
+
+    const nextFormat = computed(() => {
+        const i = formats.indexOf(activeFormat.value);
+        return formats[(i + 1) % formats.length];
+    });
+
+    const cycleFormat = () => {
+        activeFormat.value = nextFormat.value ?? 'hex';
+    };
 
     // Getting values to display in the slot
 
