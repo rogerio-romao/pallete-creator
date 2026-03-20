@@ -76,4 +76,37 @@ describe('componentSiteHeader', () => {
             .trigger('click');
         expect(wrapper.emitted('openInstructionsModal')).toBeTruthy();
     });
+
+    it('theme toggle is enabled and shows correct tooltip when not testing', () => {
+        store.commit('SET_IS_TESTING', false);
+        const toggle = wrapper.find('[data-testid="theme-toggle"]');
+        expect(toggle.classes()).not.toContain('theme-toggle-disabled');
+        expect(toggle.attributes('title')).toMatch(/switch to (light|dark) mode/i);
+    });
+
+    it('theme toggle is disabled and shows disabled tooltip when testing', async () => {
+        store.commit('SET_IS_TESTING', true);
+        await wrapper.vm.$nextTick();
+        const toggle = wrapper.find('[data-testid="theme-toggle"]');
+        expect(toggle.classes()).toContain('theme-toggle-disabled');
+        expect(toggle.attributes('title')).toBe(
+            'Reset site colors before switching themes',
+        );
+    });
+
+    it('does not toggle theme when testing', async () => {
+        store.commit('SET_IS_TESTING', true);
+        await wrapper.vm.$nextTick();
+        const themeBefore = store.state.theme;
+        await wrapper.find('[data-testid="theme-toggle"]').trigger('click');
+        expect(store.state.theme).toBe(themeBefore);
+    });
+
+    it('toggles theme when not testing', async () => {
+        store.commit('SET_IS_TESTING', false);
+        await wrapper.vm.$nextTick();
+        const themeBefore = store.state.theme;
+        await wrapper.find('[data-testid="theme-toggle"]').trigger('click');
+        expect(store.state.theme).not.toBe(themeBefore);
+    });
 });

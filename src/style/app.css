@@ -358,6 +358,11 @@ nav {
                 outline-offset: 4px;
                 border-radius: 2px;
             }
+
+            &.theme-toggle-disabled {
+                opacity: 0.4;
+                cursor: default;
+            }
         }
     }
 }
@@ -1297,10 +1302,5 @@ nav {
 
     & .modal-code-info {
         color: var(--clr-dark, #262a40);
-    }
-
-    & .theme-toggle-disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
     }
 }
