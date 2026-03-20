@@ -25,6 +25,7 @@ or expanded.
                 :data-testid="`mini-slot-${i}`"
                 :key="i"
                 :style="{ backgroundColor: color }"
+                :data-tooltip="colorCopied && colorCopiedIndex === i ? 'click to deselect' : 'select · then click a slot to paste'"
                 @click="copyColor(color, Number(i))"
                 role="option"
                 :aria-selected="colorCopied && colorCopiedIndex === i"
