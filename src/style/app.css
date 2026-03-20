@@ -898,6 +898,7 @@ nav {
 .saved-palette {
     border: 1px solid
         color-mix(in srgb, var(--clr-dark, #52525b) 30%, transparent 70%);
+    border-radius: 3px;
     padding: 6px;
     background-color: color-mix(
         in srgb,
@@ -905,14 +906,11 @@ nav {
         var(--clr-dark, #52525b) 20%
     );
     color: var(--text-color, #a1a1aa);
-    box-shadow: 0 0 0 0 transparent;
 
     @media (prefers-reduced-motion: no-preference) {
         transition:
-            color var(--cubic-bezier-transition, 0.25s ease-in-out),
-            background-color var(--cubic-bezier-transition, 0.25s ease-in-out),
-            border-color var(--cubic-bezier-transition, 0.25s ease-in-out),
-            box-shadow var(--cubic-bezier-transition, 0.25s ease-in-out);
+            background-color 0.3s ease-in-out,
+            border-color 0.3s ease-in-out;
     }
 
     &:hover {
@@ -923,7 +921,6 @@ nav {
             var(--clr-main, #18181b) 60%
         );
         border-color: var(--clr-accent, #14b8a6);
-        box-shadow: none;
     }
 }
 
