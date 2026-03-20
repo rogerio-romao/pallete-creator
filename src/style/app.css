@@ -108,6 +108,13 @@ h2 {
 /* ------- COMPONENTS --------  */
 
 /* tooltips */
+@keyframes tooltip-fade {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 [data-tooltip] {
     position: relative;
 
@@ -138,16 +145,19 @@ h2 {
         z-index: 100;
 
         @media (prefers-reduced-motion: no-preference) {
-            transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
+            transition: transform 0.2s ease;
         }
     }
 
     &:hover::after {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
-        transition-delay: 1.5s;
+
+        @media (prefers-reduced-motion: no-preference) {
+            opacity: 0;
+            animation: tooltip-fade 5s ease forwards;
+            animation-delay: 1.5s;
+        }
     }
 }
 
