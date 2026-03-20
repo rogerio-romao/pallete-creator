@@ -217,6 +217,7 @@ h2 {
         &:hover::after {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
+            transition-delay: 1.5s;
         }
     }
 }
@@ -515,6 +516,7 @@ nav {
         &:hover::after {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
+            transition-delay: 1.5s;
         }
     }
 }
@@ -995,6 +997,7 @@ nav {
         &::after {
             opacity: 1;
             transform: translateY(calc(-50% - 6px)) translateX(0);
+            transition-delay: 1.5s;
         }
     }
 }
