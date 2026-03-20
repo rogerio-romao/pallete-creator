@@ -29,7 +29,6 @@ describe('component SavedPalettes', () => {
 
         wrapper = mount(SavedPalettesPanel, {
             global: { plugins: [store] },
-            props: { isSavedPaneCollapsed: false },
         });
     });
 
@@ -39,22 +38,7 @@ describe('component SavedPalettes', () => {
     });
 
     it('renders the saved palettes pane', () => {
-        expect(wrapper.text()).toContain(
-            'Any palettes you save will appear here.',
-        );
-    });
-
-    it('shows collapsed message when pane is collapsed', () => {
-        const collapsedWrapper = mount(SavedPalettesPanel, {
-            global: { plugins: [store] },
-            props: { isSavedPaneCollapsed: true },
-        });
-
-        expect(collapsedWrapper.text()).toContain(
-            'Click the arrow to expand panel.',
-        );
-
-        collapsedWrapper.unmount();
+        expect(wrapper.find('.saved-palettes').exists()).toBeTruthy();
     });
 
     it('loads palette when clicked', async () => {
@@ -74,7 +58,6 @@ describe('component SavedPalettes', () => {
 
         const test = mount(SavedPalettesPanel, {
             global: { plugins: [store] },
-            props: { isSavedPaneCollapsed: false },
         });
 
         expect(addSpy).toHaveBeenCalledWith('keydown', expect.any(Function));

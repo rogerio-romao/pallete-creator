@@ -87,20 +87,20 @@
 
     const showButtons = computed(() => store.getters.fullSchemeSet);
 
-    /** Sets text color to light */
+    /** Sets text color to the current Light slot color */
     const setLightText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
-            DEFAULT_HEX_COLORS.LIGHT_TEXT,
+            store.state.slotColors.slot4.hex,
         );
         store.dispatch('SET_TEXT_COLOR', 'light');
     };
 
-    /** Sets text color to dark */
+    /** Sets text color to the current Dark slot color */
     const setDarkText = () => {
         document.documentElement.style.setProperty(
             '--text-color',
-            DEFAULT_HEX_COLORS.DARK_TEXT,
+            store.state.slotColors.slot5.hex,
         );
         store.dispatch('SET_TEXT_COLOR', 'dark');
     };
@@ -127,41 +127,35 @@
             DEFAULT_HEX_COLORS.MAIN,
         );
         document.documentElement.style.setProperty(
-            '--clr-complementary',
-            DEFAULT_HEX_COLORS.COMPLEMENTARY,
-        );
-        document.documentElement.style.setProperty(
-            '--clr-light',
-            DEFAULT_HEX_COLORS.LIGHT,
+            '--clr-secondary',
+            DEFAULT_HEX_COLORS.SECONDARY,
         );
         document.documentElement.style.setProperty(
             '--clr-accent',
             DEFAULT_HEX_COLORS.ACCENT,
         );
         document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            DEFAULT_HEX_COLORS.ACCENT_LIGHT,
+            '--clr-light',
+            DEFAULT_HEX_COLORS.LIGHT,
+        );
+        document.documentElement.style.setProperty(
+            '--clr-dark',
+            DEFAULT_HEX_COLORS.DARK,
         );
     };
 
     /** Sets the CSS variables to the current palette colors, allowing the user to test the palette on the site */
     const setCssVars = () => {
         const main = store.state.mainSlotColor.hex;
-        const complementary = store.state.slotColors.slot2.hex;
-        const light = store.state.slotColors.slot3.hex;
-        const accent = store.state.slotColors.slot4.hex;
-        const accentLight = store.state.slotColors.slot5.hex;
+        const secondary = store.state.slotColors.slot2.hex;
+        const accent = store.state.slotColors.slot3.hex;
+        const light = store.state.slotColors.slot4.hex;
+        const dark = store.state.slotColors.slot5.hex;
 
         document.documentElement.style.setProperty('--clr-main', main);
-        document.documentElement.style.setProperty(
-            '--clr-complementary',
-            complementary,
-        );
-        document.documentElement.style.setProperty('--clr-light', light);
+        document.documentElement.style.setProperty('--clr-secondary', secondary);
         document.documentElement.style.setProperty('--clr-accent', accent);
-        document.documentElement.style.setProperty(
-            '--clr-accent-light',
-            accentLight,
-        );
+        document.documentElement.style.setProperty('--clr-light', light);
+        document.documentElement.style.setProperty('--clr-dark', dark);
     };
 </script>

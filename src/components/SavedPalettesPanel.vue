@@ -5,19 +5,8 @@ deletions.
 
 <template>
     <!-- panel wrapper  -->
-    <section class="saved-palette-pane panel">
-        <!-- panel collapsed message  -->
-        <p v-if="isSavedPaneCollapsed">Click the arrow to expand panel.</p>
-        <div class="hide" v-if="!isSavedPaneCollapsed">
-            <!-- header text  -->
-            <div class="panel-header">
-                <p>
-                    Any palettes you save will appear here. Clicking on one will
-                    load it on the color slots for editing or exporting the CSS.
-                </p>
-            </div>
-
-            <!-- palettes container  -->
+    <section class="saved-palette-pane">
+        <div class="saved-palettes-scroll">
             <div class="saved-palettes">
                 <!-- one palette  -->
                 <div
@@ -27,25 +16,25 @@ deletions.
                     :data-testid="'saved-palette-' + palette.id"
                     @click="editPalette(palette.scheme.slice(1))"
                 >
-                    <!-- palette info  -->
-                    <div class="saved-palette-header">
-                        <h4>{{ palette.name }}</h4>
+                    <!-- palette name  -->
+                    <div class="saved-palette-name">{{ palette.name }}</div>
+
+                    <!-- colors + delete  -->
+                    <div class="saved-palette-footer">
+                        <div class="saved-palette-colors">
+                            <div
+                                v-for="(color, i) in palette.scheme.slice(1)"
+                                :key="i"
+                                class="saved-palette-color"
+                                :style="{ backgroundColor: color.hsl }"
+                            ></div>
+                        </div>
                         <div
                             data-testid="delete-palette-trigger"
                             @click.stop="deletePalette(palette)"
                         >
                             <i class="fas fa-trash-alt"></i>
                         </div>
-                    </div>
-
-                    <!-- palette colors  -->
-                    <div class="saved-palette-colors">
-                        <div
-                            v-for="(color, i) in palette.scheme.slice(1)"
-                            :key="i"
-                            class="saved-palette-color"
-                            :style="{ backgroundColor: color.hsl }"
-                        ></div>
                     </div>
                 </div>
             </div>
@@ -110,13 +99,6 @@ deletions.
     /** @typedef {import('../store/state').ColorSlot} ColorSlot */
 
     const store = useStore();
-
-    const { isSavedPaneCollapsed } = defineProps({
-        isSavedPaneCollapsed: {
-            default: false,
-            type: Boolean,
-        },
-    });
 
     const palettes = computed(() => store.state.savedPalettes);
 

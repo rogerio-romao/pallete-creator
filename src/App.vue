@@ -5,15 +5,18 @@
     <!-- MAIN  -->
     <main>
         <!-- main color control bar  -->
-        <h2>Set Main Color</h2>
-        <p class="description"
-            >Click random color or use the inputs to start your color scheme.</p
-        >
+        <h2>
+            Set Main Color
+            <span
+                class="section-info"
+                data-tooltip="Click random color or use the inputs to start your color scheme."
+                >i</span
+            >
+        </h2>
         <MainColorChooserBar />
 
         <!-- utility buttons  -->
         <div v-if="showUtilityButtons">
-            <h2>Utilities</h2>
             <UtilityButtonsPanel
                 @copyPalette="showCopyModal = true"
                 @savePalette="showSaveModal = true"
@@ -23,49 +26,27 @@
         <!-- color pallete pane  -->
         <div v-if="mainHSL">
             <h2>
-                Build your palette
+                Palette
                 <span
-                    class="collapse"
-                    data-testid="color-pane-collapse"
-                    title="Click to collapse"
-                    @click="collapseColorPane"
-                    role="button"
-                    :aria-expanded="!isColorPaneCollapsed"
-                    aria-label="Collapse color pane"
+                    class="section-info"
+                    data-tooltip="Setting main color resets everything. Edit color labels and adjust color properties with the controls below each slot."
+                    >i</span
                 >
-                    <span
-                        class="chevron-wrapper"
-                        :class="{ expanded: !isColorPaneCollapsed }"
-                    >
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-                </span>
             </h2>
-            <PalettePanel :isColorPaneCollapsed="isColorPaneCollapsed" />
+            <PalettePanel />
         </div>
 
         <!-- mini slots / variations  -->
         <div v-if="uniqueColors.size">
             <h2>
-                Pick your variations
+                Variations
                 <span
-                    class="collapse"
-                    data-testid="mini-pane-collapse"
-                    title="Click to collapse"
-                    @click="collapseMiniPane"
-                    role="button"
-                    :aria-expanded="!isMiniPaneCollapsed"
-                    aria-label="Collapse variations pane"
+                    class="section-info"
+                    data-tooltip="Click any variation to copy it, then click on one of the main color slots above to paste it. Or click Randomize to generate a full palette."
+                    >i</span
                 >
-                    <span
-                        class="chevron-wrapper"
-                        :class="{ expanded: !isMiniPaneCollapsed }"
-                    >
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-                </span>
             </h2>
-            <MiniSlotsPanel :isMiniPaneCollapsed="isMiniPaneCollapsed" />
+            <MiniSlotsPanel />
         </div>
 
         <!-- saved palletes -->
@@ -73,23 +54,12 @@
             <h2>
                 Saved Palettes
                 <span
-                    class="collapse"
-                    data-testid="saved-pane-collapse"
-                    title="Click to collapse"
-                    @click="collapseSavedPane"
-                    role="button"
-                    :aria-expanded="!isSavedPaneCollapsed"
-                    aria-label="Collapse saved palettes pane"
+                    class="section-info"
+                    data-tooltip="Any palettes you save will appear here. Clicking on one will load it on the color slots for editing or exporting the CSS."
+                    >i</span
                 >
-                    <span
-                        class="chevron-wrapper"
-                        :class="{ expanded: !isSavedPaneCollapsed }"
-                    >
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-                </span>
             </h2>
-            <SavedPalettesPanel :isSavedPaneCollapsed="isSavedPaneCollapsed" />
+            <SavedPalettesPanel />
         </div>
     </main>
     <!-- END MAIN  -->
@@ -151,32 +121,15 @@
     const showSaveModal = ref(false);
     const showInstructionsModal = ref(false);
 
-    const isColorPaneCollapsed = ref(false);
-    const isMiniPaneCollapsed = ref(false);
-    const isSavedPaneCollapsed = ref(false);
-
     const mainHSL = computed(() => store.state.mainHSL);
     const uniqueColors = computed(() => store.getters.uniqueColors);
     const savedPalettes = computed(() => store.state.savedPalettes);
     const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
 
-    const collapseColorPane = () => {
-        isColorPaneCollapsed.value = !isColorPaneCollapsed.value;
-    };
-
-    const collapseMiniPane = () => {
-        isMiniPaneCollapsed.value = !isMiniPaneCollapsed.value;
-    };
-
-    const collapseSavedPane = () => {
-        isSavedPaneCollapsed.value = !isSavedPaneCollapsed.value;
-    };
-
-    // This is needed to make the collapse state of the panes available to the tests
     defineExpose({
-        isColorPaneCollapsed,
-        isMiniPaneCollapsed,
-        isSavedPaneCollapsed,
+        showCopyModal,
+        showInstructionsModal,
+        showSaveModal,
     });
 </script>
 

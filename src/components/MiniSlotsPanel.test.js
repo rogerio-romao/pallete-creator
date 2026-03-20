@@ -40,27 +40,10 @@ describe('component MiniSlotsPanel', () => {
         expect(wrapper.exists()).toBeTruthy();
     });
 
-    it('shows the expanded panel content by default', () => {
+    it('shows the expanded panel content', () => {
         expect(
             wrapper.find('[data-testid="expanded-panel"]').exists(),
         ).toBeTruthy();
-        expect(
-            wrapper.find('[data-testid="panel-header-text"]').text(),
-        ).not.toBe('Click the arrow to expand panel.');
-    });
-
-    it('shows collapsed message when isMiniPaneCollapsed is true', () => {
-        wrapper = mount(MiniSlotsPanel, {
-            global: { plugins: [store] },
-            props: { isMiniPaneCollapsed: true },
-        });
-
-        expect(
-            wrapper.find('[data-testid="panel-collapsed-text"]').text(),
-        ).toBe('Click the arrow to expand panel.');
-        expect(
-            wrapper.find('[data-testid="expanded-panel"]').exists(),
-        ).toBeFalsy();
     });
 
     it('renders a slot for each unique color from the store', () => {
@@ -97,6 +80,18 @@ describe('component MiniSlotsPanel', () => {
             }),
         );
 
+        dispatchSpy.mockRestore();
+    });
+
+    it('dispatches CLEAR_COPIED_COLOR when an already-selected slot is clicked', async () => {
+        store.state.copiedColor = 'hsl(200, 50%, 50%)';
+        store.state.copiedColorIndex = 0;
+        await wrapper.vm.$nextTick();
+
+        const dispatchSpy = vi.spyOn(store, 'dispatch');
+        await wrapper.find('[data-testid="mini-slot-0"]').trigger('click');
+
+        expect(dispatchSpy).toHaveBeenCalledWith('CLEAR_COPIED_COLOR');
         dispatchSpy.mockRestore();
     });
 

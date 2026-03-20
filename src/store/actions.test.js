@@ -3,7 +3,6 @@
 // oxlint-disable new-cap -- actions are in ALL_CAPS by convention, they are not constructors and should not be renamed
 
 import actions from './actions';
-import DEFAULT_HEX_COLORS from '../lib/colors';
 import paletteService from '../services/paletteService';
 
 vi.mock(import('../services/paletteService'), () => ({
@@ -43,6 +42,19 @@ describe('store actions', () => {
             expect(ctx.commit).toHaveBeenCalledWith(
                 'SET_COPIED_COLOR_INDEX',
                 3,
+            );
+        });
+    });
+
+    describe('CLEAR_COPIED_COLOR', () => {
+        it('commits empty color and null index', () => {
+            const ctx = makeCtx();
+            actions.CLEAR_COPIED_COLOR(ctx);
+
+            expect(ctx.commit).toHaveBeenCalledWith('SET_COPIED_COLOR', '');
+            expect(ctx.commit).toHaveBeenCalledWith(
+                'SET_COPIED_COLOR_INDEX',
+                null,
             );
         });
     });
@@ -315,25 +327,35 @@ describe('store actions', () => {
 
     describe('SET_TEXT_COLOR', () => {
         it('commits light text color values for "light"', () => {
-            const ctx = makeCtx();
+            const slot4 = {
+                hex: '#aabbcc',
+                hsl: 'hsl(210, 14%, 73%)',
+                rgb: 'rgb(170, 187, 204)',
+            };
+            const ctx = makeCtx({
+                state: {
+                    slotColors: { slot4, slot5: { hex: '', hsl: '', rgb: '' } },
+                },
+            });
             actions.SET_TEXT_COLOR(ctx, 'light');
 
-            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
-                hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
-                hsl: 'hsl(38, 35%, 62%)',
-                rgb: 'rgb(184, 168, 134)',
-            });
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', slot4);
         });
 
         it('commits dark text color values for "dark"', () => {
-            const ctx = makeCtx();
+            const slot5 = {
+                hex: '#112233',
+                hsl: 'hsl(210, 50%, 13%)',
+                rgb: 'rgb(17, 34, 51)',
+            };
+            const ctx = makeCtx({
+                state: {
+                    slotColors: { slot4: { hex: '', hsl: '', rgb: '' }, slot5 },
+                },
+            });
             actions.SET_TEXT_COLOR(ctx, 'dark');
 
-            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', {
-                hex: DEFAULT_HEX_COLORS.DARK_TEXT,
-                hsl: 'hsl(218, 27%, 8%)',
-                rgb: 'rgb(15, 19, 26)',
-            });
+            expect(ctx.commit).toHaveBeenCalledWith('SET_TEXT_COLOR', slot5);
         });
 
         it('does not commit for unknown type', () => {
