@@ -17,6 +17,14 @@
 
         <!-- utility buttons  -->
         <div v-if="showUtilityButtons">
+            <h2>
+                Actions
+                <span
+                    class="section-info"
+                    data-tooltip="Generate a random palette, test it live on the UI, tweak text contrast, export as CSS, or save it for later."
+                    >i</span
+                >
+            </h2>
             <UtilityButtonsPanel
                 @copyPalette="showCopyModal = true"
                 @savePalette="showSaveModal = true"

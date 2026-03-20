@@ -179,7 +179,7 @@ h2 {
 
     .section-info::after {
         position-area: center inline-end;
-        margin-block-start: 0;
+        margin-block-start: -10px;
         margin-inline-start: 8px;
         position-try-fallbacks: flip-inline;
     }
@@ -1003,14 +1003,17 @@ nav {
     opacity: 0.8;
 
     &::after {
-        inset-inline-start: calc(100% + 8px);
-        inset-block-start: 50%;
-        transform: translateY(calc(-50% - 8px)) translateX(-6px);
         background-color: color-mix(
             in srgb,
             var(--clr-main, #18181b) 90%,
             var(--clr-dark, #52525b) 10%
         );
+
+        @supports not (anchor-scope: --a) {
+            inset-inline-start: calc(100% + 8px);
+            inset-block-start: 50%;
+            transform: translateY(calc(-50% - 8px)) translateX(-6px);
+        }
     }
 
     &:hover {
@@ -1020,8 +1023,11 @@ nav {
 
         &::after {
             opacity: 1;
-            transform: translateY(calc(-50% - 6px)) translateX(0);
             transition-delay: 1.5s;
+
+            @supports not (anchor-scope: --a) {
+                transform: translateY(calc(-50% - 6px)) translateX(0);
+            }
         }
     }
 }
