@@ -21,16 +21,13 @@ based on it.
             <!-- rgb input  -->
             <form @submit.prevent="submitRgb" data-testid="rgb-form">
                 <div class="input-wrapper" data-tooltip="RGB — e.g. 255,120,80">
-                    <label for="rgbInput" class="sr-only"
-                        >RGB color value</label
-                    >
+                    <label for="rgbInput" class="input-label">RGB</label>
                     <input
                         type="text"
                         data-testid="rgb-input"
-                        placeholder="RGB - 255,255,255"
+                        placeholder="255,255,255"
                         :pattern="rgbPattern"
                         id="rgbInput"
-                        aria-label="RGB color value"
                     />
                     <button type="submit" aria-label="Submit RGB color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -44,14 +41,13 @@ based on it.
                     class="input-wrapper"
                     data-tooltip="HEX — e.g. ff7850 or #ff7850"
                 >
-                    <label for="hexInput" class="sr-only">Hex color code</label>
+                    <label for="hexInput" class="input-label">HEX</label>
                     <input
                         type="text"
                         data-testid="hex-input"
-                        placeholder="HEX # - ffffff"
+                        placeholder="ffffff"
                         :pattern="hexPattern"
                         id="hexInput"
-                        aria-label="Hex color code"
                     />
                     <button type="submit" aria-label="Submit hex color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -62,16 +58,13 @@ based on it.
             <!-- hsl input  -->
             <form @submit.prevent="submitHsl" data-testid="hsl-form">
                 <div class="input-wrapper" data-tooltip="HSL — e.g. 190,75,80">
-                    <label for="hslInput" class="sr-only"
-                        >HSL color value</label
-                    >
+                    <label for="hslInput" class="input-label">HSL</label>
                     <input
                         type="text"
                         data-testid="hsl-input"
-                        placeholder="HSL - 190,75,80"
+                        placeholder="190,75,80"
                         :pattern="hslPattern"
                         id="hslInput"
-                        aria-label="HSL color value"
                     />
                     <button type="submit" aria-label="Submit HSL color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -81,14 +74,13 @@ based on it.
         </div>
 
         <!-- color input  -->
-        <form @submit.prevent="submitColor" data-testid="color-form">
+        <form @submit.prevent="submitColor" data-testid="color-form" class="color-form">
             <div class="input-wrapper" data-tooltip="Color wheel picker">
-                <label for="colorInput" class="sr-only">Color picker</label>
+                <label for="colorInput" class="input-label">COLOR</label>
                 <input
                     type="color"
                     data-testid="color-input"
                     id="colorInput"
-                    aria-label="Color picker"
                 />
                 <button type="submit" aria-label="Apply color">
                     <i class="fas fa-chevron-circle-right"></i>

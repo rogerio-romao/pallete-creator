@@ -440,6 +440,26 @@ nav {
         align-items: center;
     }
 
+    & .color-form {
+        flex: 0 0 auto;
+        inline-size: 140px;
+    }
+
+    & .input-label {
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--text-color, #a1a1aa);
+        opacity: 0.6;
+        padding-inline: 6px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-inline-end: 1px solid
+            color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+        padding-block: 4px;
+        cursor: pointer;
+    }
+
     & .input-wrapper input {
         padding-inline: 6px;
         background: transparent;
@@ -451,9 +471,13 @@ nav {
     }
 
     & .input-wrapper input:focus-visible {
+        outline: none;
+    }
+
+    & .input-wrapper:focus-within {
+        border-color: var(--clr-accent, #0d9488);
         outline: 2px solid var(--clr-accent, #0d9488);
-        outline-offset: 2px;
-        border-radius: 4px;
+        outline-offset: 0;
     }
 
     & .input-wrapper button {
