@@ -37,7 +37,7 @@
 
         <button
             v-if="showButtons"
-            class="secondary-button"
+            :class="['secondary-button', { 'reset-highlight': store.state.isTestingColorScheme }]"
             @click="resetSiteColors"
             data-test="reset-site-colors-button"
             data-tooltip="Restore the UI to its default colors"
@@ -202,3 +202,10 @@
         store.commit('SET_IS_TESTING', true);
     };
 </script>
+
+<style scoped>
+    .reset-highlight {
+        border-color: var(--clr-accent, #7c6af7);
+        border-width: 2px;
+    }
+</style>
