@@ -94,6 +94,9 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-block-end: var(--mb-sm, 0.25rem);
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 /* ------- COMPONENTS --------  */
@@ -174,6 +177,48 @@ h2 {
         outline: 2px solid var(--clr-accent, #14b8a6);
         outline-offset: 2px;
     }
+
+    &[data-tooltip] {
+        position: relative;
+
+        &::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            inset-block-start: calc(100% + 6px);
+            inset-inline-start: 50%;
+            transform: translateX(-50%) translateY(-4px);
+            white-space: nowrap;
+            background-color: color-mix(
+                in srgb,
+                var(--clr-dark, #52525b) 90%,
+                var(--clr-main, #18181b) 10%
+            );
+            color: var(--clr-light, #f4f4f5);
+            border: 1px solid
+                color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+
+            @media (prefers-reduced-motion: no-preference) {
+                transition:
+                    opacity 0.2s ease,
+                    transform 0.2s ease;
+            }
+        }
+
+        &:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    }
 }
 
 /* panels  */
@@ -205,6 +250,7 @@ nav {
     inset-inline-start: 0;
     inline-size: 100%;
     block-size: 44px;
+    z-index: 200;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -358,7 +404,6 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    overflow: hidden;
 
     & .main-button {
         min-inline-size: fit-content;
@@ -429,6 +474,48 @@ nav {
 
     & .input-wrapper input:valid + button {
         cursor: pointer;
+    }
+
+    & .input-wrapper[data-tooltip] {
+        position: relative;
+
+        &::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            inset-block-start: calc(100% + 6px);
+            inset-inline-start: 50%;
+            transform: translateX(-50%) translateY(-4px);
+            white-space: nowrap;
+            background-color: color-mix(
+                in srgb,
+                var(--clr-dark, #52525b) 90%,
+                var(--clr-main, #18181b) 10%
+            );
+            color: var(--clr-light, #f4f4f5);
+            border: 1px solid
+                color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            text-transform: none;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+
+            @media (prefers-reduced-motion: no-preference) {
+                transition:
+                    opacity 0.2s ease,
+                    transform 0.2s ease;
+            }
+        }
+
+        &:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     }
 }
 
@@ -859,9 +946,10 @@ nav {
         color-mix(in srgb, var(--clr-dark, #52525b) 60%, transparent 40%);
     font-size: 0.55rem;
     font-weight: 700;
+    line-height: 1;
+    padding-inline-start: 1px;
     cursor: default;
-    margin-inline-start: 6px;
-    vertical-align: middle;
+    margin-inline-start: 8px;
     color: var(--text-color, #a1a1aa);
     opacity: 0.8;
     position: relative;

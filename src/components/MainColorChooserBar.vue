@@ -20,7 +20,7 @@ based on it.
         <div class="inputs-wrapper">
             <!-- rgb input  -->
             <form @submit.prevent="submitRgb" data-testid="rgb-form">
-                <div class="input-wrapper">
+                <div class="input-wrapper" data-tooltip="RGB — e.g. 255,120,80">
                     <label for="rgbInput" class="sr-only"
                         >RGB color value</label
                     >
@@ -28,7 +28,6 @@ based on it.
                         type="text"
                         data-testid="rgb-input"
                         placeholder="RGB - 255,255,255"
-                        title="Enter 3 numbers between 0 and 255, separated by commas"
                         :pattern="rgbPattern"
                         id="rgbInput"
                         aria-label="RGB color value"
@@ -41,13 +40,15 @@ based on it.
 
             <!-- hex input  -->
             <form @submit.prevent="submitHex" data-testid="hex-form">
-                <div class="input-wrapper">
+                <div
+                    class="input-wrapper"
+                    data-tooltip="HEX — e.g. ff7850 or #ff7850"
+                >
                     <label for="hexInput" class="sr-only">Hex color code</label>
                     <input
                         type="text"
                         data-testid="hex-input"
                         placeholder="HEX # - ffffff"
-                        title="Enter a hex color code, without the #"
                         :pattern="hexPattern"
                         id="hexInput"
                         aria-label="Hex color code"
@@ -60,7 +61,7 @@ based on it.
 
             <!-- hsl input  -->
             <form @submit.prevent="submitHsl" data-testid="hsl-form">
-                <div class="input-wrapper">
+                <div class="input-wrapper" data-tooltip="HSL — e.g. 190,75,80">
                     <label for="hslInput" class="sr-only"
                         >HSL color value</label
                     >
@@ -68,7 +69,6 @@ based on it.
                         type="text"
                         data-testid="hsl-input"
                         placeholder="HSL - 190,75,80"
-                        title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
                         :pattern="hslPattern"
                         id="hslInput"
                         aria-label="HSL color value"
@@ -82,13 +82,12 @@ based on it.
 
         <!-- color input  -->
         <form @submit.prevent="submitColor" data-testid="color-form">
-            <div class="input-wrapper">
+            <div class="input-wrapper" data-tooltip="Color wheel picker">
                 <label for="colorInput" class="sr-only">Color picker</label>
                 <input
                     type="color"
                     data-testid="color-input"
                     id="colorInput"
-                    title="Click to select from color wheel"
                     aria-label="Color picker"
                 />
                 <button type="submit" aria-label="Apply color">
