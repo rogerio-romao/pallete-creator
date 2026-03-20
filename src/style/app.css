@@ -106,6 +106,88 @@ h2 {
 
 /* ------- COMPONENTS --------  */
 
+/* tooltips */
+[data-tooltip] {
+    position: relative;
+
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        inset-block-start: calc(100% + 6px);
+        inset-inline-start: 50%;
+        transform: translateX(-50%) translateY(-4px);
+        white-space: nowrap;
+        background-color: color-mix(
+            in srgb,
+            var(--clr-dark, #52525b) 90%,
+            var(--clr-main, #18181b) 10%
+        );
+        color: var(--clr-light, #f4f4f5);
+        border: 1px solid
+            color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 0.65rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: none;
+        font-family: 'JetBrains Mono', monospace;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 100;
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition:
+                opacity 0.2s ease,
+                transform 0.2s ease;
+        }
+    }
+
+    &:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        transition-delay: 1.5s;
+    }
+}
+
+/*
+ * Anchor positioning — progressively enhanced.
+ * Gated on anchor-scope support (Chrome 131+) to ensure each ::after
+ * anchors to its own parent, not the last [data-tooltip] in the DOM.
+ * position: fixed makes position-try-fallbacks check viewport overflow.
+ */
+@supports (anchor-scope: --a) {
+    [data-tooltip] {
+        anchor-name: --tooltip;
+        anchor-scope: --tooltip;
+    }
+
+    [data-tooltip]::after {
+        position: fixed;
+        position-anchor: --tooltip;
+        inset: unset;
+        transform: none;
+        position-area: block-end center;
+        margin-block-start: 6px;
+        position-try-fallbacks: flip-inline, flip-block;
+    }
+
+    [data-tooltip]:hover::after {
+        transform: none;
+    }
+
+    .section-info::after {
+        position-area: center inline-end;
+        margin-block-start: 0;
+        margin-inline-start: 8px;
+        position-try-fallbacks: flip-inline;
+    }
+
+    .section-info:hover::after {
+        transform: none;
+    }
+}
+
 /* buttons  */
 .main-button {
     font-size: 0.7rem;
@@ -144,49 +226,6 @@ h2 {
         outline: 2px solid var(--clr-light, #f4f4f5);
         outline-offset: 2px;
     }
-
-    &[data-tooltip] {
-        position: relative;
-
-        &::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            inset-block-start: calc(100% + 6px);
-            inset-inline-start: 50%;
-            transform: translateX(-50%) translateY(-4px);
-            white-space: nowrap;
-            background-color: color-mix(
-                in srgb,
-                var(--clr-dark, #52525b) 90%,
-                var(--clr-main, #18181b) 10%
-            );
-            color: var(--clr-light, #f4f4f5);
-            border: 1px solid
-                color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.65rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            text-transform: none;
-            font-family: 'JetBrains Mono', monospace;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 100;
-
-            @media (prefers-reduced-motion: no-preference) {
-                transition:
-                    opacity 0.2s ease,
-                    transform 0.2s ease;
-            }
-        }
-
-        &:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            transition-delay: 1.5s;
-        }
-    }
 }
 
 .secondary-button {
@@ -224,53 +263,6 @@ h2 {
     &:focus-visible {
         outline: 2px solid var(--clr-accent, #14b8a6);
         outline-offset: 2px;
-    }
-
-    &[data-tooltip] {
-        position: relative;
-
-        &::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            inset-block-start: calc(100% + 6px);
-            inset-inline-start: 50%;
-            transform: translateX(-50%) translateY(-4px);
-            white-space: nowrap;
-            background-color: color-mix(
-                in srgb,
-                var(--clr-dark, #52525b) 90%,
-                var(--clr-main, #18181b) 10%
-            );
-            color: var(--clr-light, #f4f4f5);
-            border: 1px solid
-                color-mix(
-                    in srgb,
-                    var(--clr-dark, #52525b) 50%,
-                    transparent 50%
-                );
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.65rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            text-transform: none;
-            font-family: 'JetBrains Mono', monospace;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 100;
-
-            @media (prefers-reduced-motion: no-preference) {
-                transition:
-                    opacity 0.2s ease,
-                    transform 0.2s ease;
-            }
-        }
-
-        &:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            transition-delay: 1.5s;
-        }
     }
 }
 
@@ -568,52 +560,6 @@ nav {
         cursor: pointer;
     }
 
-    & .input-wrapper[data-tooltip] {
-        position: relative;
-
-        &::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            inset-block-start: calc(100% + 6px);
-            inset-inline-start: 50%;
-            transform: translateX(-50%) translateY(-4px);
-            white-space: nowrap;
-            background-color: color-mix(
-                in srgb,
-                var(--clr-dark, #52525b) 90%,
-                var(--clr-main, #18181b) 10%
-            );
-            color: var(--clr-light, #f4f4f5);
-            border: 1px solid
-                color-mix(
-                    in srgb,
-                    var(--clr-dark, #52525b) 50%,
-                    transparent 50%
-                );
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.65rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            text-transform: none;
-            font-family: 'JetBrains Mono', monospace;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 100;
-
-            @media (prefers-reduced-motion: no-preference) {
-                transition:
-                    opacity 0.2s ease,
-                    transform 0.2s ease;
-            }
-        }
-
-        &:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            transition-delay: 1.5s;
-        }
-    }
 }
 
 /* Media Queries  */
@@ -1050,39 +996,16 @@ nav {
     margin-inline-start: 8px;
     color: var(--text-color, #a1a1aa);
     opacity: 0.8;
-    position: relative;
 
     &::after {
-        content: attr(data-tooltip);
-        position: absolute;
         inset-inline-start: calc(100% + 8px);
         inset-block-start: 50%;
         transform: translateY(calc(-50% - 8px)) translateX(-6px);
-        white-space: nowrap;
         background-color: color-mix(
             in srgb,
             var(--clr-main, #18181b) 90%,
             var(--clr-dark, #52525b) 10%
         );
-        color: var(--clr-light, #f4f4f5);
-        border: 1px solid
-            color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
-        border-radius: 4px;
-        padding: 4px 8px;
-        font-size: 0.65rem;
-        font-weight: 400;
-        letter-spacing: 0;
-        text-transform: none;
-        font-family: 'JetBrains Mono', monospace;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 100;
-
-        @media (prefers-reduced-motion: no-preference) {
-            transition:
-                opacity 0.2s ease,
-                transform 0.2s ease;
-        }
     }
 
     &:hover {
