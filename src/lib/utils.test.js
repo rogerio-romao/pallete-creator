@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 // oxlint-disable no-magic-numbers
 
 import {
@@ -7,8 +8,11 @@ import {
     generateMono,
     generateSaturations,
     generateTriad,
+    getSaturation,
     hexToHsl,
     hslToRgb,
+    isAchromatic,
+    isLowSaturation,
     rgbToHex,
     rgbToHsl,
     toHslString,
@@ -186,6 +190,137 @@ describe('utility functions', () => {
 
         it('returns empty array for invalid input', () => {
             expect(generateSaturations('invalid')).toEqual([]);
+        });
+    });
+
+    describe('isLowSaturation utility', () => {
+        it('returns true for s=0', () => {
+            expect(isLowSaturation(0)).toBeTruthy();
+        });
+
+        it('returns true at the threshold s=10', () => {
+            expect(isLowSaturation(10)).toBeTruthy();
+        });
+
+        it('returns false just above the threshold s=11', () => {
+            expect(isLowSaturation(11)).toBeFalsy();
+        });
+
+        it('returns false for s=50', () => {
+            expect(isLowSaturation(50)).toBeFalsy();
+        });
+    });
+
+    describe('isAchromatic utility', () => {
+        it('returns true for pure black (s=0, l=0)', () => {
+            expect(isAchromatic(0, 0)).toBeTruthy();
+        });
+
+        it('returns true for pure white (s=0, l=100)', () => {
+            expect(isAchromatic(0, 100)).toBeTruthy();
+        });
+
+        it('returns true at the dark threshold boundary (s=5, l=8)', () => {
+            expect(isAchromatic(5, 8)).toBeTruthy();
+        });
+
+        it('returns true at the light threshold boundary (s=5, l=95)', () => {
+            expect(isAchromatic(5, 95)).toBeTruthy();
+        });
+
+        it('returns false when lightness is mid-range even at s=0', () => {
+            expect(isAchromatic(0, 50)).toBeFalsy();
+        });
+
+        it('returns false when saturation is above threshold', () => {
+            expect(isAchromatic(15, 0)).toBeFalsy();
+        });
+    });
+
+    // oxlint-disable-next-line max-lines-per-function
+    describe('achromatic variation generation', () => {
+        const BLACK = 'hsl(0, 0%, 0%)';
+        const WHITE = 'hsl(0, 0%, 100%)';
+        const HSL_PATTERN = /^hsl\(\d+, \d+%, \d+%\)$/;
+
+        it('generateComplement returns 7 chromatic colors for black', () => {
+            const result = generateComplement(BLACK);
+            expect(result).toHaveLength(7);
+            for (const color of result) {
+                expect(color).toMatch(HSL_PATTERN);
+                expect(getSaturation(color)).toBeGreaterThan(0);
+            }
+        });
+
+        it('generateComplement returns 7 chromatic colors for white', () => {
+            const result = generateComplement(WHITE);
+            expect(result).toHaveLength(7);
+            for (const color of result) {
+                expect(getSaturation(color)).toBeGreaterThan(0);
+            }
+        });
+
+        it('generateComplement produces different results on repeated calls', () => {
+            const results = new Set(
+                Array.from({ length: 10 }, () => generateComplement(BLACK)[0]),
+            );
+            expect(results.size).toBeGreaterThan(1);
+        });
+
+        it('generateTriad returns 6 chromatic colors for black', () => {
+            const result = generateTriad(BLACK);
+            expect(result).toHaveLength(6);
+            for (const color of result) {
+                expect(color).toMatch(HSL_PATTERN);
+                expect(getSaturation(color)).toBeGreaterThan(0);
+            }
+        });
+
+        it('generateTriad produces different results on repeated calls', () => {
+            const results = new Set(
+                Array.from({ length: 10 }, () => generateTriad(BLACK)[0]),
+            );
+            expect(results.size).toBeGreaterThan(1);
+        });
+
+        it('generateAnalogous returns 6 chromatic colors for black', () => {
+            const result = generateAnalogous(BLACK);
+            expect(result).toHaveLength(6);
+            for (const color of result) {
+                expect(color).toMatch(HSL_PATTERN);
+                expect(getSaturation(color)).toBeGreaterThan(0);
+            }
+        });
+
+        it('generateAnalogous produces different results on repeated calls', () => {
+            const results = new Set(
+                Array.from({ length: 10 }, () => generateAnalogous(BLACK)[0]),
+            );
+            expect(results.size).toBeGreaterThan(1);
+        });
+
+        it('generateSaturations returns 8 chromatic colors for black', () => {
+            const result = generateSaturations(BLACK);
+            expect(result).toHaveLength(8);
+            for (const color of result) {
+                expect(color).toMatch(HSL_PATTERN);
+                expect(getSaturation(color)).toBeGreaterThan(0);
+            }
+        });
+
+        it('generateSaturations uses normal behavior for mid-lightness low-sat gray', () => {
+            const result = generateSaturations('hsl(0, 0%, 50%)');
+            expect(result).toHaveLength(8);
+            for (const color of result) {
+                expect(color).toMatch(/^hsl\(0, \d+%, 50%\)$/);
+            }
+        });
+
+        it('generateSaturations produces different results on repeated calls for black', () => {
+            const results = new Set(
+                Array.from({ length: 10 }, () => generateSaturations(BLACK)[0]),
+            );
+            expect(results.size).toBeGreaterThan(1);
         });
     });
 });
