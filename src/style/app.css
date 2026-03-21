@@ -6,11 +6,11 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap');
 
 :root {
-    --clr-main: #18181b;
-    --clr-secondary: #5eead4;
-    --clr-light: #f4f4f5;
-    --clr-accent: #14b8a6;
-    --clr-dark: #52525b;
+    --clr-main: #031f25;
+    --clr-secondary: #03250a;
+    --clr-light: #b9edf8;
+    --clr-accent: #3bcced;
+    --clr-dark: #0f0f0f;
     --text-color: #f4f4f5;
     --slot-size: 96px;
     --mini-slot-size: 28px;
