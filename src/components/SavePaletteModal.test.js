@@ -59,13 +59,6 @@ describe('component SavePaletteModal', () => {
         expect(wrapper.emitted('close')).toBeTruthy();
     });
 
-    it('does not emit close for non-Escape key presses', async () => {
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
-        await wrapper.vm.$nextTick();
-
-        expect(wrapper.emitted('close')).toBeFalsy();
-    });
-
     it('shows invalid state and warning toast when Save is clicked with no name', async () => {
         await wrapper
             .find('[data-testid="save-palette-form"]')

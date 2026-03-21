@@ -4,7 +4,7 @@
 
 import actions from './actions';
 import paletteService from '../services/paletteService';
-import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
+import { DEFAULT_HEX_COLORS, DEFAULT_LIGHT_COLORS } from '../lib/colors';
 
 vi.mock(import('../services/paletteService'), () => ({
     default: {

@@ -1,17 +1,13 @@
-// This component is the mini slots panel that displays color variations based
-on the main color. Users can click on any variation to copy it, and then paste
-it into one of the color slots in the palette panel. The panel can be collapsed
-or expanded.
+// This component is the variations slots panel that displays color variations
+based on the main color. Users can click on any variation to copy it, and then
+paste it into one of the color slots in the palette panel. The panel can be
+collapsed or expanded.
 
 <template>
     <!-- wrapper   -->
     <section class="mini-slots-pane" data-testid="expanded-panel">
         <!-- all the slots  -->
-        <div
-            class="mini-slots"
-            role="listbox"
-            aria-label="Color variations"
-        >
+        <div class="mini-slots" role="listbox" aria-label="Color variations">
             <!-- one slot  -->
             <div
                 v-for="(entry, i) in colors"
@@ -25,7 +21,11 @@ or expanded.
                 :data-testid="`mini-slot-${i}`"
                 :key="i"
                 :style="{ backgroundColor: entry.hsl }"
-                :data-tooltip="colorCopied && colorCopiedIndex === i ? 'click to deselect' : 'select · then click a slot to paste'"
+                :data-tooltip="
+                    colorCopied && colorCopiedIndex === i
+                        ? 'click to deselect'
+                        : 'select · then click a slot to paste'
+                "
                 @click="copyColor(entry.hsl, Number(i))"
                 role="option"
                 :aria-selected="colorCopied && colorCopiedIndex === i"

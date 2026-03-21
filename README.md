@@ -147,6 +147,18 @@ also:
   to some extent, but I want to improve it further to create more harmonious
   palettes with the random variations button.
 
+## AI usage
+
+Yes, AI assistance was used in the final stages of this project, primarily for a
+complete UI overhaul and refining certain features and bugs. The original
+project was built manually years ago with 90%+ of the functionality already
+present, but the UI was very amateur. My workflow was: human in the loop at
+every stage: assigning tasks, approving work manually, iterating on plans for
+bigger features, and finishing with a manual refactoring and clean-up pass. It
+was fun, AI has improved a lot the last few months, and it took days to put the
+app on a level of polish that would have taken weeks or months for me to achieve
+manually for a side project.
+
 ## Run locally
 
 If you want to, clone this repo, cd into it, and:

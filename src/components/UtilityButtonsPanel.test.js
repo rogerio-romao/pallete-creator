@@ -1,9 +1,8 @@
-// oxlint-disable jest/max-expects
 // oxlint-disable max-lines
 
 import { mount } from '@vue/test-utils';
 
-import DEFAULT_HEX_COLORS from '../lib/colors';
+import { DEFAULT_HEX_COLORS } from '../lib/colors';
 import stateFactory from '../store/state';
 import store from '../store';
 
@@ -62,13 +61,13 @@ describe('component UtilityButtonsPanel', () => {
 
     it('renders the component', () => {
         expect(
-            wrapper.find('[data-test="utility-buttons"]').exists(),
+            wrapper.find('[data-testid="utility-buttons"]').exists(),
         ).toBeTruthy();
         expect(
-            wrapper.find('[data-test="random-scheme-button"]').exists(),
+            wrapper.find('[data-testid="random-scheme-button"]').exists(),
         ).toBeTruthy();
         expect(
-            wrapper.find('[data-test="one-shot-button"]').exists(),
+            wrapper.find('[data-testid="one-shot-button"]').exists(),
         ).toBeTruthy();
     });
 
@@ -76,58 +75,44 @@ describe('component UtilityButtonsPanel', () => {
         const spy = vi.spyOn(store, 'dispatch').mockResolvedValue(null);
 
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
     });
 
-    // oxlint-disable-next-line max-statements
     it('fills the slots with random colors', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
-
         await wrapper.vm.$nextTick();
 
-        const { slotColors } = store.state;
-        expect(slotColors.slot2.hsl).not.toBe('');
-        expect(slotColors.slot2.hsl).not.toBe(store.state.mainHSL);
-        expect(slotColors.slot2.hsl).not.toBe(slotColors.slot3.hsl);
-        expect(slotColors.slot2.hsl).not.toBe(slotColors.slot4.hsl);
-        expect(slotColors.slot2.hsl).not.toBe(slotColors.slot5.hsl);
-        expect(slotColors.slot2.hsl).toContain('hsl');
-        expect(slotColors.slot2.rgb).not.toBe('');
-        expect(slotColors.slot2.rgb).toContain('rgb');
-        expect(slotColors.slot2.hex).not.toBe('');
-        expect(slotColors.slot2.hex).toContain('#');
-        expect(slotColors.slot3.hsl).not.toBe('');
-        expect(slotColors.slot3.hsl).not.toBe(store.state.mainHSL);
-        expect(slotColors.slot3.hsl).not.toBe(slotColors.slot2.hsl);
-        expect(slotColors.slot3.hsl).not.toBe(slotColors.slot4.hsl);
-        expect(slotColors.slot3.hsl).not.toBe(slotColors.slot5.hsl);
-        expect(slotColors.slot3.rgb).not.toBe('');
-        expect(slotColors.slot3.rgb).toContain('rgb');
-        expect(slotColors.slot3.hex).not.toBe('');
-        expect(slotColors.slot3.hex).toContain('#');
-        expect(slotColors.slot4.hsl).not.toBe('');
-        expect(slotColors.slot4.hsl).not.toBe(store.state.mainHSL);
-        expect(slotColors.slot4.hsl).not.toBe(slotColors.slot2.hsl);
-        expect(slotColors.slot4.hsl).not.toBe(slotColors.slot3.hsl);
-        expect(slotColors.slot4.hsl).not.toBe(slotColors.slot5.hsl);
-        expect(slotColors.slot4.rgb).not.toBe('');
-        expect(slotColors.slot4.rgb).toContain('rgb');
-        expect(slotColors.slot4.hex).not.toBe('');
-        expect(slotColors.slot4.hex).toContain('#');
-        expect(slotColors.slot5.hsl).not.toBe('');
-        expect(slotColors.slot5.hsl).not.toBe(store.state.mainHSL);
-        expect(slotColors.slot5.hsl).not.toBe(slotColors.slot2.hsl);
-        expect(slotColors.slot5.hsl).not.toBe(slotColors.slot3.hsl);
-        expect(slotColors.slot5.hsl).not.toBe(slotColors.slot4.hsl);
-        expect(slotColors.slot5.rgb).not.toBe('');
-        expect(slotColors.slot5.rgb).toContain('rgb');
-        expect(slotColors.slot5.hex).not.toBe('');
-        expect(slotColors.slot5.hex).toContain('#');
+        const { slotColors, mainHSL } = store.state;
+        const slots = ['slot2', 'slot3', 'slot4', 'slot5'];
+
+        for (const slotId of slots) {
+            const color = slotColors[slotId];
+
+            expect(color.hsl).toContain('hsl');
+            expect(color.rgb).toContain('rgb');
+            expect(color.hex).toContain('#');
+
+            // Check uniqueness against main color
+            expect(color.hsl).not.toBe(mainHSL);
+
+            // Check uniqueness against other slots
+            const otherSlots = slots.filter((s) => s !== slotId);
+            for (const otherId of otherSlots) {
+                expect(color.hsl).not.toBe(slotColors[otherId].hsl);
+            }
+        }
+    });
+
+    it('show the one-shot button always, even when the full scheme is not set', () => {
+        store.state.allColors = [];
+        expect(
+            wrapper.find('[data-testid="one-shot-button"]').exists(),
+        ).toBeTruthy();
     });
 
     it('shows all buttons when the full scheme is set', async () => {
@@ -142,74 +127,60 @@ describe('component UtilityButtonsPanel', () => {
 
         for (const button of buttons) {
             expect(
-                wrapper.find(`[data-test="${button}"]`).exists(),
+                wrapper.find(`[data-testid="${button}"]`).exists(),
             ).toBeFalsy();
         }
 
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
-
         await wrapper.vm.$nextTick();
 
         for (const button of buttons) {
             expect(
-                wrapper.find(`[data-test="${button}"]`).exists(),
+                wrapper.find(`[data-testid="${button}"]`).exists(),
             ).toBeTruthy();
         }
     });
 
-    // oxlint-disable-next-line max-statements
     it('sets the theme colors when the test palette button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
-        const mainSlotColor = store.state.mainSlotColor.hex;
-        const slot2Color = store.state.slotColors.slot2.hex;
-        const slot3Color = store.state.slotColors.slot3.hex;
-        const slot4Color = store.state.slotColors.slot4.hex;
-        const slot5Color = store.state.slotColors.slot5.hex;
+        const { mainSlotColor, slotColors } = store.state;
 
         await wrapper
-            .find('[data-test="test-palette-button"]')
+            .find('[data-testid="test-palette-button"]')
             .trigger('click');
 
-        const mainColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-main');
-        const secondaryColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-secondary');
-        const accentColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-accent');
-        const lightColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-light');
-        const darkColor = getComputedStyle(
-            document.documentElement,
-        ).getPropertyValue('--clr-dark');
+        const expectedColors = {
+            '--clr-accent': slotColors.slot3.hex,
+            '--clr-dark': slotColors.slot5.hex,
+            '--clr-light': slotColors.slot4.hex,
+            '--clr-main': mainSlotColor.hex,
+            '--clr-secondary': slotColors.slot2.hex,
+        };
 
-        expect(mainColor).toBe(mainSlotColor);
-        expect(secondaryColor).toBe(slot2Color);
-        expect(accentColor).toBe(slot3Color);
-        expect(lightColor).toBe(slot4Color);
-        expect(darkColor).toBe(slot5Color);
+        for (const [variable, expectedHex] of Object.entries(expectedColors)) {
+            const actualHex = getComputedStyle(
+                document.documentElement,
+            ).getPropertyValue(variable);
+            expect(actualHex).toBe(expectedHex);
+        }
     });
 
-    // oxlint-disable-next-line max-statements
     it('resets the site colors when the reset button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
         await wrapper
-            .find('[data-test="test-palette-button"]')
+            .find('[data-testid="test-palette-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
@@ -221,36 +192,33 @@ describe('component UtilityButtonsPanel', () => {
         expect(mainColor).not.toBe(DEFAULT_HEX_COLORS.MAIN);
 
         await wrapper
-            .find('[data-test="reset-site-colors-button"]')
+            .find('[data-testid="reset-site-colors-button"]')
             .trigger('click');
 
-        const mainColorAfterReset =
-            document.documentElement.style.getPropertyValue('--clr-main');
-        const secondaryColor =
-            document.documentElement.style.getPropertyValue('--clr-secondary');
-        const accentColor =
-            document.documentElement.style.getPropertyValue('--clr-accent');
-        const lightColor =
-            document.documentElement.style.getPropertyValue('--clr-light');
-        const darkColor =
-            document.documentElement.style.getPropertyValue('--clr-dark');
+        const variables = [
+            '--clr-main',
+            '--clr-secondary',
+            '--clr-accent',
+            '--clr-light',
+            '--clr-dark',
+        ];
 
-        expect(mainColorAfterReset).toBe('');
-        expect(secondaryColor).toBe('');
-        expect(accentColor).toBe('');
-        expect(lightColor).toBe('');
-        expect(darkColor).toBe('');
+        for (const variable of variables) {
+            expect(
+                document.documentElement.style.getPropertyValue(variable),
+            ).toBe('');
+        }
     });
 
     it('sets the text color to the default light color when the light button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
         await wrapper
-            .find('[data-test="set-light-text-button"]')
+            .find('[data-testid="set-light-text-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
@@ -265,13 +233,13 @@ describe('component UtilityButtonsPanel', () => {
 
     it('sets the text color to the default dark color when the dark button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
         await wrapper
-            .find('[data-test="set-dark-text-button"]')
+            .find('[data-testid="set-dark-text-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
@@ -286,25 +254,27 @@ describe('component UtilityButtonsPanel', () => {
 
     it('sends copyPalette event when the export css button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
-        await wrapper.find('[data-test="export-css-button"]').trigger('click');
+        await wrapper
+            .find('[data-testid="export-css-button"]')
+            .trigger('click');
 
         expect(wrapper.emitted('copyPalette')).toBeTruthy();
     });
 
     it('sends savePalette event when the save palette button is clicked', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
 
         await wrapper.vm.$nextTick();
 
         await wrapper
-            .find('[data-test="save-palette-button"]')
+            .find('[data-testid="save-palette-button"]')
             .trigger('click');
 
         expect(wrapper.emitted('savePalette')).toBeTruthy();
@@ -313,46 +283,43 @@ describe('component UtilityButtonsPanel', () => {
     it('one-shot button dispatches SET_MAIN_COLOR and SET_RANDOM_SCHEME', async () => {
         const spy = vi.spyOn(store, 'dispatch').mockResolvedValue(null);
 
-        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+        await wrapper.find('[data-testid="one-shot-button"]').trigger('click');
 
         expect(spy).toHaveBeenCalledWith('SET_MAIN_COLOR');
         expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
     });
 
-    // oxlint-disable-next-line max-statements
     it('one-shot button sets a full random palette and applies CSS vars', async () => {
-        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+        await wrapper.find('[data-testid="one-shot-button"]').trigger('click');
 
         await wrapper.vm.$nextTick();
 
         const { slotColors, mainSlotColor } = store.state;
 
         expect(mainSlotColor.hex).not.toBe('');
-        expect(slotColors.slot2.hsl).not.toBe('');
-        expect(slotColors.slot3.hsl).not.toBe('');
-        expect(slotColors.slot4.hsl).not.toBe('');
-        expect(slotColors.slot5.hsl).not.toBe('');
 
-        const mainColor =
-            document.documentElement.style.getPropertyValue('--clr-main');
-        const secondaryColor =
-            document.documentElement.style.getPropertyValue('--clr-secondary');
-        const accentColor =
-            document.documentElement.style.getPropertyValue('--clr-accent');
-        const lightColor =
-            document.documentElement.style.getPropertyValue('--clr-light');
-        const darkColor =
-            document.documentElement.style.getPropertyValue('--clr-dark');
+        const slots = ['slot2', 'slot3', 'slot4', 'slot5'];
+        for (const slotId of slots) {
+            expect(slotColors[slotId].hsl).not.toBe('');
+        }
 
-        expect(mainColor).toBe(mainSlotColor.hex);
-        expect(secondaryColor).toBe(slotColors.slot2.hex);
-        expect(accentColor).toBe(slotColors.slot3.hex);
-        expect(lightColor).toBe(slotColors.slot4.hex);
-        expect(darkColor).toBe(slotColors.slot5.hex);
+        const expectedColors = {
+            '--clr-accent': slotColors.slot3.hex,
+            '--clr-dark': slotColors.slot5.hex,
+            '--clr-light': slotColors.slot4.hex,
+            '--clr-main': mainSlotColor.hex,
+            '--clr-secondary': slotColors.slot2.hex,
+        };
+
+        for (const [variable, expectedHex] of Object.entries(expectedColors)) {
+            expect(
+                document.documentElement.style.getPropertyValue(variable),
+            ).toBe(expectedHex);
+        }
     });
 
     it('one-shot button sets isTestingColorScheme to true', async () => {
-        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+        await wrapper.find('[data-testid="one-shot-button"]').trigger('click');
 
         await wrapper.vm.$nextTick();
 
@@ -361,7 +328,7 @@ describe('component UtilityButtonsPanel', () => {
 
     it('Test this palette applies text color from palette (dark theme uses slot4)', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -369,7 +336,7 @@ describe('component UtilityButtonsPanel', () => {
         const { slot4 } = store.state.slotColors;
 
         await wrapper
-            .find('[data-test="test-palette-button"]')
+            .find('[data-testid="test-palette-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -381,7 +348,7 @@ describe('component UtilityButtonsPanel', () => {
 
     it('Light Text uses slot4 color when testing', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -390,7 +357,7 @@ describe('component UtilityButtonsPanel', () => {
         const { slot4 } = store.state.slotColors;
 
         await wrapper
-            .find('[data-test="set-light-text-button"]')
+            .find('[data-testid="set-light-text-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -399,7 +366,7 @@ describe('component UtilityButtonsPanel', () => {
 
     it('Dark Text uses slot5 color when testing', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -408,7 +375,7 @@ describe('component UtilityButtonsPanel', () => {
         const { slot5 } = store.state.slotColors;
 
         await wrapper
-            .find('[data-test="set-dark-text-button"]')
+            .find('[data-testid="set-dark-text-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -417,14 +384,14 @@ describe('component UtilityButtonsPanel', () => {
 
     it('Light Text uses theme default when not testing', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
         store.commit('SET_IS_TESTING', false);
 
         await wrapper
-            .find('[data-test="set-light-text-button"]')
+            .find('[data-testid="set-light-text-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -434,7 +401,7 @@ describe('component UtilityButtonsPanel', () => {
     // oxlint-disable-next-line max-statements
     it('Reset restores text color to theme default', async () => {
         await wrapper
-            .find('[data-test="random-scheme-button"]')
+            .find('[data-testid="random-scheme-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 
@@ -442,7 +409,7 @@ describe('component UtilityButtonsPanel', () => {
         await store.dispatch('SET_TEXT_COLOR', 'dark');
 
         await wrapper
-            .find('[data-test="reset-site-colors-button"]')
+            .find('[data-testid="reset-site-colors-button"]')
             .trigger('click');
         await wrapper.vm.$nextTick();
 

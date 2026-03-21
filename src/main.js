@@ -56,6 +56,7 @@ library.add(
     faVial,
     faWindowMinimize,
 );
+
 dom.watch();
 
 const app = createApp(App);

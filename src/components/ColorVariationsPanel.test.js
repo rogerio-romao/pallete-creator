@@ -2,23 +2,38 @@ import { mount } from '@vue/test-utils';
 
 import store from '../store';
 
-import MiniSlotsPanel from './MiniSlotsPanel.vue';
+import ColorVariationsPanel from './ColorVariationsPanel.vue';
 
 // oxlint-disable-next-line max-lines-per-function
-describe('component MiniSlotsPanel', () => {
+describe('component ColorVariationsPanel', () => {
     /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
     beforeEach(() => {
         store.state.allColors = [
-            { hex: '#40a0bf', hsl: 'hsl(200, 50%, 50%)', rgb: 'rgb(64, 160, 191)', type: 'complement' },
-            { hex: '#4095bf', hsl: 'hsl(210, 50%, 50%)', rgb: 'rgb(64, 149, 191)', type: 'complement' },
-            { hex: '#408abf', hsl: 'hsl(220, 50%, 50%)', rgb: 'rgb(64, 138, 191)', type: 'mono' },
+            {
+                hex: '#40a0bf',
+                hsl: 'hsl(200, 50%, 50%)',
+                rgb: 'rgb(64, 160, 191)',
+                type: 'complement',
+            },
+            {
+                hex: '#4095bf',
+                hsl: 'hsl(210, 50%, 50%)',
+                rgb: 'rgb(64, 149, 191)',
+                type: 'complement',
+            },
+            {
+                hex: '#408abf',
+                hsl: 'hsl(220, 50%, 50%)',
+                rgb: 'rgb(64, 138, 191)',
+                type: 'mono',
+            },
         ];
         store.state.copiedColor = '';
         store.state.copiedColorIndex = null;
 
-        wrapper = mount(MiniSlotsPanel, {
+        wrapper = mount(ColorVariationsPanel, {
             global: { plugins: [store] },
         });
     });
@@ -71,8 +86,6 @@ describe('component MiniSlotsPanel', () => {
                 index: 0,
             }),
         );
-
-        dispatchSpy.mockRestore();
     });
 
     it('dispatches CLEAR_COPIED_COLOR when an already-selected slot is clicked', async () => {
@@ -84,7 +97,6 @@ describe('component MiniSlotsPanel', () => {
         await wrapper.find('[data-testid="mini-slot-0"]').trigger('click');
 
         expect(dispatchSpy).toHaveBeenCalledWith('CLEAR_COPIED_COLOR');
-        dispatchSpy.mockRestore();
     });
 
     it('marks copied slot with mini-slot-copied class', async () => {

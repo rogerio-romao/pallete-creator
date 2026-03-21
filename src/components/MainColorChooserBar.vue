@@ -76,14 +76,14 @@ based on it.
         </div>
 
         <!-- color input  -->
-        <form @submit.prevent="submitColor" data-testid="color-form" class="color-form">
+        <form
+            @submit.prevent="submitColor"
+            data-testid="color-form"
+            class="color-form"
+        >
             <div class="input-wrapper" data-tooltip="Color wheel picker">
                 <label for="colorInput" class="input-label">COLOR</label>
-                <input
-                    type="color"
-                    data-testid="color-input"
-                    id="colorInput"
-                />
+                <input type="color" data-testid="color-input" id="colorInput" />
                 <button type="submit" aria-label="Apply color">
                     <i class="fas fa-chevron-circle-right"></i>
                 </button>
@@ -105,7 +105,7 @@ based on it.
     const COLOR_CHANNEL_COUNT = 3;
 
     /**
-     * Normalizes color input by replacing spaces with commas, capped at 3 values.
+     * Normalizes color input by replacing spaces with commas, capped at 3 values. This allows users to input RGB or HSL values with either spaces or commas as separators, while ensuring the format remains consistent for parsing.
      * @param {Event} e - The input event from an RGB or HSL text field.
      */
     const normalizeColorSeparators = (e) => {
@@ -126,7 +126,10 @@ based on it.
         if (normalized !== val) {
             input.value = normalized;
             const lengthDiff = normalized.length - val.length;
-            input.setSelectionRange(cursorPos + lengthDiff, cursorPos + lengthDiff);
+            input.setSelectionRange(
+                cursorPos + lengthDiff,
+                cursorPos + lengthDiff,
+            );
         }
     };
 
@@ -139,24 +142,22 @@ based on it.
     };
 
     /**
-     * Handles the submission of the RGB color input, converting it to HSL and setting it as the main color.
+     * Handles the submission of the color input form, setting the main color to the selected value.
      * @param {SubmitEvent} e - The form submission event.
      */
-    const submitRgb = (e) => {
+    const submitColor = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
-        const rgbInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('#rgbInput')
+        const colorInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('#colorInput')
         );
 
-        const rgb = rgbInput.value;
-        if (!rgb) {
+        // remove the # from the color value
+        const color = colorInput.value.slice(1);
+        if (!color) {
             return;
         }
-
-        const hsl = rgbToHsl(rgb);
+        const hsl = hexToHsl(color);
         store.dispatch('SET_MAIN_COLOR', hsl);
-
-        rgbInput.value = '';
     };
 
     /**
@@ -203,21 +204,23 @@ based on it.
     };
 
     /**
-     * Handles the submission of the color input form, setting the main color to the selected value.
+     * Handles the submission of the RGB color input, converting it to HSL and setting it as the main color.
      * @param {SubmitEvent} e - The form submission event.
      */
-    const submitColor = (e) => {
+    const submitRgb = (e) => {
         const form = /** @type {HTMLFormElement} */ (e.target);
-        const colorInput = /** @type {HTMLInputElement} */ (
-            form.querySelector('#colorInput')
+        const rgbInput = /** @type {HTMLInputElement} */ (
+            form.querySelector('#rgbInput')
         );
 
-        // remove the # from the color value
-        const color = colorInput.value.slice(1);
-        if (!color) {
+        const rgb = rgbInput.value;
+        if (!rgb) {
             return;
         }
-        const hsl = hexToHsl(color);
+
+        const hsl = rgbToHsl(rgb);
         store.dispatch('SET_MAIN_COLOR', hsl);
+
+        rgbInput.value = '';
     };
 </script>

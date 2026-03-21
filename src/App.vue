@@ -54,7 +54,7 @@
                     >i</span
                 >
             </h2>
-            <MiniSlotsPanel />
+            <ColorVariationsPanel />
         </div>
 
         <!-- saved palletes -->
@@ -101,10 +101,10 @@
     import { useStore } from 'vuex';
     import { computed, onMounted, ref } from 'vue';
 
+    import ColorVariationsPanel from './components/ColorVariationsPanel.vue';
     import ExportCssModal from './components/ExportCssModal.vue';
     import Instructions from './components/InstructionsModal.vue';
     import MainColorChooserBar from './components/MainColorChooserBar.vue';
-    import MiniSlotsPanel from './components/MiniSlotsPanel.vue';
     import PalettePanel from './components/PalettePanel.vue';
     import SavedPalettesPanel from './components/SavedPalettesPanel.vue';
     import SavePaletteModal from './components/SavePaletteModal.vue';
@@ -135,7 +135,9 @@
     const mainHSL = computed(() => store.state.mainHSL);
     const uniqueColors = computed(() => store.getters.uniqueColors);
     const savedPalettes = computed(() => store.state.savedPalettes);
-    const showUtilityButtons = computed(() => store.getters.uniqueColors.length);
+    const showUtilityButtons = computed(
+        () => store.getters.uniqueColors.length,
+    );
 
     defineExpose({
         showCopyModal,

@@ -13,10 +13,7 @@ successful copying.
         aria-labelledby="export-css-title"
         @click.self="$emit('close')"
     >
-        <div
-            class="modal-wrapper"
-            data-testid="modal-wrapper"
-        >
+        <div class="modal-wrapper" data-testid="modal-wrapper">
             <div class="modal-container">
                 <!-- header  -->
                 <div class="modal-header">
@@ -126,16 +123,6 @@ successful copying.
     });
 
     /**
-     * Closes the modal when the escape key is pressed.
-     * @param {KeyboardEvent} e - The keyboard event.
-     */
-    const handleKeydown = (e) => {
-        if (e.key === 'Escape') {
-            emit('close');
-        }
-    };
-
-    /**
      * Toggles the syntax between CSS and SCSS for the exported code.
      */
     const changeSyntax = () => {
@@ -154,6 +141,16 @@ successful copying.
      */
     const changeMode = (newMode) => {
         mode.value = newMode;
+    };
+
+    /**
+     * Closes the modal when the escape key is pressed.
+     * @param {KeyboardEvent} e - The keyboard event.
+     */
+    const handleKeydown = (e) => {
+        if (e.key === 'Escape') {
+            emit('close');
+        }
     };
 
     /**

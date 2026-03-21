@@ -3,11 +3,11 @@
 import mutations from './mutations';
 import state from './state';
 
-/** @type {ReturnType<typeof state>} */
-let testState;
-
 // oxlint-disable-next-line max-lines-per-function
 describe('store mutations', () => {
+    /** @type {ReturnType<typeof state>} */
+    let testState;
+
     beforeEach(() => {
         testState = state();
     });

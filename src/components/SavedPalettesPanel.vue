@@ -109,16 +109,6 @@ deletions.
     /** @type {import('vue').Ref<{ id: string, name: string } | null>} */
     const paletteToDelete = ref(null);
 
-    /**
-     * Closes the delete modal when Escape is pressed.
-     * @param {KeyboardEvent} event - The keyboard event.
-     */
-    const handleKeydown = (event) => {
-        if (event.key === 'Escape' && showDeleteModal.value) {
-            closeDeleteModal();
-        }
-    };
-
     onMounted(() => {
         document.addEventListener('keydown', handleKeydown);
     });
@@ -126,23 +116,6 @@ deletions.
     onBeforeUnmount(() => {
         document.removeEventListener('keydown', handleKeydown);
     });
-
-    /**
-     * Loads the clicked palette into the color slots for editing.
-     * @param {ColorSlot[]} palette - The palette scheme to load into the slots.
-     */
-    const editPalette = (palette) => {
-        store.dispatch('SET_PALETTE_FROM_SAVED', palette);
-    };
-
-    /**
-     * Opens the delete confirmation modal for the clicked palette.
-     * @param {{ id: string, name: string }} palette - The palette to delete.
-     */
-    const deletePalette = (palette) => {
-        paletteToDelete.value = palette;
-        showDeleteModal.value = true;
-    };
 
     /**
      * Closes the delete confirmation modal and clears the selection.
@@ -176,6 +149,33 @@ deletions.
                 type: 'danger',
             });
         } finally {
+            closeDeleteModal();
+        }
+    };
+
+    /**
+     * Opens the delete confirmation modal for the clicked palette.
+     * @param {{ id: string, name: string }} palette - The palette to delete.
+     */
+    const deletePalette = (palette) => {
+        paletteToDelete.value = palette;
+        showDeleteModal.value = true;
+    };
+
+    /**
+     * Loads the clicked palette into the color slots for editing.
+     * @param {ColorSlot[]} palette - The palette scheme to load into the slots.
+     */
+    const editPalette = (palette) => {
+        store.dispatch('SET_PALETTE_FROM_SAVED', palette);
+    };
+
+    /**
+     * Closes the delete modal when Escape is pressed.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
+    const handleKeydown = (event) => {
+        if (event.key === 'Escape' && showDeleteModal.value) {
             closeDeleteModal();
         }
     };

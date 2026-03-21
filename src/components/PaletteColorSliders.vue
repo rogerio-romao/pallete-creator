@@ -82,7 +82,6 @@ main slot or a specific palette color slot, depending on the `slotNumber` prop.
     );
 
     // Populating the sliders with the current color, if any
-
     watchEffect(() => {
         if (hsl.value) {
             const [newH, newS, newL] = hsl.value.match(/\d+/g).map(Number);
@@ -97,7 +96,6 @@ main slot or a specific palette color slot, depending on the `slotNumber` prop.
     });
 
     // Updating the color in the store after changing the sliders
-
     const updateColor = () => {
         const newColor = `hsl(${h.value}, ${s.value}%, ${l.value}%)`;
         if (slotNumber === 1) {

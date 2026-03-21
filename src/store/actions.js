@@ -8,7 +8,7 @@
 /** @typedef {{ commit: (mutation: string, payload?: unknown) => void, dispatch: (action: string, payload?: unknown) => void, state: State, getters: Getters }} ActionCtx */
 
 import paletteService from '../services/paletteService';
-import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
+import { DEFAULT_HEX_COLORS, DEFAULT_LIGHT_COLORS } from '../lib/colors';
 import {
     generateAnalogous,
     generateComplement,
@@ -22,7 +22,7 @@ import {
 } from '../lib/utils';
 
 /**
- * Returns the semantic role for a generated palette slot.
+ * Returns the semantic role for a generated palette slot. slotNum - 2 aligns the slot number with the slotRoles array because slot 0 is text color, slot 1 is the main color; slots 2+ get roles. This helper is used by the SET_RANDOM_SCHEME action to assign the correct type to each generated variation based on its slot type (accent, secondary, light, dark).
  * @param {number} slotNum - the palette slot number
  * @returns {'secondary' | 'accent' | 'light' | 'dark'} The semantic role for the slot.
  */
@@ -72,7 +72,7 @@ const actions = {
     },
 
     /**
-     * Trigerred when a user generates a main color. Dispatches actions to reset the color slots and generate variations based on the new main color.
+     * Trigerred when a user generates a main color. Dispatches actions to reset the color slots and generate variations based on the new main color, receiving the base color, variation generator function (analogous, complementary, etc.), and variation type as parameters to generate and commit the new variations to the state.
      * @param {ActionCtx} ctx - Vuex action context
      * @param {{ color: string, fn: (color: string) => string[], type: string }} payload - base color, variation generator function, and variation type
      */
@@ -210,6 +210,8 @@ const actions = {
     SET_RANDOM_SCHEME({ commit, state, getters }) {
         const groups = getters.colorsByType;
         const mainHex = state.mainSlotColor.hex;
+
+        // we want to ensure that the random scheme does not repeat main color, so we filter out any variations that are identical
         const all = getters.uniqueColors.filter(
             (e) => e.hex !== mainHex && e.type !== 'main',
         );
@@ -217,6 +219,7 @@ const actions = {
             return;
         }
 
+        // when we start assigning colors to slots, we keep track of which colors have already been used to avoid duplicates across slots.
         const used = new Set([mainHex].filter(Boolean));
         const pickRandom = (
             /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
@@ -225,17 +228,20 @@ const actions = {
             if (available.length === 0) {
                 return null;
             }
+
             const pick =
                 available[Math.floor(Math.random() * available.length)];
             if (pick) {
                 used.add(pick.hex);
             }
+
             return pick;
         };
 
+        // if the main color is very light or very dark, we want to ensure enough contrast for the secondary and accent colors by preferring variations with a minimum lightness difference from the main color; if no such variations are available, we fall back to any available colors to avoid leaving slots empty
         const EXTREME_LIGHT_THRESHOLD = 75;
         const EXTREME_DARK_THRESHOLD = 25;
-        const MIN_LIGHTNESS_DIFF = 20;
+        const MIN_LIGHTNESS_DIFF = 25;
         const mainLightness = state.mainHSL ? getLightness(state.mainHSL) : 50;
         const isExtreme =
             mainLightness > EXTREME_LIGHT_THRESHOLD ||
@@ -255,8 +261,7 @@ const actions = {
             return filtered.length > 0 ? filtered : candidates;
         };
 
-        // slot2 (Secondary): analogous colors are harmonious and close to the main hue;
-        // when main is extreme lightness, prefer analogous with contrast, fall back to any with contrast
+        // slot2 (Secondary): analogous colors are harmonious and close to the main hue; when main is extreme lightness, prefer analogous with contrast, fall back to any with contrast
         const secondaryPool = isExtreme
             ? contrastFilter(groups['analogous'] ?? [])
             : (groups['analogous'] ?? all);
@@ -265,8 +270,7 @@ const actions = {
                 secondaryPool.length > 0 ? secondaryPool : contrastFilter(all),
             ) ?? pickRandom(all);
 
-        // slot3 (Accent): complement or triad colors are visually distinct;
-        // when main is extreme lightness, prefer contrast-filtered pool, fall back to any with contrast
+        // slot3 (Accent): complement or triad colors are visually distinct;  when main is extreme lightness, prefer contrast-filtered pool, fall back to any with contrast
         const rawAccentPool = [
             ...(groups['complement'] ?? []),
             ...(groups['triad'] ?? []),
@@ -301,6 +305,7 @@ const actions = {
                 ),
             );
 
+        // finally, we assign the selected colors to their respective slots in the state; if any slot ended up without a color (which can happen if there are very few variations), we simply skip it to avoid errors
         for (const [slotNum, entry] of [
             [2, secondary],
             [3, accent],
@@ -311,6 +316,7 @@ const actions = {
                 // oxlint-disable-next-line no-continue
                 continue;
             }
+
             const rgb = hslToRgb(entry.hsl);
             const hex = rgbToHex(rgb);
             commit('SET_SLOT_COLOR', {
@@ -329,11 +335,13 @@ const actions = {
      * @param {'light' | 'dark'} type - text color variant to apply
      */
     SET_TEXT_COLOR({ commit, state }, type) {
-        const isLight = state.theme === 'light';
+        const isLightTheme = state.theme === 'light';
+
+        // are we setting the light text color or the dark text color.
         if (type === 'light') {
             commit(
                 'SET_TEXT_COLOR',
-                isLight
+                isLightTheme
                     ? {
                           hex: DEFAULT_LIGHT_COLORS.LIGHT_TEXT,
                           hsl: 'hsl(216, 56%, 91%)',
@@ -348,7 +356,7 @@ const actions = {
         } else if (type === 'dark') {
             commit(
                 'SET_TEXT_COLOR',
-                isLight
+                isLightTheme
                     ? {
                           hex: DEFAULT_LIGHT_COLORS.DARK_TEXT,
                           hsl: 'hsl(231, 25%, 20%)',

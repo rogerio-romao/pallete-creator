@@ -78,40 +78,54 @@ accordingly.
     });
 
     const store = useStore();
-    const labels = computed(() => store.state.labels);
-    const colorCopied = computed(() => store.state.copiedColor);
 
     const formats = ['hex', 'hsl', 'rgb'];
     const activeFormat = ref('hex');
 
-    const nextFormat = computed(() => {
-        const i = formats.indexOf(activeFormat.value);
-        return formats[(i + 1) % formats.length];
-    });
-
-    const cycleFormat = () => {
-        activeFormat.value = nextFormat.value ?? 'hex';
-    };
-
-    // Getting values to display in the slot
-
+    const labels = computed(() => store.state.labels);
+    const colorCopied = computed(() => store.state.copiedColor);
     const hsl = computed(() =>
         slotNumber === 1
             ? store.state.mainSlotColor.hsl
             : store.state.slotColors[`slot${slotNumber}`].hsl,
     );
-
     const rgb = computed(() =>
         slotNumber === 1
             ? store.state.mainSlotColor.rgb
             : store.state.slotColors[`slot${slotNumber}`].rgb,
     );
-
     const hex = computed(() =>
         slotNumber === 1
             ? store.state.mainSlotColor.hex
             : store.state.slotColors[`slot${slotNumber}`].hex,
     );
+
+    // Cycles through the color formats (hex, hsl, rgb) when the format toggle button is clicked
+    const nextFormat = computed(() => {
+        const i = formats.indexOf(activeFormat.value);
+        return formats[(i + 1) % formats.length];
+    });
+
+    // Getting the background color of the slot
+    const slotBg = computed(() =>
+        slotNumber === 1
+            ? store.state.mainHSL
+            : store.state.slotColors[`slot${slotNumber}`].hsl,
+    );
+
+    // Determines whether to use white or black text based on the lightness of the HSL color for better contrast (this is inside the color slot, for displaying the color code)
+    const lightOrDark = computed(() => {
+        const lum = Number.parseInt(hsl.value.split(',')[2], 10);
+        // oxlint-disable-next-line no-magic-numbers
+        return lum < 50 ? 'white' : 'black';
+    });
+
+    /**
+     * Updates the active color format to the next one in the cycle when the format toggle button is clicked.
+     */
+    const cycleFormat = () => {
+        activeFormat.value = nextFormat.value ?? 'hex';
+    };
 
     /**
      * Removes all spaces from a color code string before displaying it.
@@ -120,24 +134,9 @@ accordingly.
      */
     const format = (str) => str.replaceAll(' ', '');
 
-    // Getting the background color of the slot
-
-    const slotBg = computed(() =>
-        slotNumber === 1
-            ? store.state.mainHSL
-            : store.state.slotColors[`slot${slotNumber}`].hsl,
-    );
-
-    // Changes the text color of the slot to make it readable on light or dark backgrounds
-
-    const lightOrDark = computed(() => {
-        const lum = Number.parseInt(hsl.value.split(',')[2], 10);
-        // oxlint-disable-next-line no-magic-numbers
-        return lum < 50 ? 'white' : 'black';
-    });
-
-    // Paste a color from the mini palette to the slot
-
+    /**
+     * Dispatches the PASTE_COLOR action to the Vuex store with the current slot number when the color slot is clicked.
+     */
     const pasteColor = () => {
         store.dispatch('PASTE_COLOR', slotNumber);
     };
