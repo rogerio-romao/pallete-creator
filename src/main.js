@@ -1,10 +1,7 @@
 import { createApp } from 'vue';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import {
-    faCopy,
-    faLightbulb as faLightbulbRegular,
-    faWindowRestore,
-} from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import {
     faChevronCircleRight,
     faDice,
@@ -19,8 +16,11 @@ import {
     faVial,
     faWindowMinimize,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { dom, library } from '@fortawesome/fontawesome-svg-core';
+import {
+    faCopy,
+    faLightbulb as faLightbulbRegular,
+    faWindowRestore,
+} from '@fortawesome/free-regular-svg-icons';
 
 import store from './store';
 
