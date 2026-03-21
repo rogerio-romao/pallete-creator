@@ -1,7 +1,24 @@
 import { createApp } from 'vue';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import {
+    faCopy,
+    faLightbulb as faLightbulbRegular,
+    faWindowRestore,
+} from '@fortawesome/free-regular-svg-icons';
+import {
+    faChevronCircleRight,
+    faDice,
+    faExpandArrowsAlt,
+    faLightbulb,
+    faMoon,
+    faRandom,
+    faSave,
+    faSun,
+    faTimes,
+    faTrashAlt,
+    faVial,
+    faWindowMinimize,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { dom, library } from '@fortawesome/fontawesome-svg-core';
 
@@ -18,9 +35,27 @@ const initialTheme = savedTheme ?? (prefersDark ? 'dark' : 'light');
 document.documentElement.dataset['theme'] = initialTheme;
 store.commit('SET_THEME', initialTheme);
 
-library.add(fas);
-library.add(fab);
-library.add(far);
+library.add(
+    // brands
+    faGithub,
+    // regular
+    faCopy,
+    faLightbulbRegular,
+    faWindowRestore,
+    // solid
+    faChevronCircleRight,
+    faDice,
+    faExpandArrowsAlt,
+    faLightbulb,
+    faMoon,
+    faRandom,
+    faSave,
+    faSun,
+    faTimes,
+    faTrashAlt,
+    faVial,
+    faWindowMinimize,
+);
 dom.watch();
 
 const app = createApp(App);
