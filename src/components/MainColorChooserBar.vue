@@ -28,6 +28,7 @@ based on it.
                         placeholder="255,255,255"
                         :pattern="rgbPattern"
                         id="rgbInput"
+                        @input="normalizeColorSeparators"
                     />
                     <button type="submit" aria-label="Submit RGB color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -65,6 +66,7 @@ based on it.
                         placeholder="190,75,80"
                         :pattern="hslPattern"
                         id="hslInput"
+                        @input="normalizeColorSeparators"
                     />
                     <button type="submit" aria-label="Submit HSL color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -99,6 +101,34 @@ based on it.
     const hexPattern = '^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$';
     const rgbPattern = String.raw`\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b`;
     const hslPattern = String.raw`\b(([0-9]|[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|360))\b,\s*\b([0-9]|[1-9][0-9]|100)\b,\s*\b([0-9]|[1-9][0-9]|100)\b`;
+
+    const COLOR_CHANNEL_COUNT = 3;
+
+    /**
+     * Normalizes color input by replacing spaces with commas, capped at 3 values.
+     * @param {Event} e - The input event from an RGB or HSL text field.
+     */
+    const normalizeColorSeparators = (e) => {
+        const input = /** @type {HTMLInputElement} */ (e.target);
+        const cursorPos = input.selectionStart ?? 0;
+        const val = input.value;
+
+        let normalized = val
+            .replaceAll(/\s+/g, ',')
+            .replaceAll(/,+/g, ',')
+            .replace(/^,/, '');
+
+        const parts = normalized.split(',');
+        if (parts.length > COLOR_CHANNEL_COUNT) {
+            normalized = parts.slice(0, COLOR_CHANNEL_COUNT).join(',');
+        }
+
+        if (normalized !== val) {
+            input.value = normalized;
+            const lengthDiff = normalized.length - val.length;
+            input.setSelectionRange(cursorPos + lengthDiff, cursorPos + lengthDiff);
+        }
+    };
 
     /**
      * Generates a random HSL color and sets it as the main color in the store.
