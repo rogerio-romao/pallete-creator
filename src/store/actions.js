@@ -190,7 +190,7 @@ const actions = {
      * Trigerred when a user clicks on the "Randomize" button to fill the slots with random unique colors from the variations.
      * @param {ActionCtx} ctx - Vuex action context
      */
-    // oxlint-disable-next-line max-statements, max-lines-per-function
+    // oxlint-disable-next-line max-statements, max-lines-per-function, complexity
     SET_RANDOM_SCHEME({ commit, state, getters }) {
         const groups = getters.colorsByType;
         const all = getters.uniqueColors.filter(
@@ -200,7 +200,7 @@ const actions = {
             return;
         }
 
-        const used = new Set();
+        const used = new Set([state.mainHSL].filter(Boolean));
         const pickRandom = (
             /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
         ) => {
@@ -216,15 +216,47 @@ const actions = {
             return pick;
         };
 
-        // slot2 (Secondary): analogous colors are harmonious and close to the main hue
-        const secondary = pickRandom(groups['analogous'] ?? all);
+        const EXTREME_LIGHT_THRESHOLD = 75;
+        const EXTREME_DARK_THRESHOLD = 25;
+        const MIN_LIGHTNESS_DIFF = 20;
+        const mainLightness = state.mainHSL ? getLightness(state.mainHSL) : 50;
+        const isExtreme =
+            mainLightness > EXTREME_LIGHT_THRESHOLD ||
+            mainLightness < EXTREME_DARK_THRESHOLD;
 
-        // slot3 (Accent): complement or triad colors are visually distinct
-        const accentPool = [
+        const contrastFilter = (
+            /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
+        ) => {
+            if (!isExtreme) { return candidates; }
+            const filtered = candidates.filter(
+                (e) =>
+                    Math.abs(getLightness(e.hsl) - mainLightness) >=
+                    MIN_LIGHTNESS_DIFF,
+            );
+            return filtered.length > 0 ? filtered : candidates;
+        };
+
+        // slot2 (Secondary): analogous colors are harmonious and close to the main hue;
+        // when main is extreme lightness, prefer analogous with contrast, fall back to any with contrast
+        const secondaryPool = isExtreme
+            ? contrastFilter(groups['analogous'] ?? [])
+            : (groups['analogous'] ?? all);
+        const secondary =
+            pickRandom(secondaryPool.length > 0 ? secondaryPool : contrastFilter(all)) ??
+            pickRandom(all);
+
+        // slot3 (Accent): complement or triad colors are visually distinct;
+        // when main is extreme lightness, prefer contrast-filtered pool, fall back to any with contrast
+        const rawAccentPool = [
             ...(groups['complement'] ?? []),
             ...(groups['triad'] ?? []),
         ];
-        const accent = pickRandom(accentPool.length > 0 ? accentPool : all);
+        const accentPool = isExtreme
+            ? contrastFilter(rawAccentPool)
+            : rawAccentPool;
+        const accent =
+            pickRandom(accentPool.length > 0 ? accentPool : contrastFilter(all)) ??
+            pickRandom(all);
 
         // slot4 (Light): prefer colors with lightness >= 70; if none available (or all used), pick lightest unused
         const lightCandidates = all.filter((e) => getLightness(e.hsl) >= 70);
