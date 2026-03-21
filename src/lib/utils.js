@@ -213,7 +213,7 @@ export const generateComplement = (hsl) => {
     }
 
     const h2 = (h + 180) % MAX_HUE;
-    const h3 = Math.abs((h - 150) % MAX_HUE);
+    const h3 = ((h - 150) % MAX_HUE + MAX_HUE) % MAX_HUE;
     const h4 = (h + 150) % MAX_HUE;
     const l2 = (l - 30 + MAX_LIGHTNESS) % MAX_LIGHTNESS;
 
@@ -286,11 +286,11 @@ export const generateAnalogous = (hsl) => {
         return [];
     }
 
-    const h2 = Math.abs((h - 60) % MAX_HUE);
-    const h3 = Math.abs((h - 30) % MAX_HUE);
+    const h2 = ((h - 60) % MAX_HUE + MAX_HUE) % MAX_HUE;
+    const h3 = ((h - 30) % MAX_HUE + MAX_HUE) % MAX_HUE;
     const h4 = (h + 30) % MAX_HUE;
     const h5 = (h + 60) % MAX_HUE;
-    const h6 = Math.abs((h - 90) % MAX_HUE);
+    const h6 = ((h - 90) % MAX_HUE + MAX_HUE) % MAX_HUE;
     const h7 = (h + 90) % MAX_HUE;
 
     return [
@@ -314,13 +314,13 @@ export const generateSaturations = (hsl) => {
         return [];
     }
 
-    const s2 = Math.abs((s - 10) % MAX_SATURATION);
+    const s2 = ((s - 10) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
     const s3 = (s + 10) % MAX_SATURATION;
-    const s4 = Math.abs((s - 20) % MAX_SATURATION);
+    const s4 = ((s - 20) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
     const s5 = (s + 20) % MAX_SATURATION;
-    const s6 = Math.abs((s - 30) % MAX_SATURATION);
+    const s6 = ((s - 30) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
     const s7 = (s + 30) % MAX_SATURATION;
-    const s8 = Math.abs((s - 40) % MAX_SATURATION);
+    const s8 = ((s - 40) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
     const s9 = (s + 40) % MAX_SATURATION;
 
     return [

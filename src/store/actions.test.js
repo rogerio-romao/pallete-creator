@@ -318,7 +318,7 @@ describe('store actions', () => {
         it('does nothing when uniqueColors is empty', () => {
             const ctx = makeCtx({
                 getters: { colorsByType: {}, uniqueColors: [] },
-                state: { mainHSL: null },
+                state: { mainHSL: null, mainSlotColor: { hex: '' } },
             });
             actions.SET_RANDOM_SCHEME(ctx);
 
@@ -329,33 +329,33 @@ describe('store actions', () => {
         it('commits SET_SLOT_COLOR for 4 slots when enough colors exist', () => {
             const colors = [
                 {
-                    hex: '#000',
+                    hex: '#bf4040',
                     hsl: 'hsl(0, 50%, 50%)',
-                    rgb: 'rgb(0,0,0)',
+                    rgb: 'rgb(191,64,64)',
                     type: 'analogous',
                 },
                 {
-                    hex: '#000',
+                    hex: '#bfbf40',
                     hsl: 'hsl(60, 50%, 50%)',
-                    rgb: 'rgb(0,0,0)',
+                    rgb: 'rgb(191,191,64)',
                     type: 'complement',
                 },
                 {
-                    hex: '#000',
-                    hsl: 'hsl(120, 50%, 85%)',
-                    rgb: 'rgb(0,0,0)',
+                    hex: '#d9c2c2',
+                    hsl: 'hsl(0, 30%, 85%)',
+                    rgb: 'rgb(217,194,194)',
                     type: 'triad',
                 },
                 {
-                    hex: '#000',
-                    hsl: 'hsl(180, 50%, 15%)',
-                    rgb: 'rgb(0,0,0)',
+                    hex: '#263326',
+                    hsl: 'hsl(120, 15%, 17%)',
+                    rgb: 'rgb(38,51,38)',
                     type: 'mono',
                 },
                 {
-                    hex: '#000',
+                    hex: '#4040bf',
                     hsl: 'hsl(240, 50%, 50%)',
-                    rgb: 'rgb(0,0,0)',
+                    rgb: 'rgb(64,64,191)',
                     type: 'saturation',
                 },
             ];
@@ -370,7 +370,7 @@ describe('store actions', () => {
                     },
                     uniqueColors: colors,
                 },
-                state: { mainHSL: null },
+                state: { mainHSL: null, mainSlotColor: { hex: '' } },
             });
             actions.SET_RANDOM_SCHEME(ctx);
 
