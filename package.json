@@ -18,7 +18,7 @@
         "test:coverage": "vitest run --coverage",
         "test:ui": "vitest --ui --coverage.enabled=true",
         "typecheck": "vue-tsc --noEmit",
-        "deploy": "pnpm build && cp dist/index.html dist/200.html && surge dist/"
+        "release": "pnpm build && cp dist/index.html dist/200.html && surge dist/"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.0.0",
