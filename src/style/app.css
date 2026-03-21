@@ -204,26 +204,6 @@ h2 {
         transform: none;
     }
 
-    /* Mini-slots opt out of anchor positioning — use basic absolute positioning instead */
-    .mini-slot {
-        anchor-name: none;
-    }
-
-    .mini-slot::after {
-        position: absolute;
-        position-anchor: none;
-        inset-block-start: calc(100% + 10px);
-        inset-inline-start: 50%;
-        transform: translateX(-50%) translateY(-4px);
-        margin-block-start: 0;
-        position-area: none;
-        position-try-fallbacks: none;
-    }
-
-    .mini-slot:hover::after {
-        transform: translateX(-50%) translateY(0);
-    }
-
     .section-info::after {
         position-area: center inline-end;
         margin-block-start: -10px;
@@ -884,10 +864,11 @@ nav {
     border-radius: 4px;
     cursor: pointer;
     box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+    inset-block-start: 0;
 
     @media (prefers-reduced-motion: no-preference) {
         transition:
-            transform 0.12s ease,
+            inset-block-start 0.12s ease,
             box-shadow 0.12s ease;
     }
 
@@ -896,7 +877,7 @@ nav {
         z-index: 10;
 
         @media (prefers-reduced-motion: no-preference) {
-            transform: translateY(-2px);
+            inset-block-start: -2px;
             box-shadow: 0 2px 6px
                 color-mix(in srgb, var(--clr-light, #f4f4f5) 30%, transparent);
         }
