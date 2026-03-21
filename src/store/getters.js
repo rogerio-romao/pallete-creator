@@ -90,8 +90,8 @@ const getters = {
         const seen = new Set();
         const result = [];
         for (const entry of state.allColors) {
-            if (!seen.has(entry.hsl)) {
-                seen.add(entry.hsl);
+            if (!seen.has(entry.hex)) {
+                seen.add(entry.hex);
                 result.push(entry);
             }
         }

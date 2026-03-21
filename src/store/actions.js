@@ -209,25 +209,26 @@ const actions = {
     // oxlint-disable-next-line max-statements, max-lines-per-function, complexity
     SET_RANDOM_SCHEME({ commit, state, getters }) {
         const groups = getters.colorsByType;
+        const mainHex = state.mainSlotColor.hex;
         const all = getters.uniqueColors.filter(
-            (e) => e.hsl !== state.mainHSL && e.type !== 'main',
+            (e) => e.hex !== mainHex && e.type !== 'main',
         );
         if (all.length === 0) {
             return;
         }
 
-        const used = new Set([state.mainHSL].filter(Boolean));
+        const used = new Set([mainHex].filter(Boolean));
         const pickRandom = (
             /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
         ) => {
-            const available = candidates.filter((e) => !used.has(e.hsl));
+            const available = candidates.filter((e) => !used.has(e.hex));
             if (available.length === 0) {
                 return null;
             }
             const pick =
                 available[Math.floor(Math.random() * available.length)];
             if (pick) {
-                used.add(pick.hsl);
+                used.add(pick.hex);
             }
             return pick;
         };
