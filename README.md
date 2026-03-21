@@ -1,6 +1,7 @@
 ![palette creator logo](public/social-preview.png)
 
 # Palette Creator
+### V 1.0.0
 
 A fun little color palette tool for designers and developers. Pick a base color, explore variations built on color theory, fine-tune each slot, preview the result live on the UI, and export it as CSS variables — all in one place.
 
