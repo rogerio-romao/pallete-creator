@@ -87,9 +87,14 @@ const getters = {
      * @returns {Array<{ hex: string, hsl: string, rgb: string, type: string }>} An array of unique color entries, where each entry includes hex, hsl, rgb values and its generation type (e.g., 'complement', 'mono').
      */
     uniqueColors: (state) => {
-        const seen = new Set();
+        const mainHex = state.mainSlotColor?.hex;
+        const seen = new Set(mainHex ? [mainHex] : []);
         const result = [];
         for (const entry of state.allColors) {
+            if (entry.type === 'main') {
+                // oxlint-disable-next-line no-continue
+                continue;
+            }
             if (!seen.has(entry.hex)) {
                 seen.add(entry.hex);
                 result.push(entry);
