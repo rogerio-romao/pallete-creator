@@ -6,8 +6,8 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap');
 
 :root {
-    --clr-main: #031f25;
-    --clr-secondary: #03250a;
+    --clr-main: #062328;
+    --clr-secondary: #fb923c;
     --clr-light: #b9edf8;
     --clr-accent: #3bcced;
     --clr-dark: #0f0f0f;
@@ -332,10 +332,14 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 4px 16px 10px;
-    background-color: var(--clr-main, #18181b);
+    background-color: color-mix(
+        in srgb,
+        var(--clr-main, #062328) 95%,
+        var(--clr-accent, #3bcced) 5%
+    );
     color: var(--text-color, #a1a1aa);
     border-block-end: 1px solid
-        color-mix(in srgb, var(--clr-dark, #52525b) 40%, transparent 60%);
+        color-mix(in srgb, var(--clr-light, #52525b) 60%, transparent 40%);
 
     & .brand {
         font-family: 'JetBrains Mono', monospace;
@@ -768,7 +772,7 @@ nav {
     &::-webkit-slider-runnable-track {
         background: linear-gradient(
             to right,
-            var(--clr-accent, #14b8a6) var(--fill-percent, 0%),
+            var(--clr-secondary, #5eead4) var(--fill-percent, 0%),
             color-mix(in srgb, var(--clr-dark, #52525b) 60%, transparent 40%)
                 var(--fill-percent, 0%)
         );
@@ -810,7 +814,7 @@ nav {
 
     &::-moz-range-progress {
         block-size: 3px;
-        background: var(--clr-accent, #14b8a6);
+        background: var(--clr-secondary, #5eead4);
         border: 0;
         margin-block-start: 0;
     }
@@ -894,7 +898,7 @@ nav {
 }
 
 .mini-slot-copied {
-    outline: var(--clr-accent, #14b8a6) solid 2px;
+    outline: var(--clr-secondary, #5eead4) solid 2px;
     outline-offset: 2px;
 }
 
@@ -938,7 +942,7 @@ nav {
             var(--clr-dark, #52525b) 40%,
             var(--clr-main, #18181b) 60%
         );
-        border-color: var(--clr-accent, #14b8a6);
+        border-color: var(--clr-secondary, #5eead4);
     }
 }
 
