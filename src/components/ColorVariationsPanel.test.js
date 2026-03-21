@@ -86,8 +86,6 @@ describe('component ColorVariationsPanel', () => {
                 index: 0,
             }),
         );
-
-        dispatchSpy.mockRestore();
     });
 
     it('dispatches CLEAR_COPIED_COLOR when an already-selected slot is clicked', async () => {
@@ -99,7 +97,6 @@ describe('component ColorVariationsPanel', () => {
         await wrapper.find('[data-testid="mini-slot-0"]').trigger('click');
 
         expect(dispatchSpy).toHaveBeenCalledWith('CLEAR_COPIED_COLOR');
-        dispatchSpy.mockRestore();
     });
 
     it('marks copied slot with mini-slot-copied class', async () => {

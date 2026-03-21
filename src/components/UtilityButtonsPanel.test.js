@@ -109,6 +109,7 @@ describe('component UtilityButtonsPanel', () => {
     });
 
     it('show the one-shot button always, even when the full scheme is not set', () => {
+        store.state.allColors = [];
         expect(
             wrapper.find('[data-testid="one-shot-button"]').exists(),
         ).toBeTruthy();
