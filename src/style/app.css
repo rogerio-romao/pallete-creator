@@ -204,10 +204,24 @@ h2 {
         transform: none;
     }
 
+    /* Mini-slots opt out of anchor positioning — use basic absolute positioning instead */
+    .mini-slot {
+        anchor-name: none;
+    }
+
     .mini-slot::after {
         position: absolute;
-        position-area: block-end center;
-        position-try-fallbacks: flip-inline;
+        position-anchor: none;
+        inset-block-start: calc(100% + 10px);
+        inset-inline-start: 50%;
+        transform: translateX(-50%) translateY(-4px);
+        margin-block-start: 0;
+        position-area: none;
+        position-try-fallbacks: none;
+    }
+
+    .mini-slot:hover::after {
+        transform: translateX(-50%) translateY(0);
     }
 
     .section-info::after {
@@ -314,6 +328,9 @@ h2 {
     border-radius: 8px;
     padding: 16px 12px;
     margin-block-end: var(--mb-lg, 1rem);
+}
+
+.saved-palette-pane {
     overflow: hidden;
 }
 
