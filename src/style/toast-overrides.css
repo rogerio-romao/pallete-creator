@@ -41,7 +41,7 @@
 }
 
 .mosha__toast.warning {
-    background-color: var(--clr-secondary, #5eead4) !important;
+    background-color: var(--clr-secondary, #fb923c) !important;
     color: var(--clr-dark, #52525b) !important;
 }
 
