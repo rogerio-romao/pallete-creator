@@ -1,10 +1,10 @@
-![palette creator logo](src/assets/logo.png)
+![palette creator logo](public/social-preview.png)
 
 # Palette Creator
 
-A color palette tool for designers and developers. Pick a base color, explore variations built on color theory, fine-tune each slot, preview the result live on the UI, and export it as CSS variables — all in one place.
+A fun little color palette tool for designers and developers. Pick a base color, explore variations built on color theory, fine-tune each slot, preview the result live on the UI, and export it as CSS variables — all in one place.
 
-**[palette-creator.surge.sh](https://palette-creator.surge.sh/)**
+Visit: **[palette-creator.surge.sh](https://palette-creator.surge.sh/)**
 
 ---
 
@@ -14,9 +14,9 @@ A color palette tool for designers and developers. Pick a base color, explore va
 
 A random palette is generated when the app loads. From there you have a few options:
 
-- **One Shot** — generates a random color, builds a full scheme, and applies it to the UI in one click. Great for quick inspiration.
+- **One Shot** — generates a random color, builds a full scheme, and applies it to the UI in one click. Great for quick inspiration, and the main way i use it.
 - **Random** button — picks a random base color and regenerates all palette slots from it.
-- **Inputs** — enter a specific color in HEX, RGB, or HSL. All three are always in sync, so you can work in whichever format you prefer. There's also a color wheel picker.
+- **Inputs** — enter a color in HEX, RGB, or HSL. All three are always in sync, so you can work in whichever format you prefer. There's also a color wheel picker.
 
 Setting a new main color resets everything and recalculates the palette from scratch.
 
@@ -45,11 +45,13 @@ Each palette slot has its own H / S / L sliders for precise adjustments. You can
 ### Export and save
 
 - **Export CSS** — copies your palette as CSS custom properties, ready to paste into your project.
-- **Save Palette** — stores the palette in your browser's local storage. No account needed. Saved palettes appear below the main panel and can be reloaded or deleted at any time.
+- **Save Palette** — name and store the palette in your browser's local storage. No account needed. All your saved palettes appear on its own panel and can be reloaded or deleted at any time.
 
 ---
 
 ## Run locally
+
+If you want to, clone this repo, cd into it, and:
 
 ```bash
 pnpm install
