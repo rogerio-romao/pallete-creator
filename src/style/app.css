@@ -364,6 +364,11 @@ nav {
         & li {
             color: var(--text-color, #a1a1aa);
             cursor: pointer;
+
+            & a {
+                color: inherit;
+            }
+
             border-radius: 0;
             font-size: 0.8rem;
 

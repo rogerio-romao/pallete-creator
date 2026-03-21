@@ -21,6 +21,16 @@ and open the instructions modal.
                         @click="emit('openInstructionsModal')"
                         >Instructions</li
                     >
+                    <li data-tooltip="Star this repo">
+                        <a
+                            href="https://github.com/rogerio-romao/pallete-creator"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Star this repo"
+                        >
+                            <font-awesome-icon :icon="['fab', 'github']" />
+                        </a>
+                    </li>
                     <li
                         data-testid="theme-toggle"
                         :class="{ 'theme-toggle-disabled': isTesting }"
