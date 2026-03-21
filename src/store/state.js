@@ -1,4 +1,4 @@
-import DEFAULT_HEX_COLORS from '../lib/colors';
+import { DEFAULT_HEX_COLORS } from '../lib/colors';
 
 /** @typedef {Object} ColorSlot
  *  @property {string} hex - the hex value of the color

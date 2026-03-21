@@ -36,7 +36,14 @@ describe('component App.vue', () => {
     });
 
     it('shows utility buttons panel when colors are present', async () => {
-        store.state.allColors = [{ hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' }];
+        store.state.allColors = [
+            {
+                hex: '#ff0000',
+                hsl: 'hsl(0, 100%, 50%)',
+                rgb: 'rgb(255,0,0)',
+                type: 'complement',
+            },
+        ];
         await wrapper.vm.$nextTick();
 
         expect(
@@ -70,7 +77,6 @@ describe('component App.vue', () => {
     });
 
     it('opens and closes Instructions modal', async () => {
-        // Open modal via SiteHeader event
         await wrapper
             .findComponent({ name: 'SiteHeader' })
             .vm.$emit('openInstructionsModal');
@@ -78,7 +84,6 @@ describe('component App.vue', () => {
 
         expect(wrapper.vm.showInstructionsModal).toBeTruthy();
 
-        // Close modal via @close event
         const instructionsModal = wrapper.findComponent({
             name: 'InstructionsModal',
         });
@@ -91,15 +96,7 @@ describe('component App.vue', () => {
         expect(wrapper.vm.showInstructionsModal).toBeFalsy();
     });
 
-    // oxlint-disable-next-line max-lines-per-function
     it('opens and closes Copy modal', async () => {
-        store.state.allColors = [
-            { hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' },
-            { hex: '#00ff00', hsl: 'hsl(120, 100%, 50%)', rgb: 'rgb(0,255,0)', type: 'triad' },
-            { hex: '#0000ff', hsl: 'hsl(240, 100%, 50%)', rgb: 'rgb(0,0,255)', type: 'analogous' },
-        ];
-        await wrapper.vm.$nextTick();
-
         await wrapper
             .findComponent({ name: 'UtilityButtonsPanel' })
             .vm.$emit('copyPalette');
@@ -116,13 +113,11 @@ describe('component App.vue', () => {
 
         await exportCssModal.vm.$emit('close');
         await wrapper.vm.$nextTick();
+
         expect(wrapper.vm.showCopyModal).toBeFalsy();
     });
 
     it('opens and closes SavePalette modal', async () => {
-        store.state.allColors = [{ hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' }];
-        await wrapper.vm.$nextTick();
-
         await wrapper
             .findComponent({ name: 'UtilityButtonsPanel' })
             .vm.$emit('savePalette');

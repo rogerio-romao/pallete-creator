@@ -9,7 +9,7 @@
  */
 const getters = {
     /**
-     * Groups unique color entries by their generation type, excluding the main color.
+     * Groups unique color entries by their generation type, excluding the main color. It returns an object where each key is a generation type and each value is an array of colors belonging to that type.
      * @param {State} _state - Vuex root state
      * @param {Getters} rootGetters - Vuex getters
      * @returns {Record<string, Array<{ hex: string, hsl: string, rgb: string, type: string }>>} - An object where keys are generation types (e.g., 'complement', 'mono') and values are arrays of unique color entries of that type.
@@ -87,8 +87,10 @@ const getters = {
      * @returns {Array<{ hex: string, hsl: string, rgb: string, type: string }>} An array of unique color entries, where each entry includes hex, hsl, rgb values and its generation type (e.g., 'complement', 'mono').
      */
     uniqueColors: (state) => {
+        // Use a Set to track seen hex values for deduplication, starting with the main slot color if it exists
         const mainHex = state.mainSlotColor?.hex;
         const seen = new Set(mainHex ? [mainHex] : []);
+
         const result = [];
         for (const entry of state.allColors) {
             if (entry.type === 'main') {
@@ -100,6 +102,7 @@ const getters = {
                 result.push(entry);
             }
         }
+
         return result;
     },
 };

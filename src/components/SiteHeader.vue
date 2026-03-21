@@ -16,11 +16,13 @@ and open the instructions modal.
             <!-- right side nav  -->
             <div class="nav-links">
                 <ul>
+                    <!-- instructions -->
                     <li
                         data-testid="instructions-link"
                         @click="emit('openInstructionsModal')"
                         >Instructions</li
                     >
+                    <!-- github link -->
                     <li data-tooltip="Star this repo">
                         <a
                             href="https://github.com/rogerio-romao/pallete-creator"
@@ -31,6 +33,7 @@ and open the instructions modal.
                             <font-awesome-icon :icon="['fab', 'github']" />
                         </a>
                     </li>
+                    <!-- theme toggle -->
                     <li
                         data-testid="theme-toggle"
                         :class="{ 'theme-toggle-disabled': isTesting }"
@@ -45,6 +48,7 @@ and open the instructions modal.
                     >
                         <font-awesome-icon :icon="isDark ? 'sun' : 'moon'" />
                     </li>
+                    <!-- fullscreen toggle -->
                     <li
                         data-testid="fullscreen-link-minimised"
                         v-if="!isFullscreen"
@@ -76,6 +80,7 @@ and open the instructions modal.
     const store = useStore();
 
     const isFullscreen = ref(false);
+
     const isDark = computed(() => store.state.theme === 'dark');
     const isTesting = computed(() => store.state.isTestingColorScheme);
 

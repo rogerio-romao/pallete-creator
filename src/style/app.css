@@ -69,6 +69,10 @@
     margin-block-end: var(--mb-sm, 0.5rem);
 }
 
+.fa-window-minimize {
+    margin-block-end: 5px;
+}
+
 /* --------- GLOBAL ----------  */
 
 html {
@@ -407,10 +411,6 @@ nav {
     }
 }
 
-.fa-window-minimize {
-    margin-block-end: 5px;
-}
-
 /* Media Queries  */
 
 /* small  */
@@ -652,7 +652,6 @@ nav {
 }
 
 /* ----- COLOR PALETTE PANEL ----- */
-
 .palette-slots {
     display: grid;
     justify-content: center;
@@ -718,6 +717,42 @@ nav {
     letter-spacing: 0.5px;
     margin-block-end: var(--mb-sm, 0.25rem);
     position: relative;
+}
+
+/* ----- FORMAT TOGGLE ----- */
+.format-toggle {
+    font-size: 0.55rem;
+    padding: 1px 4px;
+    border: 1px solid
+        color-mix(in srgb, var(--clr-dark, #52525b) 60%, transparent 40%);
+    border-radius: 3px;
+    background: color-mix(
+        in srgb,
+        var(--clr-main, #18181b) 60%,
+        transparent 40%
+    );
+    cursor: pointer;
+    margin-block: 2px 4px;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition:
+            background-color 0.15s ease,
+            border-color 0.15s ease,
+            color 0.15s ease;
+    }
+
+    &:hover {
+        background: color-mix(
+            in srgb,
+            var(--clr-main, #18181b) 80%,
+            transparent 20%
+        );
+        border-color: var(--clr-accent, #14b8a6);
+        color: var(--clr-accent, #14b8a6);
+    }
 }
 
 .palette-slot-controls {
@@ -853,7 +888,7 @@ nav {
     }
 }
 
-/* ----- MINI SLOTS PANEL ----- */
+/* ----- VARIATIONS PANEL ----- */
 .mini-slots {
     display: grid;
     grid-template-columns: repeat(auto-fill, var(--mini-slot-size, 28px));
@@ -1000,43 +1035,7 @@ nav {
     opacity: 0;
 }
 
-/* ----- FORMAT TOGGLE ----- */
-.format-toggle {
-    font-size: 0.55rem;
-    padding: 1px 4px;
-    border: 1px solid
-        color-mix(in srgb, var(--clr-dark, #52525b) 60%, transparent 40%);
-    border-radius: 3px;
-    background: color-mix(
-        in srgb,
-        var(--clr-main, #18181b) 60%,
-        transparent 40%
-    );
-    cursor: pointer;
-    margin-block: 2px 4px;
-    letter-spacing: 0.3px;
-    font-weight: 600;
-    text-transform: uppercase;
-
-    @media (prefers-reduced-motion: no-preference) {
-        transition:
-            background-color 0.15s ease,
-            border-color 0.15s ease,
-            color 0.15s ease;
-    }
-
-    &:hover {
-        background: color-mix(
-            in srgb,
-            var(--clr-main, #18181b) 80%,
-            transparent 20%
-        );
-        border-color: var(--clr-accent, #14b8a6);
-        color: var(--clr-accent, #14b8a6);
-    }
-}
-
-/* tooltip info icons */
+/* PANEL INFO TOOLTIPS */
 .section-info {
     display: inline-flex;
     flex-wrap: wrap;
@@ -1123,6 +1122,110 @@ nav {
         font-size: 0.75rem;
         font-weight: 400;
     }
+}
+
+/* ----- EXPORT MODAL ----- */
+.modal-export {
+    min-inline-size: 480px;
+
+    .modal-body {
+        inline-size: 100%;
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 4px;
+        justify-content: center;
+
+        [data-testid='syntax-toggle'] {
+            inline-size: calc(4ch + 22px);
+            text-align: center;
+        }
+    }
+
+    .modal-code {
+        border: 1px solid var(--clr-main, #404f4c);
+        text-align: start;
+        padding: 1rem;
+        background-color: var(--clr-main, #404f4c);
+        margin-block-start: 1.5rem;
+        user-select: all;
+        cursor: pointer;
+
+        & p {
+            font-size: 0.8rem;
+            line-height: 1.4rem;
+        }
+    }
+
+    .modal-code-info {
+        text-align: center;
+        color: var(--clr-light, #f4f4f5);
+        margin-block-end: 0.3rem;
+        font-weight: 600;
+    }
+
+    .modal-footer {
+        justify-self: start;
+        align-content: center;
+    }
+}
+
+.delete-modal .delete-modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    & button {
+        flex: 1;
+        min-block-size: 2.25rem;
+        padding-block: 0.4rem;
+        box-sizing: border-box;
+    }
+}
+
+/* ----- SAVE MODAL ----- */
+.modal-save .modal-input {
+    margin: var(--mb-lg, 1rem);
+
+    input {
+        background: color-mix(
+            in srgb,
+            var(--clr-light, #f4f4f5) 10%,
+            transparent 90%
+        );
+        border: 1px solid
+            color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
+        border-radius: 4px;
+        color: var(--text-color, #d1d5db);
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        padding: 6px 12px;
+        inline-size: 100%;
+        box-sizing: border-box;
+        font-family: inherit;
+
+        &:focus-visible {
+            outline: none;
+            border-color: var(--clr-accent, #0d9488);
+            box-shadow: 0 0 0 2px var(--clr-accent, #0d9488);
+        }
+
+        &::placeholder {
+            color: var(--text-color, #d1d5db);
+            opacity: 0.4;
+        }
+    }
+}
+
+.modal-save .modal-input-invalid {
+    outline: var(--clr-accent, #14b8a6) solid 5px;
+}
+
+.modal-save .modal-footer button {
+    margin-inline-end: 2px;
+    padding: 4px 8px;
 }
 
 /* ----- MODALS COMMON ----- */
@@ -1232,110 +1335,6 @@ nav {
     .modal-leave-to {
         transform: translateX(-100%);
     }
-}
-
-/* ----- EXPORT MODAL ----- */
-.modal-export {
-    min-inline-size: 480px;
-
-    .modal-body {
-        inline-size: 100%;
-    }
-
-    .modal-buttons {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 4px;
-        justify-content: center;
-
-        [data-testid='syntax-toggle'] {
-            inline-size: calc(4ch + 22px);
-            text-align: center;
-        }
-    }
-
-    .modal-code {
-        border: 1px solid var(--clr-main, #404f4c);
-        text-align: start;
-        padding: 1rem;
-        background-color: var(--clr-main, #404f4c);
-        margin-block-start: 1.5rem;
-        user-select: all;
-        cursor: pointer;
-
-        & p {
-            font-size: 0.8rem;
-            line-height: 1.4rem;
-        }
-    }
-
-    .modal-code-info {
-        text-align: center;
-        color: var(--clr-light, #f4f4f5);
-        margin-block-end: 0.3rem;
-        font-weight: 600;
-    }
-
-    .modal-footer {
-        justify-self: start;
-        align-content: center;
-    }
-}
-
-.delete-modal .delete-modal-footer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-
-    & button {
-        flex: 1;
-        min-block-size: 2.25rem;
-        padding-block: 0.4rem;
-        box-sizing: border-box;
-    }
-}
-
-/* ----- SAVE MODAL ----- */
-.modal-save .modal-input {
-    margin: var(--mb-lg, 1rem);
-
-    input {
-        background: color-mix(
-            in srgb,
-            var(--clr-light, #f4f4f5) 10%,
-            transparent 90%
-        );
-        border: 1px solid
-            color-mix(in srgb, var(--clr-dark, #52525b) 50%, transparent 50%);
-        border-radius: 4px;
-        color: var(--text-color, #d1d5db);
-        font-size: 0.75rem;
-        letter-spacing: 0.04em;
-        padding: 6px 12px;
-        inline-size: 100%;
-        box-sizing: border-box;
-        font-family: inherit;
-
-        &:focus-visible {
-            outline: none;
-            border-color: var(--clr-accent, #0d9488);
-            box-shadow: 0 0 0 2px var(--clr-accent, #0d9488);
-        }
-
-        &::placeholder {
-            color: var(--text-color, #d1d5db);
-            opacity: 0.4;
-        }
-    }
-}
-
-.modal-save .modal-input-invalid {
-    outline: var(--clr-accent, #14b8a6) solid 5px;
-}
-
-.modal-save .modal-footer button {
-    margin-inline-end: 2px;
-    padding: 4px 8px;
 }
 
 /* ---- LIGHT MODE OVERRIDES ---- */

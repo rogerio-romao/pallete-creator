@@ -13,10 +13,7 @@ failure of the save operation.
         aria-labelledby="save-palette-title"
         @click.self="$emit('close')"
     >
-        <div
-            class="modal-wrapper"
-            data-testid="modal-wrapper"
-        >
+        <div class="modal-wrapper" data-testid="modal-wrapper">
             <div class="modal-container">
                 <form
                     @submit.prevent="savePalette"
@@ -95,6 +92,9 @@ failure of the save operation.
 
     /** @type {import('vue').Ref<HTMLElement | null>} */
     const nameInput = ref(null);
+    const paletteName = ref('');
+    const placeholder = ref('Palette name');
+    const invalid = ref(false);
 
     onMounted(() => {
         nameInput.value?.focus();
@@ -114,10 +114,6 @@ failure of the save operation.
             emit('close');
         }
     };
-
-    const paletteName = ref('');
-    const placeholder = ref('Palette name');
-    const invalid = ref(false);
 
     /** Saves the current palette with the provided name. Validates the input and
      * displays toast notifications based on the success or failure of the save operation. */

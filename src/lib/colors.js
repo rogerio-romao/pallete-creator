@@ -1,6 +1,6 @@
 // Centralized color constants for palette creator
 
-const DEFAULT_HEX_COLORS = {
+export const DEFAULT_HEX_COLORS = {
     ACCENT: '#14b8a6',
     DARK: '#52525b',
     DARK_TEXT: '#0f131a',
@@ -19,5 +19,3 @@ export const DEFAULT_LIGHT_COLORS = {
     MAIN: '#f9f9fb',
     SECONDARY: '#555f91',
 };
-
-export default DEFAULT_HEX_COLORS;

@@ -5,7 +5,7 @@ import store from '../store/index';
 import SiteHeader from './SiteHeader.vue';
 
 // oxlint-disable-next-line max-lines-per-function
-describe('componentSiteHeader', () => {
+describe('component SiteHeader', () => {
     /** @type {import('@vue/test-utils').VueWrapper} */
     let wrapper;
 
@@ -64,6 +64,7 @@ describe('componentSiteHeader', () => {
         await wrapper
             .find('[data-testid="fullscreen-link-maximised"]')
             .trigger('click');
+
         expect(mockExitFullscreen).toHaveBeenCalledWith();
         expect(
             wrapper.find('[data-testid="fullscreen-link-minimised"]').exists(),
@@ -81,6 +82,7 @@ describe('componentSiteHeader', () => {
         store.commit('SET_IS_TESTING', false);
         await wrapper.vm.$nextTick();
         const toggle = wrapper.find('[data-testid="theme-toggle"]');
+
         expect(toggle.classes()).not.toContain('theme-toggle-disabled');
         expect(toggle.attributes('title')).toMatch(
             /switch to (light|dark) mode/i,
@@ -91,6 +93,7 @@ describe('componentSiteHeader', () => {
         store.commit('SET_IS_TESTING', true);
         await wrapper.vm.$nextTick();
         const toggle = wrapper.find('[data-testid="theme-toggle"]');
+
         expect(toggle.classes()).toContain('theme-toggle-disabled');
         expect(toggle.attributes('title')).toBe(
             'Reset site colors before switching themes',
@@ -101,6 +104,7 @@ describe('componentSiteHeader', () => {
         store.commit('SET_IS_TESTING', true);
         await wrapper.vm.$nextTick();
         const themeBefore = store.state.theme;
+
         await wrapper.find('[data-testid="theme-toggle"]').trigger('click');
         expect(store.state.theme).toBe(themeBefore);
     });
@@ -109,6 +113,7 @@ describe('componentSiteHeader', () => {
         store.commit('SET_IS_TESTING', false);
         await wrapper.vm.$nextTick();
         const themeBefore = store.state.theme;
+
         await wrapper.find('[data-testid="theme-toggle"]').trigger('click');
         expect(store.state.theme).not.toBe(themeBefore);
     });

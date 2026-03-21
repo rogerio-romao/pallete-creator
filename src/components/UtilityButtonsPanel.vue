@@ -2,12 +2,13 @@
 
 <template>
     <!-- wrapper  -->
-    <div class="utility-buttons" data-test="utility-buttons">
+    <div class="utility-buttons" data-testid="utility-buttons">
         <!-- individual buttons  -->
+
         <button
             class="main-button"
             @click="oneShotPalette"
-            data-test="one-shot-button"
+            data-testid="one-shot-button"
             data-tooltip="Random color + random scheme + apply to UI in one click"
         >
             <i class="fas fa-dice"></i>
@@ -17,7 +18,7 @@
         <button
             class="secondary-button"
             @click="setRandomScheme"
-            data-test="random-scheme-button"
+            data-testid="random-scheme-button"
             data-tooltip="Randomize all 5 slots"
         >
             <i class="fas fa-random" title="Generate random scheme" />
@@ -27,7 +28,7 @@
         <button
             v-if="showButtons"
             class="secondary-button"
-            data-test="test-palette-button"
+            data-testid="test-palette-button"
             data-tooltip="Apply this palette to the UI so you can preview it live"
             @click="setCssVars"
         >
@@ -37,9 +38,12 @@
 
         <button
             v-if="showButtons"
-            :class="['secondary-button', { 'reset-highlight': store.state.isTestingColorScheme }]"
+            :class="[
+                'secondary-button',
+                { 'reset-highlight': store.state.isTestingColorScheme },
+            ]"
             @click="resetSiteColors"
-            data-test="reset-site-colors-button"
+            data-testid="reset-site-colors-button"
             data-tooltip="Restore the UI to its default colors"
         >
             <i class="far fa-window-restore"></i>
@@ -49,7 +53,7 @@
         <button
             v-if="showButtons"
             class="secondary-button"
-            data-test="set-light-text-button"
+            data-testid="set-light-text-button"
             data-tooltip="Set text color to light"
             @click="setLightText"
         >
@@ -60,7 +64,7 @@
         <button
             v-if="showButtons"
             class="secondary-button"
-            data-test="set-dark-text-button"
+            data-testid="set-dark-text-button"
             data-tooltip="Set text color to dark"
             @click="setDarkText"
         >
@@ -71,7 +75,7 @@
         <button
             v-if="showButtons"
             class="secondary-button"
-            data-test="export-css-button"
+            data-testid="export-css-button"
             data-tooltip="Copy the palette as CSS variables to your clipboard"
             @click="copyPalette"
         >
@@ -82,7 +86,7 @@
         <button
             v-if="showButtons"
             class="secondary-button"
-            data-test="save-palette-button"
+            data-testid="save-palette-button"
             data-tooltip="Save this palette to local storage"
             @click="savePalette"
         >
@@ -96,7 +100,7 @@
     import { computed } from 'vue';
     import { useStore } from 'vuex';
 
-    import DEFAULT_HEX_COLORS, { DEFAULT_LIGHT_COLORS } from '../lib/colors';
+    import { DEFAULT_HEX_COLORS, DEFAULT_LIGHT_COLORS } from '../lib/colors';
 
     const emit = defineEmits(['copyPalette', 'savePalette']);
 
@@ -196,8 +200,15 @@
             store.state.theme === 'dark'
                 ? store.state.slotColors.slot4
                 : store.state.slotColors.slot5;
-        document.documentElement.style.setProperty('--text-color', textSlot.hex);
-        store.commit('SET_TEXT_COLOR', { hex: textSlot.hex, hsl: textSlot.hsl, rgb: textSlot.rgb });
+        document.documentElement.style.setProperty(
+            '--text-color',
+            textSlot.hex,
+        );
+        store.commit('SET_TEXT_COLOR', {
+            hex: textSlot.hex,
+            hsl: textSlot.hsl,
+            rgb: textSlot.rgb,
+        });
 
         store.commit('SET_IS_TESTING', true);
     };
