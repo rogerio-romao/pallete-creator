@@ -89,7 +89,11 @@ describe('store actions', () => {
                 .fn()
                 .mockReturnValue(['hsl(120, 50%, 50%)', 'hsl(240, 50%, 50%)']);
 
-            actions.GENERATE_VARIATIONS(ctx, { color: 'hsl(0, 50%, 50%)', fn, type: '' });
+            actions.GENERATE_VARIATIONS(ctx, {
+                color: 'hsl(0, 50%, 50%)',
+                fn,
+                type: '',
+            });
 
             expect(fn).toHaveBeenCalledWith('hsl(0, 50%, 50%)');
             expect(ctx.commit).toHaveBeenCalledTimes(2);
@@ -286,23 +290,25 @@ describe('store actions', () => {
                     hex: '#0f0',
                     hsl: 'hsl(120, 100%, 50%)',
                     rgb: 'rgb(0,255,0)',
-                    type: 'complement',
+                    type: 'secondary',
                 },
                 {
                     hex: '#00f',
                     hsl: 'hsl(240, 100%, 50%)',
                     rgb: 'rgb(0,0,255)',
-                    type: 'triad',
+                    type: 'accent',
                 },
             ]);
 
             expect(ctx.dispatch).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
                 hsl: 'hsl(120, 100%, 50%)',
                 slot: 2,
+                type: 'secondary',
             });
             expect(ctx.dispatch).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
                 hsl: 'hsl(240, 100%, 50%)',
                 slot: 3,
+                type: 'accent',
             });
         });
     });
@@ -376,6 +382,8 @@ describe('store actions', () => {
             for (let i = 0; i < calls.length; i++) {
                 const [, payload] = /** @type {[string, any]} */ (calls[i]);
                 expect(payload.slot).toBe(`slot${i + 2}`);
+                const expectedTypes = ['secondary', 'accent', 'light', 'dark'];
+                expect(payload.type).toBe(expectedTypes[i]);
             }
         });
     });

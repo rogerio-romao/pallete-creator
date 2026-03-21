@@ -18,11 +18,36 @@ describe('component UtilityButtonsPanel', () => {
         Object.assign(store.state, stateFactory());
         store.state.mainHSL = 'hsl(20, 20%, 20%)';
         store.state.allColors = [
-            { hex: '#000000', hsl: 'hsl(180, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'analogous' },
-            { hex: '#000000', hsl: 'hsl(200, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'complement' },
-            { hex: '#000000', hsl: 'hsl(220, 50%, 85%)', rgb: 'rgb(0,0,0)', type: 'triad' },
-            { hex: '#000000', hsl: 'hsl(240, 50%, 15%)', rgb: 'rgb(0,0,0)', type: 'mono' },
-            { hex: '#000000', hsl: 'hsl(260, 50%, 50%)', rgb: 'rgb(0,0,0)', type: 'saturation' },
+            {
+                hex: '#40BFBF',
+                hsl: 'hsl(180, 50%, 50%)',
+                rgb: 'rgb(64,191,191)',
+                type: 'analogous',
+            },
+            {
+                hex: '#4080BF',
+                hsl: 'hsl(200, 50%, 50%)',
+                rgb: 'rgb(64,128,191)',
+                type: 'complement',
+            },
+            {
+                hex: '#B3C4D6',
+                hsl: 'hsl(220, 50%, 85%)',
+                rgb: 'rgb(179,196,214)',
+                type: 'triad',
+            },
+            {
+                hex: '#13133D',
+                hsl: 'hsl(240, 50%, 15%)',
+                rgb: 'rgb(19,19,61)',
+                type: 'mono',
+            },
+            {
+                hex: '#8040BF',
+                hsl: 'hsl(260, 50%, 50%)',
+                rgb: 'rgb(128,64,191)',
+                type: 'saturation',
+            },
         ];
 
         wrapper = mount(UtilityButtonsPanel, {

@@ -31,25 +31,25 @@ const mutations = {
                 hex: '',
                 hsl: '',
                 rgb: '',
-                type: 'complement',
+                type: 'secondary',
             },
             slot3: {
                 hex: '',
                 hsl: '',
                 rgb: '',
-                type: 'mono',
+                type: 'accent',
             },
             slot4: {
                 hex: '',
                 hsl: '',
                 rgb: '',
-                type: 'triad',
+                type: 'light',
             },
             slot5: {
                 hex: '',
                 hsl: '',
                 rgb: '',
-                type: 'saturation',
+                type: 'dark',
             },
         };
     },
@@ -115,12 +115,15 @@ const mutations = {
     /**
      * Sets the color values for a specific slot in the state.
      * @param {State} state - The Vuex state object.
-     * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string }} payload - The slot identifier and color values.
+     * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string, type?: string }} payload - The slot identifier and color values.
      */
-    SET_SLOT_COLOR(state, { slot, hsl, rgb, hex }) {
+    SET_SLOT_COLOR(state, { slot, hsl, rgb, hex, type }) {
         state.slotColors[slot].hsl = hsl;
         state.slotColors[slot].rgb = rgb;
         state.slotColors[slot].hex = hex;
+        if (type) {
+            state.slotColors[slot].type = type;
+        }
     },
 
     /**

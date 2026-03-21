@@ -77,11 +77,14 @@ describe('componentSiteHeader', () => {
         expect(wrapper.emitted('openInstructionsModal')).toBeTruthy();
     });
 
-    it('theme toggle is enabled and shows correct tooltip when not testing', () => {
+    it('theme toggle is enabled and shows correct tooltip when not testing', async () => {
         store.commit('SET_IS_TESTING', false);
+        await wrapper.vm.$nextTick();
         const toggle = wrapper.find('[data-testid="theme-toggle"]');
         expect(toggle.classes()).not.toContain('theme-toggle-disabled');
-        expect(toggle.attributes('title')).toMatch(/switch to (light|dark) mode/i);
+        expect(toggle.attributes('title')).toMatch(
+            /switch to (light|dark) mode/i,
+        );
     });
 
     it('theme toggle is disabled and shows disabled tooltip when testing', async () => {

@@ -22,6 +22,18 @@ import {
 } from '../lib/utils';
 
 /**
+ * Returns the semantic role for a generated palette slot.
+ * @param {number} slotNum - the palette slot number
+ * @returns {'secondary' | 'accent' | 'light' | 'dark'} The semantic role for the slot.
+ */
+const getSlotRole = (slotNum) => {
+    const slotRoles = ['secondary', 'accent', 'light', 'dark'];
+    return /** @type {'secondary' | 'accent' | 'light' | 'dark'} */ (
+        slotRoles[slotNum - 2] ?? 'secondary'
+    );
+};
+
+/**
  * Vuex actions for the palette creator app. These actions handle user interactions and async operations, committing mutations to update the state accordingly.
  * @module store/actions
  */
@@ -182,7 +194,11 @@ const actions = {
         dispatch('SET_MAIN_COLOR', main.hsl);
         for (const [index, slot] of others.entries()) {
             // oxlint-disable-next-line no-magic-numbers -- the first slot is text color and the second slot is the main color, so the generated variations start from slot 2
-            dispatch('UPDATE_SLOT_COLOR', { hsl: slot.hsl, slot: index + 2 });
+            dispatch('UPDATE_SLOT_COLOR', {
+                hsl: slot.hsl,
+                slot: index + 2,
+                type: slot.type,
+            });
         }
     },
 
@@ -227,7 +243,9 @@ const actions = {
         const contrastFilter = (
             /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
         ) => {
-            if (!isExtreme) { return candidates; }
+            if (!isExtreme) {
+                return candidates;
+            }
             const filtered = candidates.filter(
                 (e) =>
                     Math.abs(getLightness(e.hsl) - mainLightness) >=
@@ -242,8 +260,9 @@ const actions = {
             ? contrastFilter(groups['analogous'] ?? [])
             : (groups['analogous'] ?? all);
         const secondary =
-            pickRandom(secondaryPool.length > 0 ? secondaryPool : contrastFilter(all)) ??
-            pickRandom(all);
+            pickRandom(
+                secondaryPool.length > 0 ? secondaryPool : contrastFilter(all),
+            ) ?? pickRandom(all);
 
         // slot3 (Accent): complement or triad colors are visually distinct;
         // when main is extreme lightness, prefer contrast-filtered pool, fall back to any with contrast
@@ -255,8 +274,9 @@ const actions = {
             ? contrastFilter(rawAccentPool)
             : rawAccentPool;
         const accent =
-            pickRandom(accentPool.length > 0 ? accentPool : contrastFilter(all)) ??
-            pickRandom(all);
+            pickRandom(
+                accentPool.length > 0 ? accentPool : contrastFilter(all),
+            ) ?? pickRandom(all);
 
         // slot4 (Light): prefer colors with lightness >= 70; if none available (or all used), pick lightest unused
         const lightCandidates = all.filter((e) => getLightness(e.hsl) >= 70);
@@ -297,6 +317,7 @@ const actions = {
                 hsl: entry.hsl,
                 rgb,
                 slot: `slot${slotNum}`,
+                type: getSlotRole(Number(slotNum)),
             });
         }
     },
@@ -361,12 +382,12 @@ const actions = {
     /**
      * Trigerred when a user updates the color of a specific slot. Commits mutations to set the new color values for the target slot based on the provided HSL color.
      * @param {ActionCtx} ctx - Vuex action context
-     * @param {{ slot: number, hsl: string }} payload - target slot number and HSL color to set
+     * @param {{ slot: number, hsl: string, type?: string }} payload - target slot number, HSL color, and optional type to set
      */
-    UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
+    UPDATE_SLOT_COLOR({ commit }, { slot, hsl, type }) {
         const rgb = hslToRgb(hsl);
         const hex = rgbToHex(rgb);
-        commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}` });
+        commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}`, type });
     },
 };
 
