@@ -20,18 +20,15 @@ based on it.
         <div class="inputs-wrapper">
             <!-- rgb input  -->
             <form @submit.prevent="submitRgb" data-testid="rgb-form">
-                <div class="input-wrapper">
-                    <label for="rgbInput" class="sr-only"
-                        >RGB color value</label
-                    >
+                <div class="input-wrapper" data-tooltip="RGB — e.g. 255,120,80">
+                    <label for="rgbInput" class="input-label">RGB</label>
                     <input
                         type="text"
                         data-testid="rgb-input"
-                        placeholder="RGB - 255,255,255"
-                        title="Enter 3 numbers between 0 and 255, separated by commas"
+                        placeholder="255,255,255"
                         :pattern="rgbPattern"
                         id="rgbInput"
-                        aria-label="RGB color value"
+                        @input="normalizeColorSeparators"
                     />
                     <button type="submit" aria-label="Submit RGB color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -41,16 +38,17 @@ based on it.
 
             <!-- hex input  -->
             <form @submit.prevent="submitHex" data-testid="hex-form">
-                <div class="input-wrapper">
-                    <label for="hexInput" class="sr-only">Hex color code</label>
+                <div
+                    class="input-wrapper"
+                    data-tooltip="HEX — e.g. ff7850 or #ff7850"
+                >
+                    <label for="hexInput" class="input-label">HEX</label>
                     <input
                         type="text"
                         data-testid="hex-input"
-                        placeholder="HEX # - ffffff"
-                        title="Enter a hex color code, without the #"
+                        placeholder="ffffff"
                         :pattern="hexPattern"
                         id="hexInput"
-                        aria-label="Hex color code"
                     />
                     <button type="submit" aria-label="Submit hex color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -60,18 +58,15 @@ based on it.
 
             <!-- hsl input  -->
             <form @submit.prevent="submitHsl" data-testid="hsl-form">
-                <div class="input-wrapper">
-                    <label for="hslInput" class="sr-only"
-                        >HSL color value</label
-                    >
+                <div class="input-wrapper" data-tooltip="HSL — e.g. 190,75,80">
+                    <label for="hslInput" class="input-label">HSL</label>
                     <input
                         type="text"
                         data-testid="hsl-input"
-                        placeholder="HSL - 190,75,80"
-                        title="Enter H between 0 and 360, then S and L between 0 and 100, separated by commas"
+                        placeholder="190,75,80"
                         :pattern="hslPattern"
                         id="hslInput"
-                        aria-label="HSL color value"
+                        @input="normalizeColorSeparators"
                     />
                     <button type="submit" aria-label="Submit HSL color">
                         <i class="fas fa-chevron-circle-right"></i>
@@ -81,15 +76,13 @@ based on it.
         </div>
 
         <!-- color input  -->
-        <form @submit.prevent="submitColor" data-testid="color-form">
-            <div class="input-wrapper">
-                <label for="colorInput" class="sr-only">Color picker</label>
+        <form @submit.prevent="submitColor" data-testid="color-form" class="color-form">
+            <div class="input-wrapper" data-tooltip="Color wheel picker">
+                <label for="colorInput" class="input-label">COLOR</label>
                 <input
                     type="color"
                     data-testid="color-input"
                     id="colorInput"
-                    title="Click to select from color wheel"
-                    aria-label="Color picker"
                 />
                 <button type="submit" aria-label="Apply color">
                     <i class="fas fa-chevron-circle-right"></i>
@@ -108,6 +101,34 @@ based on it.
     const hexPattern = '^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$';
     const rgbPattern = String.raw`\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b,\s*\b(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\b`;
     const hslPattern = String.raw`\b(([0-9]|[1-9][0-9]|[1-2][0-9]{2}|3[0-5][0-9]|360))\b,\s*\b([0-9]|[1-9][0-9]|100)\b,\s*\b([0-9]|[1-9][0-9]|100)\b`;
+
+    const COLOR_CHANNEL_COUNT = 3;
+
+    /**
+     * Normalizes color input by replacing spaces with commas, capped at 3 values.
+     * @param {Event} e - The input event from an RGB or HSL text field.
+     */
+    const normalizeColorSeparators = (e) => {
+        const input = /** @type {HTMLInputElement} */ (e.target);
+        const cursorPos = input.selectionStart ?? 0;
+        const val = input.value;
+
+        let normalized = val
+            .replaceAll(/\s+/g, ',')
+            .replaceAll(/,+/g, ',')
+            .replace(/^,/, '');
+
+        const parts = normalized.split(',');
+        if (parts.length > COLOR_CHANNEL_COUNT) {
+            normalized = parts.slice(0, COLOR_CHANNEL_COUNT).join(',');
+        }
+
+        if (normalized !== val) {
+            input.value = normalized;
+            const lengthDiff = normalized.length - val.length;
+            input.setSelectionRange(cursorPos + lengthDiff, cursorPos + lengthDiff);
+        }
+    };
 
     /**
      * Generates a random HSL color and sets it as the main color in the store.

@@ -17,12 +17,37 @@ describe('component UtilityButtonsPanel', () => {
     beforeEach(() => {
         Object.assign(store.state, stateFactory());
         store.state.mainHSL = 'hsl(20, 20%, 20%)';
-        store.state.allColors.hsl = [
-            'hsl(180, 50%, 50%)',
-            'hsl(200, 50%, 50%)',
-            'hsl(220, 50%, 50%)',
-            'hsl(240, 50%, 50%)',
-            'hsl(260, 50%, 50%)',
+        store.state.allColors = [
+            {
+                hex: '#40BFBF',
+                hsl: 'hsl(180, 50%, 50%)',
+                rgb: 'rgb(64,191,191)',
+                type: 'analogous',
+            },
+            {
+                hex: '#4080BF',
+                hsl: 'hsl(200, 50%, 50%)',
+                rgb: 'rgb(64,128,191)',
+                type: 'complement',
+            },
+            {
+                hex: '#B3C4D6',
+                hsl: 'hsl(220, 50%, 85%)',
+                rgb: 'rgb(179,196,214)',
+                type: 'triad',
+            },
+            {
+                hex: '#13133D',
+                hsl: 'hsl(240, 50%, 15%)',
+                rgb: 'rgb(19,19,61)',
+                type: 'mono',
+            },
+            {
+                hex: '#8040BF',
+                hsl: 'hsl(260, 50%, 50%)',
+                rgb: 'rgb(128,64,191)',
+                type: 'saturation',
+            },
         ];
 
         wrapper = mount(UtilityButtonsPanel, {
@@ -41,6 +66,9 @@ describe('component UtilityButtonsPanel', () => {
         ).toBeTruthy();
         expect(
             wrapper.find('[data-test="random-scheme-button"]').exists(),
+        ).toBeTruthy();
+        expect(
+            wrapper.find('[data-test="one-shot-button"]').exists(),
         ).toBeTruthy();
     });
 
@@ -196,11 +224,16 @@ describe('component UtilityButtonsPanel', () => {
             .find('[data-test="reset-site-colors-button"]')
             .trigger('click');
 
-        const mainColorAfterReset = document.documentElement.style.getPropertyValue('--clr-main');
-        const secondaryColor = document.documentElement.style.getPropertyValue('--clr-secondary');
-        const accentColor = document.documentElement.style.getPropertyValue('--clr-accent');
-        const lightColor = document.documentElement.style.getPropertyValue('--clr-light');
-        const darkColor = document.documentElement.style.getPropertyValue('--clr-dark');
+        const mainColorAfterReset =
+            document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor =
+            document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor =
+            document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor =
+            document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor =
+            document.documentElement.style.getPropertyValue('--clr-dark');
 
         expect(mainColorAfterReset).toBe('');
         expect(secondaryColor).toBe('');
@@ -275,5 +308,146 @@ describe('component UtilityButtonsPanel', () => {
             .trigger('click');
 
         expect(wrapper.emitted('savePalette')).toBeTruthy();
+    });
+
+    it('one-shot button dispatches SET_MAIN_COLOR and SET_RANDOM_SCHEME', async () => {
+        const spy = vi.spyOn(store, 'dispatch').mockResolvedValue(null);
+
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        expect(spy).toHaveBeenCalledWith('SET_MAIN_COLOR');
+        expect(spy).toHaveBeenCalledWith('SET_RANDOM_SCHEME');
+    });
+
+    // oxlint-disable-next-line max-statements
+    it('one-shot button sets a full random palette and applies CSS vars', async () => {
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        const { slotColors, mainSlotColor } = store.state;
+
+        expect(mainSlotColor.hex).not.toBe('');
+        expect(slotColors.slot2.hsl).not.toBe('');
+        expect(slotColors.slot3.hsl).not.toBe('');
+        expect(slotColors.slot4.hsl).not.toBe('');
+        expect(slotColors.slot5.hsl).not.toBe('');
+
+        const mainColor =
+            document.documentElement.style.getPropertyValue('--clr-main');
+        const secondaryColor =
+            document.documentElement.style.getPropertyValue('--clr-secondary');
+        const accentColor =
+            document.documentElement.style.getPropertyValue('--clr-accent');
+        const lightColor =
+            document.documentElement.style.getPropertyValue('--clr-light');
+        const darkColor =
+            document.documentElement.style.getPropertyValue('--clr-dark');
+
+        expect(mainColor).toBe(mainSlotColor.hex);
+        expect(secondaryColor).toBe(slotColors.slot2.hex);
+        expect(accentColor).toBe(slotColors.slot3.hex);
+        expect(lightColor).toBe(slotColors.slot4.hex);
+        expect(darkColor).toBe(slotColors.slot5.hex);
+    });
+
+    it('one-shot button sets isTestingColorScheme to true', async () => {
+        await wrapper.find('[data-test="one-shot-button"]').trigger('click');
+
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.isTestingColorScheme).toBeTruthy();
+    });
+
+    it('Test this palette applies text color from palette (dark theme uses slot4)', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        // default theme is dark → text should use slot4
+        const { slot4 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="test-palette-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot4.hex);
+        expect(
+            document.documentElement.style.getPropertyValue('--text-color'),
+        ).toBe(slot4.hex);
+    });
+
+    it('Light Text uses slot4 color when testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+
+        const { slot4 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="set-light-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot4.hex);
+    });
+
+    it('Dark Text uses slot5 color when testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+
+        const { slot5 } = store.state.slotColors;
+
+        await wrapper
+            .find('[data-test="set-dark-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(slot5.hex);
+    });
+
+    it('Light Text uses theme default when not testing', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', false);
+
+        await wrapper
+            .find('[data-test="set-light-text-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
+    });
+
+    // oxlint-disable-next-line max-statements
+    it('Reset restores text color to theme default', async () => {
+        await wrapper
+            .find('[data-test="random-scheme-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        store.commit('SET_IS_TESTING', true);
+        await store.dispatch('SET_TEXT_COLOR', 'dark');
+
+        await wrapper
+            .find('[data-test="reset-site-colors-button"]')
+            .trigger('click');
+        await wrapper.vm.$nextTick();
+
+        expect(store.state.isTestingColorScheme).toBeFalsy();
+        // default theme is dark → textType becomes 'light'
+        expect(store.state.textColor.hex).toBe(DEFAULT_HEX_COLORS.LIGHT);
     });
 });

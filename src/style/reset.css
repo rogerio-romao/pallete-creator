@@ -40,7 +40,7 @@ ol {
 
 /* Set core body defaults */
 body {
-    min-block-size: 100dvh;
+    min-block-size: fit-content;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizelegibility;

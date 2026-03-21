@@ -43,6 +43,16 @@ const hue2rgb = (p, q, t) => {
 const clamp = (v) => Math.max(0, Math.min(MAX_LIGHTNESS, v));
 
 /**
+ * Extracts the lightness value from an HSL color string.
+ * @param {string} hsl - The HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {number} The lightness value (0–100).
+ */
+export const getLightness = (hsl) => {
+    const parts = hsl.match(/\d+/g)?.map(Number) ?? [];
+    return parts[2] ?? 50;
+};
+
+/**
  * Generates an HSL color string from the provided hue, saturation, and luminosity values.
  * @param {number} h - the hue value
  * @param {number} s - the saturation value

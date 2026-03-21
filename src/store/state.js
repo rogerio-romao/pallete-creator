@@ -4,6 +4,7 @@ import DEFAULT_HEX_COLORS from '../lib/colors';
  *  @property {string} hex - the hex value of the color
  *  @property {string} hsl - the hsl value of the color
  *  @property {string} rgb - the rgb value of the color
+ *  @property {string} type - the type of the color (main, complement, mono, triad, analogous, saturation)
  */
 
 /** @typedef {Object} SavedPalette
@@ -18,7 +19,7 @@ import DEFAULT_HEX_COLORS from '../lib/colors';
  * saved palettes, labels, and UI state for the palette creator application.
  *
  * @returns {{
- *   allColors: { hex: string[], hsl: string[], rgb: string[] },
+ *   allColors: Array<{ hex: string, hsl: string, rgb: string, type: string }>,
  *   copiedColor: string,
  *   copiedColorIndex: number | null,
  *   isTestingColorScheme: boolean,
@@ -36,14 +37,8 @@ import DEFAULT_HEX_COLORS from '../lib/colors';
 export default function state() {
     return {
         // holds all the generated variations, before filtering them to unique values in the getter
-        allColors: {
-            /** @type {string[]} */
-            hex: [],
-            /** @type {string[]} */
-            hsl: [],
-            /** @type {string[]} */
-            rgb: [],
-        },
+        /** @type {Array<{ hex: string, hsl: string, rgb: string, type: 'complement' | 'mono' | 'triad' | 'analogous' | 'saturation' | 'main' }>} */
+        allColors: [],
         // if a variation is selected for copying, it is stored here
         copiedColor: '',
         // this is the index of the mini slot that is selected, for styling purposes
@@ -61,6 +56,7 @@ export default function state() {
             hex: '',
             hsl: '',
             rgb: '',
+            type: 'main',
         },
         // holds all local storage saved color schemes
         /** @type {SavedPalette[]} */
@@ -71,21 +67,25 @@ export default function state() {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'secondary',
             },
             slot3: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'accent',
             },
             slot4: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'light',
             },
             slot5: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'dark',
             },
         },
         // default light text, changes when using the dark text button
@@ -93,6 +93,7 @@ export default function state() {
             hex: DEFAULT_HEX_COLORS.LIGHT_TEXT,
             hsl: 'hsl(240, 5%, 96%)',
             rgb: 'rgb(244, 244, 245)',
+            type: 'text',
         },
         // persisted display theme ('dark' | 'light')
         theme: 'dark',

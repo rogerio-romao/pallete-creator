@@ -89,7 +89,11 @@ describe('store actions', () => {
                 .fn()
                 .mockReturnValue(['hsl(120, 50%, 50%)', 'hsl(240, 50%, 50%)']);
 
-            actions.GENERATE_VARIATIONS(ctx, { color: 'hsl(0, 50%, 50%)', fn });
+            actions.GENERATE_VARIATIONS(ctx, {
+                color: 'hsl(0, 50%, 50%)',
+                fn,
+                type: '',
+            });
 
             expect(fn).toHaveBeenCalledWith('hsl(0, 50%, 50%)');
             expect(ctx.commit).toHaveBeenCalledTimes(2);
@@ -174,7 +178,12 @@ describe('store actions', () => {
         it('calls paletteService.save and dispatches LOAD_PALETTES', () => {
             const ctx = makeCtx();
             const scheme = [
-                { hex: '#fff', hsl: 'hsl(0,0%,100%)', rgb: 'rgb(255,255,255)' },
+                {
+                    hex: '#fff',
+                    hsl: 'hsl(0,0%,100%)',
+                    rgb: 'rgb(255,255,255)',
+                    type: 'main',
+                },
             ];
             actions.SAVE_PALETTE(ctx, { name: 'My Palette', scheme });
 
@@ -240,11 +249,12 @@ describe('store actions', () => {
         });
     });
 
+    // oxlint-disable-next-line max-lines-per-function
     describe('SET_PALETTE_FROM_SAVED', () => {
         it('does nothing when first slot has no hsl', () => {
             const ctx = makeCtx();
             actions.SET_PALETTE_FROM_SAVED(ctx, [
-                { hex: '#fff', hsl: '', rgb: '' },
+                { hex: '#fff', hsl: '', rgb: '', type: 'main' },
             ]);
 
             expect(ctx.dispatch).not.toHaveBeenCalled();
@@ -253,7 +263,12 @@ describe('store actions', () => {
         it('dispatches SET_MAIN_COLOR for the first slot', () => {
             const ctx = makeCtx();
             actions.SET_PALETTE_FROM_SAVED(ctx, [
-                { hex: '#f00', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)' },
+                {
+                    hex: '#f00',
+                    hsl: 'hsl(0, 100%, 50%)',
+                    rgb: 'rgb(255,0,0)',
+                    type: 'main',
+                },
             ]);
 
             expect(ctx.dispatch).toHaveBeenCalledWith(
@@ -265,34 +280,44 @@ describe('store actions', () => {
         it('dispatches UPDATE_SLOT_COLOR for each additional slot', () => {
             const ctx = makeCtx();
             actions.SET_PALETTE_FROM_SAVED(ctx, [
-                { hex: '#f00', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)' },
+                {
+                    hex: '#f00',
+                    hsl: 'hsl(0, 100%, 50%)',
+                    rgb: 'rgb(255,0,0)',
+                    type: 'main',
+                },
                 {
                     hex: '#0f0',
                     hsl: 'hsl(120, 100%, 50%)',
                     rgb: 'rgb(0,255,0)',
+                    type: 'secondary',
                 },
                 {
                     hex: '#00f',
                     hsl: 'hsl(240, 100%, 50%)',
                     rgb: 'rgb(0,0,255)',
+                    type: 'accent',
                 },
             ]);
 
             expect(ctx.dispatch).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
                 hsl: 'hsl(120, 100%, 50%)',
                 slot: 2,
+                type: 'secondary',
             });
             expect(ctx.dispatch).toHaveBeenCalledWith('UPDATE_SLOT_COLOR', {
                 hsl: 'hsl(240, 100%, 50%)',
                 slot: 3,
+                type: 'accent',
             });
         });
     });
 
+    // oxlint-disable-next-line max-lines-per-function
     describe('SET_RANDOM_SCHEME', () => {
         it('does nothing when uniqueColors is empty', () => {
             const ctx = makeCtx({
-                getters: { uniqueColors: new Set() },
+                getters: { colorsByType: {}, uniqueColors: [] },
                 state: { mainHSL: null },
             });
             actions.SET_RANDOM_SCHEME(ctx);
@@ -300,16 +325,51 @@ describe('store actions', () => {
             expect(ctx.commit).not.toHaveBeenCalled();
         });
 
+        // oxlint-disable-next-line max-lines-per-function
         it('commits SET_SLOT_COLOR for 4 slots when enough colors exist', () => {
-            const colors = new Set([
-                'hsl(0, 50%, 50%)',
-                'hsl(60, 50%, 50%)',
-                'hsl(120, 50%, 50%)',
-                'hsl(180, 50%, 50%)',
-                'hsl(240, 50%, 50%)',
-            ]);
+            const colors = [
+                {
+                    hex: '#000',
+                    hsl: 'hsl(0, 50%, 50%)',
+                    rgb: 'rgb(0,0,0)',
+                    type: 'analogous',
+                },
+                {
+                    hex: '#000',
+                    hsl: 'hsl(60, 50%, 50%)',
+                    rgb: 'rgb(0,0,0)',
+                    type: 'complement',
+                },
+                {
+                    hex: '#000',
+                    hsl: 'hsl(120, 50%, 85%)',
+                    rgb: 'rgb(0,0,0)',
+                    type: 'triad',
+                },
+                {
+                    hex: '#000',
+                    hsl: 'hsl(180, 50%, 15%)',
+                    rgb: 'rgb(0,0,0)',
+                    type: 'mono',
+                },
+                {
+                    hex: '#000',
+                    hsl: 'hsl(240, 50%, 50%)',
+                    rgb: 'rgb(0,0,0)',
+                    type: 'saturation',
+                },
+            ];
             const ctx = makeCtx({
-                getters: { uniqueColors: colors },
+                getters: {
+                    colorsByType: {
+                        analogous: [colors[0]],
+                        complement: [colors[1]],
+                        mono: [colors[3]],
+                        saturation: [colors[4]],
+                        triad: [colors[2]],
+                    },
+                    uniqueColors: colors,
+                },
                 state: { mainHSL: null },
             });
             actions.SET_RANDOM_SCHEME(ctx);
@@ -322,6 +382,8 @@ describe('store actions', () => {
             for (let i = 0; i < calls.length; i++) {
                 const [, payload] = /** @type {[string, any]} */ (calls[i]);
                 expect(payload.slot).toBe(`slot${i + 2}`);
+                const expectedTypes = ['secondary', 'accent', 'light', 'dark'];
+                expect(payload.type).toBe(expectedTypes[i]);
             }
         });
     });

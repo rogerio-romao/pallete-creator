@@ -15,10 +15,7 @@ const mutations = {
      * @param {ColorSlot} colors - The color values to add.
      */
     ADD_COLOR(state, colors) {
-        const { hsl, rgb, hex } = colors;
-        state.allColors.hsl.push(hsl);
-        state.allColors.rgb.push(rgb);
-        state.allColors.hex.push(hex);
+        state.allColors.push(colors);
     },
 
     /**
@@ -28,31 +25,31 @@ const mutations = {
      */
     RESET_ALL_COLORS(state, colors) {
         const { hsl, rgb, hex } = colors;
-        state.allColors = {
-            hex: [hex],
-            hsl: [hsl],
-            rgb: [rgb],
-        };
+        state.allColors = [{ hex, hsl, rgb, type: 'main' }];
         state.slotColors = {
             slot2: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'secondary',
             },
             slot3: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'accent',
             },
             slot4: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'light',
             },
             slot5: {
                 hex: '',
                 hsl: '',
                 rgb: '',
+                type: 'dark',
             },
         };
     },
@@ -118,12 +115,15 @@ const mutations = {
     /**
      * Sets the color values for a specific slot in the state.
      * @param {State} state - The Vuex state object.
-     * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string }} payload - The slot identifier and color values.
+     * @param {{ slot: SlotKey, hsl: string, rgb: string, hex: string, type?: string }} payload - The slot identifier and color values.
      */
-    SET_SLOT_COLOR(state, { slot, hsl, rgb, hex }) {
+    SET_SLOT_COLOR(state, { slot, hsl, rgb, hex, type }) {
         state.slotColors[slot].hsl = hsl;
         state.slotColors[slot].rgb = rgb;
         state.slotColors[slot].hex = hex;
+        if (type) {
+            state.slotColors[slot].type = type;
+        }
     },
 
     /**

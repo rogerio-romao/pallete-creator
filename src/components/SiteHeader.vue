@@ -67,7 +67,7 @@ and open the instructions modal.
 
     const isFullscreen = ref(false);
     const isDark = computed(() => store.state.theme === 'dark');
-    const isTesting = computed(() => store.state.isTesting);
+    const isTesting = computed(() => store.state.isTestingColorScheme);
 
     /**
      * Toggles the browser's fullscreen mode.

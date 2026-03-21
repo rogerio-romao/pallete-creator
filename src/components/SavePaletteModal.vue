@@ -11,11 +11,11 @@ failure of the save operation.
         role="dialog"
         aria-modal="true"
         aria-labelledby="save-palette-title"
+        @click.self="$emit('close')"
     >
         <div
             class="modal-wrapper"
             data-testid="modal-wrapper"
-            @click.self="$emit('close')"
         >
             <div class="modal-container">
                 <form
@@ -58,6 +58,7 @@ failure of the save operation.
                     <!-- footer  -->
                     <div class="modal-footer">
                         <button
+                            type="button"
                             class="secondary-button"
                             data-testid="close-button"
                             @click="$emit('close')"

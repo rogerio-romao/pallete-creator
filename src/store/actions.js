@@ -1,8 +1,10 @@
+// oxlint-disable max-lines
+// oxlint-disable no-magic-numbers
 // oxlint-disable no-console
 
 /** @typedef {ReturnType<typeof import('./state.js').default> & { theme: 'dark' | 'light' }} State */
 /** @typedef {import('./state.js').ColorSlot} ColorSlot */
-/** @typedef {{ uniqueColors: Set<string>, fullSchemeSet: boolean, currentScheme: ColorSlot[] }} Getters */
+/** @typedef {{ uniqueColors: Array<{ hex: string, hsl: string, rgb: string, type: string }>, colorsByType: Record<string, Array<{ hex: string, hsl: string, rgb: string, type: string }>>, fullSchemeSet: boolean, currentScheme: ColorSlot[] }} Getters */
 /** @typedef {{ commit: (mutation: string, payload?: unknown) => void, dispatch: (action: string, payload?: unknown) => void, state: State, getters: Getters }} ActionCtx */
 
 import paletteService from '../services/paletteService';
@@ -14,11 +16,22 @@ import {
     generateMono,
     generateSaturations,
     generateTriad,
+    getLightness,
     hslToRgb,
     rgbToHex,
 } from '../lib/utils';
 
-const MIN_SCHEME_SIZE = 4;
+/**
+ * Returns the semantic role for a generated palette slot.
+ * @param {number} slotNum - the palette slot number
+ * @returns {'secondary' | 'accent' | 'light' | 'dark'} The semantic role for the slot.
+ */
+const getSlotRole = (slotNum) => {
+    const slotRoles = ['secondary', 'accent', 'light', 'dark'];
+    return /** @type {'secondary' | 'accent' | 'light' | 'dark'} */ (
+        slotRoles[slotNum - 2] ?? 'secondary'
+    );
+};
 
 /**
  * Vuex actions for the palette creator app. These actions handle user interactions and async operations, committing mutations to update the state accordingly.
@@ -61,14 +74,14 @@ const actions = {
     /**
      * Trigerred when a user generates a main color. Dispatches actions to reset the color slots and generate variations based on the new main color.
      * @param {ActionCtx} ctx - Vuex action context
-     * @param {{ color: string, fn: (color: string) => string[] }} payload - base color and variation generator function
+     * @param {{ color: string, fn: (color: string) => string[], type: string }} payload - base color, variation generator function, and variation type
      */
-    GENERATE_VARIATIONS({ commit }, { color, fn }) {
+    GENERATE_VARIATIONS({ commit }, { color, fn, type }) {
         const variations = fn(color);
         for (const hsl of variations) {
             const rgb = hslToRgb(hsl);
             const hex = rgbToHex(rgb);
-            commit('ADD_COLOR', { hex, hsl, rgb });
+            commit('ADD_COLOR', { hex, hsl, rgb, type });
         }
     },
 
@@ -140,13 +153,30 @@ const actions = {
 
         commit('SET_MAIN_COLOR', { hex, hsl, rgb });
         commit('RESET_ALL_COLORS', { hex, hsl, rgb });
-        dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateComplement });
-        dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateMono });
-        dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateTriad });
-        dispatch('GENERATE_VARIATIONS', { color: hsl, fn: generateAnalogous });
+        dispatch('GENERATE_VARIATIONS', {
+            color: hsl,
+            fn: generateComplement,
+            type: 'complement',
+        });
+        dispatch('GENERATE_VARIATIONS', {
+            color: hsl,
+            fn: generateMono,
+            type: 'mono',
+        });
+        dispatch('GENERATE_VARIATIONS', {
+            color: hsl,
+            fn: generateTriad,
+            type: 'triad',
+        });
+        dispatch('GENERATE_VARIATIONS', {
+            color: hsl,
+            fn: generateAnalogous,
+            type: 'analogous',
+        });
         dispatch('GENERATE_VARIATIONS', {
             color: hsl,
             fn: generateSaturations,
+            type: 'saturation',
         });
     },
 
@@ -164,7 +194,11 @@ const actions = {
         dispatch('SET_MAIN_COLOR', main.hsl);
         for (const [index, slot] of others.entries()) {
             // oxlint-disable-next-line no-magic-numbers -- the first slot is text color and the second slot is the main color, so the generated variations start from slot 2
-            dispatch('UPDATE_SLOT_COLOR', { hsl: slot.hsl, slot: index + 2 });
+            dispatch('UPDATE_SLOT_COLOR', {
+                hsl: slot.hsl,
+                slot: index + 2,
+                type: slot.type,
+            });
         }
     },
 
@@ -172,34 +206,119 @@ const actions = {
      * Trigerred when a user clicks on the "Randomize" button to fill the slots with random unique colors from the variations.
      * @param {ActionCtx} ctx - Vuex action context
      */
-    // oxlint-disable-next-line max-statements
+    // oxlint-disable-next-line max-statements, max-lines-per-function, complexity
     SET_RANDOM_SCHEME({ commit, state, getters }) {
-        const unique = [...getters.uniqueColors].filter(
-            (hsl) => hsl !== state.mainHSL,
+        const groups = getters.colorsByType;
+        const all = getters.uniqueColors.filter(
+            (e) => e.hsl !== state.mainHSL && e.type !== 'main',
         );
-        if (unique.length === 0) {
+        if (all.length === 0) {
             return;
         }
 
-        const randomScheme = new Set();
-        const maxAttempts = 100;
-        let attempts = 0;
-
-        // We want to ensure we get a full scheme of unique colors, but there might not be enough unique colors to fill all the slots. To avoid an infinite loop, we set a maximum number of attempts to find unique colors.
-        while (randomScheme.size < MIN_SCHEME_SIZE && attempts < maxAttempts) {
-            const hsl = unique[Math.floor(Math.random() * unique.length)];
-            if (!randomScheme.has(hsl)) {
-                randomScheme.add(hsl);
+        const used = new Set([state.mainHSL].filter(Boolean));
+        const pickRandom = (
+            /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
+        ) => {
+            const available = candidates.filter((e) => !used.has(e.hsl));
+            if (available.length === 0) {
+                return null;
             }
-            attempts += 1;
-        }
+            const pick =
+                available[Math.floor(Math.random() * available.length)];
+            if (pick) {
+                used.add(pick.hsl);
+            }
+            return pick;
+        };
 
-        let slot = 2;
-        for (const hsl of randomScheme) {
-            const rgb = hslToRgb(hsl);
+        const EXTREME_LIGHT_THRESHOLD = 75;
+        const EXTREME_DARK_THRESHOLD = 25;
+        const MIN_LIGHTNESS_DIFF = 20;
+        const mainLightness = state.mainHSL ? getLightness(state.mainHSL) : 50;
+        const isExtreme =
+            mainLightness > EXTREME_LIGHT_THRESHOLD ||
+            mainLightness < EXTREME_DARK_THRESHOLD;
+
+        const contrastFilter = (
+            /** @type {Array<{ hex: string, hsl: string, rgb: string, type: string }>} */ candidates,
+        ) => {
+            if (!isExtreme) {
+                return candidates;
+            }
+            const filtered = candidates.filter(
+                (e) =>
+                    Math.abs(getLightness(e.hsl) - mainLightness) >=
+                    MIN_LIGHTNESS_DIFF,
+            );
+            return filtered.length > 0 ? filtered : candidates;
+        };
+
+        // slot2 (Secondary): analogous colors are harmonious and close to the main hue;
+        // when main is extreme lightness, prefer analogous with contrast, fall back to any with contrast
+        const secondaryPool = isExtreme
+            ? contrastFilter(groups['analogous'] ?? [])
+            : (groups['analogous'] ?? all);
+        const secondary =
+            pickRandom(
+                secondaryPool.length > 0 ? secondaryPool : contrastFilter(all),
+            ) ?? pickRandom(all);
+
+        // slot3 (Accent): complement or triad colors are visually distinct;
+        // when main is extreme lightness, prefer contrast-filtered pool, fall back to any with contrast
+        const rawAccentPool = [
+            ...(groups['complement'] ?? []),
+            ...(groups['triad'] ?? []),
+        ];
+        const accentPool = isExtreme
+            ? contrastFilter(rawAccentPool)
+            : rawAccentPool;
+        const accent =
+            pickRandom(
+                accentPool.length > 0 ? accentPool : contrastFilter(all),
+            ) ?? pickRandom(all);
+
+        // slot4 (Light): prefer colors with lightness >= 70; if none available (or all used), pick lightest unused
+        const lightCandidates = all.filter((e) => getLightness(e.hsl) >= 70);
+        const lightPool = lightCandidates.length > 0 ? lightCandidates : all;
+        const light =
+            pickRandom(lightPool) ??
+            pickRandom(
+                [...all].toSorted(
+                    (a, b) => getLightness(b.hsl) - getLightness(a.hsl),
+                ),
+            );
+
+        // slot5 (Dark): prefer colors with lightness <= 30; if none available (or all used), pick darkest unused
+        const darkCandidates = all.filter((e) => getLightness(e.hsl) <= 30);
+        const darkPool = darkCandidates.length > 0 ? darkCandidates : all;
+        const dark =
+            pickRandom(darkPool) ??
+            pickRandom(
+                [...all].toSorted(
+                    (a, b) => getLightness(a.hsl) - getLightness(b.hsl),
+                ),
+            );
+
+        for (const [slotNum, entry] of [
+            [2, secondary],
+            [3, accent],
+            [4, light],
+            [5, dark],
+        ]) {
+            if (!entry || typeof entry === 'number') {
+                // oxlint-disable-next-line no-continue
+                continue;
+            }
+            const rgb = hslToRgb(entry.hsl);
             const hex = rgbToHex(rgb);
-            commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}` });
-            slot += 1;
+            commit('SET_SLOT_COLOR', {
+                hex,
+                hsl: entry.hsl,
+                rgb,
+                slot: `slot${slotNum}`,
+                type: getSlotRole(Number(slotNum)),
+            });
         }
     },
 
@@ -263,12 +382,12 @@ const actions = {
     /**
      * Trigerred when a user updates the color of a specific slot. Commits mutations to set the new color values for the target slot based on the provided HSL color.
      * @param {ActionCtx} ctx - Vuex action context
-     * @param {{ slot: number, hsl: string }} payload - target slot number and HSL color to set
+     * @param {{ slot: number, hsl: string, type?: string }} payload - target slot number, HSL color, and optional type to set
      */
-    UPDATE_SLOT_COLOR({ commit }, { slot, hsl }) {
+    UPDATE_SLOT_COLOR({ commit }, { slot, hsl, type }) {
         const rgb = hslToRgb(hsl);
         const hex = rgbToHex(rgb);
-        commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}` });
+        commit('SET_SLOT_COLOR', { hex, hsl, rgb, slot: `slot${slot}`, type });
     },
 };
 

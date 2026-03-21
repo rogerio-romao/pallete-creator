@@ -17,6 +17,14 @@
 
         <!-- utility buttons  -->
         <div v-if="showUtilityButtons">
+            <h2>
+                Actions
+                <span
+                    class="section-info"
+                    data-tooltip="Generate a random palette, test it live on the UI, tweak text contrast, export as CSS, or save it for later."
+                    >i</span
+                >
+            </h2>
             <UtilityButtonsPanel
                 @copyPalette="showCopyModal = true"
                 @savePalette="showSaveModal = true"
@@ -37,7 +45,7 @@
         </div>
 
         <!-- mini slots / variations  -->
-        <div v-if="uniqueColors.size">
+        <div v-if="uniqueColors.length">
             <h2>
                 Variations
                 <span
@@ -127,7 +135,7 @@
     const mainHSL = computed(() => store.state.mainHSL);
     const uniqueColors = computed(() => store.getters.uniqueColors);
     const savedPalettes = computed(() => store.state.savedPalettes);
-    const showUtilityButtons = computed(() => store.getters.uniqueColors.size);
+    const showUtilityButtons = computed(() => store.getters.uniqueColors.length);
 
     defineExpose({
         showCopyModal,

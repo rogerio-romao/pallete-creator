@@ -28,6 +28,7 @@ accordingly.
             @click="pasteColor"
             :style="{
                 backgroundColor: slotBg,
+                cursor: colorCopied ? 'pointer' : 'default',
             }"
             role="button"
             :aria-label="`Color slot ${slotNumber}: ${hex}. Click to paste color.`"
@@ -78,6 +79,7 @@ accordingly.
 
     const store = useStore();
     const labels = computed(() => store.state.labels);
+    const colorCopied = computed(() => store.state.copiedColor);
 
     const formats = ['hex', 'hsl', 'rgb'];
     const activeFormat = ref('hex');

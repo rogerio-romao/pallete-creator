@@ -10,19 +10,11 @@ describe('component MiniSlotsPanel', () => {
     let wrapper;
 
     beforeEach(() => {
-        store.state.allColors = {
-            hex: ['#40a0bf', '#4095bf', '#408abf'],
-            hsl: [
-                'hsl(200, 50%, 50%)',
-                'hsl(210, 50%, 50%)',
-                'hsl(220, 50%, 50%)',
-            ],
-            rgb: [
-                'rgb(64, 160, 191)',
-                'rgb(64, 149, 191)',
-                'rgb(64, 138, 191)',
-            ],
-        };
+        store.state.allColors = [
+            { hex: '#40a0bf', hsl: 'hsl(200, 50%, 50%)', rgb: 'rgb(64, 160, 191)', type: 'complement' },
+            { hex: '#4095bf', hsl: 'hsl(210, 50%, 50%)', rgb: 'rgb(64, 149, 191)', type: 'complement' },
+            { hex: '#408abf', hsl: 'hsl(220, 50%, 50%)', rgb: 'rgb(64, 138, 191)', type: 'mono' },
+        ];
         store.state.copiedColor = '';
         store.state.copiedColorIndex = null;
 
@@ -49,7 +41,7 @@ describe('component MiniSlotsPanel', () => {
     it('renders a slot for each unique color from the store', () => {
         const slots = wrapper.findAll('.mini-slot');
 
-        expect(slots).toHaveLength(store.getters.uniqueColors.size);
+        expect(slots).toHaveLength(store.getters.uniqueColors.length);
     });
 
     it('applies background color to each slot', () => {

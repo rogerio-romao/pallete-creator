@@ -36,7 +36,7 @@ describe('component App.vue', () => {
     });
 
     it('shows utility buttons panel when colors are present', async () => {
-        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
+        store.state.allColors = [{ hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' }];
         await wrapper.vm.$nextTick();
 
         expect(
@@ -45,7 +45,7 @@ describe('component App.vue', () => {
     });
 
     it('hides utility buttons panel when no colors are present', async () => {
-        store.state.allColors.hsl = [];
+        store.state.allColors = [];
         await wrapper.vm.$nextTick();
 
         expect(
@@ -93,10 +93,10 @@ describe('component App.vue', () => {
 
     // oxlint-disable-next-line max-lines-per-function
     it('opens and closes Copy modal', async () => {
-        store.state.allColors.hsl = [
-            'hsl(0, 100%, 50%)',
-            'hsl(120, 100%, 50%)',
-            'hsl(240, 100%, 50%)',
+        store.state.allColors = [
+            { hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' },
+            { hex: '#00ff00', hsl: 'hsl(120, 100%, 50%)', rgb: 'rgb(0,255,0)', type: 'triad' },
+            { hex: '#0000ff', hsl: 'hsl(240, 100%, 50%)', rgb: 'rgb(0,0,255)', type: 'analogous' },
         ];
         await wrapper.vm.$nextTick();
 
@@ -120,7 +120,7 @@ describe('component App.vue', () => {
     });
 
     it('opens and closes SavePalette modal', async () => {
-        store.state.allColors.hsl = ['hsl(0, 100%, 50%)'];
+        store.state.allColors = [{ hex: '#ff0000', hsl: 'hsl(0, 100%, 50%)', rgb: 'rgb(255,0,0)', type: 'complement' }];
         await wrapper.vm.$nextTick();
 
         await wrapper
