@@ -6,6 +6,23 @@ const MAX_SATURATION = 100;
 const MAX_LIGHTNESS = 100;
 const MAX_RGB_VALUE = 255;
 const HEX_RADIX = 16;
+const LOW_SAT_THRESHOLD = 10;
+const ACHROMATIC_DARK_THRESHOLD = 8;
+const ACHROMATIC_LIGHT_THRESHOLD = 95;
+
+/** * Generates a random hue value between 0 and MAX_HUE.
+ * @returns {number} A random hue value in the range [0, MAX_HUE).
+ */
+const randomHue = () => Math.floor(Math.random() * MAX_HUE);
+
+/**
+ * Returns a random integer in [min, max].
+ * @param {number} min - the minimum integer value (inclusive)
+ * @param {number} max - the maximum integer value (inclusive)
+ * @returns {number} a random integer between min and max (inclusive)
+ */
+const randomInRange = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
 
 /**
  * Helper function for converting hue to RGB values, used in the HSL to RGB conversion process.
@@ -51,6 +68,31 @@ export const getLightness = (hsl) => {
     const parts = hsl.match(/\d+/g)?.map(Number) ?? [];
     return parts[2] ?? 50;
 };
+
+/**
+ * Returns true when saturation is so low that hue rotation produces no visible color variation.
+ * @param {number} s - saturation value (0–100)
+ * @returns {boolean} - true if saturation is low enough to be considered near-achromatic, false otherwise
+ */
+export const isLowSaturation = (s) => s <= LOW_SAT_THRESHOLD;
+
+/**
+ * Returns true when both saturation is near-zero AND lightness is at an extreme where
+ * saturation changes have no visible effect (pure black / pure white region).
+ * @param {number} s - saturation value (0–100)
+ * @param {number} l - lightness value (0–100)
+ * @returns {boolean} - true if the color is effectively achromatic, false otherwise
+ */
+export const isAchromatic = (s, l) =>
+    s <= LOW_SAT_THRESHOLD &&
+    (l <= ACHROMATIC_DARK_THRESHOLD || l >= ACHROMATIC_LIGHT_THRESHOLD);
+
+/**
+ * Extracts the saturation value from an HSL color string.
+ * @param {string} hsl - The HSL color string (e.g., "hsl(120, 50%, 50%)").
+ * @returns {number} The saturation value (0–100).
+ */
+export const getSaturation = (hsl) => Number(hsl.match(/\d+/g)?.[1]);
 
 /**
  * Generates an HSL color string from the provided hue, saturation, and luminosity values.
@@ -206,14 +248,52 @@ export const hexToHsl = (hex) => {
  * @param {string} hsl - The base HSL color string (e.g., "hsl(120, 50%, 50%)").
  * @returns {string[]} An array of complementary HSL color strings.
  */
+// oxlint-disable-next-line max-lines-per-function
 export const generateComplement = (hsl) => {
     const [h, s, l] = hsl.match(/\d+/g)?.map(Number) ?? [];
     if (h === undefined || s === undefined || l === undefined) {
         return [];
     }
 
+    if (isLowSaturation(s)) {
+        const base = randomHue();
+        return [
+            toHslString(base, randomInRange(50, 80), randomInRange(40, 60)),
+            toHslString(
+                (base + 180) % MAX_HUE,
+                randomInRange(50, 80),
+                randomInRange(40, 60),
+            ),
+            toHslString(
+                (base + 60) % MAX_HUE,
+                randomInRange(40, 70),
+                randomInRange(70, 85),
+            ),
+            toHslString(
+                (base + 240) % MAX_HUE,
+                randomInRange(40, 70),
+                randomInRange(70, 85),
+            ),
+            toHslString(
+                (base + 90) % MAX_HUE,
+                randomInRange(50, 80),
+                randomInRange(25, 40),
+            ),
+            toHslString(
+                (base + 120) % MAX_HUE,
+                randomInRange(50, 80),
+                randomInRange(45, 65),
+            ),
+            toHslString(
+                (base + 270) % MAX_HUE,
+                randomInRange(50, 80),
+                randomInRange(45, 65),
+            ),
+        ];
+    }
+
     const h2 = (h + 180) % MAX_HUE;
-    const h3 = ((h - 150) % MAX_HUE + MAX_HUE) % MAX_HUE;
+    const h3 = (((h - 150) % MAX_HUE) + MAX_HUE) % MAX_HUE;
     const h4 = (h + 150) % MAX_HUE;
     const l2 = (l - 30 + MAX_LIGHTNESS) % MAX_LIGHTNESS;
 
@@ -262,6 +342,21 @@ export const generateTriad = (hsl) => {
         return [];
     }
 
+    if (isLowSaturation(s)) {
+        const base = randomHue();
+        const sat = randomInRange(50, 80);
+        const h2 = (base + 120) % MAX_HUE;
+        const h3 = (base + 240) % MAX_HUE;
+        return [
+            toHslString(h2, sat, randomInRange(40, 60)),
+            toHslString(h3, sat, randomInRange(40, 60)),
+            toHslString(h2, sat, randomInRange(25, 40)),
+            toHslString(h3, sat, randomInRange(25, 40)),
+            toHslString(h2, sat, randomInRange(65, 80)),
+            toHslString(h3, sat, randomInRange(65, 80)),
+        ];
+    }
+
     const h2 = (h + 120) % MAX_HUE;
     const h3 = (h + 240) % MAX_HUE;
 
@@ -286,11 +381,37 @@ export const generateAnalogous = (hsl) => {
         return [];
     }
 
-    const h2 = ((h - 60) % MAX_HUE + MAX_HUE) % MAX_HUE;
-    const h3 = ((h - 30) % MAX_HUE + MAX_HUE) % MAX_HUE;
+    if (isLowSaturation(s)) {
+        const base = randomHue();
+        const sat = randomInRange(45, 75);
+        const lit = randomInRange(40, 65);
+        return [
+            toHslString(
+                (((base - 60) % MAX_HUE) + MAX_HUE) % MAX_HUE,
+                sat,
+                lit,
+            ),
+            toHslString(
+                (((base - 30) % MAX_HUE) + MAX_HUE) % MAX_HUE,
+                sat,
+                lit,
+            ),
+            toHslString((base + 30) % MAX_HUE, sat, lit),
+            toHslString((base + 60) % MAX_HUE, sat, lit),
+            toHslString(
+                (((base - 90) % MAX_HUE) + MAX_HUE) % MAX_HUE,
+                sat,
+                lit,
+            ),
+            toHslString((base + 90) % MAX_HUE, sat, lit),
+        ];
+    }
+
+    const h2 = (((h - 60) % MAX_HUE) + MAX_HUE) % MAX_HUE;
+    const h3 = (((h - 30) % MAX_HUE) + MAX_HUE) % MAX_HUE;
     const h4 = (h + 30) % MAX_HUE;
     const h5 = (h + 60) % MAX_HUE;
-    const h6 = ((h - 90) % MAX_HUE + MAX_HUE) % MAX_HUE;
+    const h6 = (((h - 90) % MAX_HUE) + MAX_HUE) % MAX_HUE;
     const h7 = (h + 90) % MAX_HUE;
 
     return [
@@ -314,13 +435,27 @@ export const generateSaturations = (hsl) => {
         return [];
     }
 
-    const s2 = ((s - 10) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
+    if (isAchromatic(s, l)) {
+        const base = randomHue();
+        return [
+            toHslString(base, 15, 25),
+            toHslString(base, 30, 35),
+            toHslString(base, 45, 45),
+            toHslString(base, 55, 55),
+            toHslString(base, 65, 65),
+            toHslString(base, 75, 75),
+            toHslString(base, 85, 85),
+            toHslString(base, 95, 92),
+        ];
+    }
+
+    const s2 = (((s - 10) % MAX_SATURATION) + MAX_SATURATION) % MAX_SATURATION;
     const s3 = (s + 10) % MAX_SATURATION;
-    const s4 = ((s - 20) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
+    const s4 = (((s - 20) % MAX_SATURATION) + MAX_SATURATION) % MAX_SATURATION;
     const s5 = (s + 20) % MAX_SATURATION;
-    const s6 = ((s - 30) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
+    const s6 = (((s - 30) % MAX_SATURATION) + MAX_SATURATION) % MAX_SATURATION;
     const s7 = (s + 30) % MAX_SATURATION;
-    const s8 = ((s - 40) % MAX_SATURATION + MAX_SATURATION) % MAX_SATURATION;
+    const s8 = (((s - 40) % MAX_SATURATION) + MAX_SATURATION) % MAX_SATURATION;
     const s9 = (s + 40) % MAX_SATURATION;
 
     return [
