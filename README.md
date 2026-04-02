@@ -8,7 +8,8 @@ A fun little color palette tool for designers and developers. Pick a base color,
 explore variations built on color theory, fine-tune each slot, preview the
 result live on the UI, and export it as CSS variables — all in one place.
 
-Visit: **[palette-creator.surge.sh](https://palette-creator.surge.sh/)**
+Visit:
+**[palette-creator.rogerioromao.dev](https://palette-creator.rogerioromao.dev/)**
 
 ---
 
