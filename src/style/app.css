@@ -393,6 +393,14 @@ nav {
                 color: inherit;
             }
 
+            & .avatar-icon {
+                inline-size: 1em;
+                block-size: 1em;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+            }
+
             border-radius: 0;
             font-size: 0.8rem;
 
