@@ -22,6 +22,17 @@ and open the instructions modal.
                         @click="emit('openInstructionsModal')"
                         >Instructions</li
                     >
+                    <!-- dev website -->
+                    <li data-tooltip="Visit developer's website">
+                        <a
+                            href="https://rogerioromao.dev"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Visit developer's website"
+                        >
+                            <img src="../assets/rogerio_avatar.jpg" alt="Developer avatar" class="avatar-icon" />
+                        </a>
+                    </li>
                     <!-- github link -->
                     <li data-tooltip="Star this repo">
                         <a
